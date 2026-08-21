@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>فرمانروایان قلمرو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120e0a; --gold:#e8b23d; --gold-dim:#8a662688; --stone:#4a4238; --ink:#f0e8d8; --ink-dim:#a89a82;
+    --red:#c1443c; --green:#5a9b5a; --line:#3a3226; --panel:#1c150f;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{ margin:0; padding:0; width:100%; height:100%; overflow-x:hidden; background:var(--bg); color:var(--ink);
+    font-family:'Chakra Petch', sans-serif; -webkit-user-select:none; user-select:none; }
+  .fancy{ font-family:'Cinzel', serif; }
+  #app{ min-height:100vh; display:flex; flex-direction:column; }
+  .hidden{ display:none !important; }
+
+  .screen{ min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:22px 16px 80px;
+    background: radial-gradient(ellipse at 50% -10%, #2a2015 0%, #120e0a 60%); }
+  .screen.center{ justify-content:center; text-align:center; gap:12px; }
+
+  .brand-eyebrow{ font-size:11px; letter-spacing:4px; color:var(--gold); opacity:.85; border:1px solid var(--gold-dim); padding:4px 12px; border-radius:2px;}
+  .brand-title{ font-size:30px; margin:6px 0 0; text-shadow:0 0 18px rgba(232,178,61,.25); }
+  .brand-sub{ font-size:13px; color:var(--ink-dim); max-width:340px; line-height:1.8; }
+
+  input.text-input{ width:min(280px,78vw); padding:13px 16px; font-size:16px; background:#0f0b07; border:1px solid var(--stone);
+    color:var(--ink); border-radius:4px; text-align:center; font-family:inherit; outline:none;}
+  input.text-input:focus{ border-color:var(--gold); }
+
+  .btn{ font-family:'Chakra Petch', sans-serif; font-weight:700; font-size:15px; padding:13px 26px; border-radius:4px;
+    border:1px solid var(--stone); background:linear-gradient(180deg, #2a2318, #1a140d); color:var(--ink);
+    letter-spacing:.5px; cursor:pointer; min-width:200px;}
+  .btn:active{ transform:translateY(1px); }
+  .btn-primary{ border-color:var(--gold); background:linear-gradient(180deg,#a3781f,#5c4212); color:#fff6dc;}
+  .btn-red{ border-color:var(--red); background:linear-gradient(180deg,#7a2a26,#4a1815); color:#ffe8e4;}
+  .btn-ghost{ background:transparent; border-color:var(--line); color:var(--ink-dim); font-size:13px; padding:9px 18px; min-width:0;}
+  .btn-sm{ font-size:12px; padding:7px 12px; min-width:0;}
+  .btn:disabled{ opacity:.4; }
+
+  /* top bar */
+  .topbar{ position:sticky; top:0; width:100%; max-width:520px; display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px; background:rgba(18,14,10,.92); border-bottom:1px solid var(--line); z-index:5; backdrop-filter:blur(3px);}
+  .res-pill{ display:flex; align-items:center; gap:5px; background:#1c150f; border:1px solid var(--line); border-radius:20px; padding:5px 12px; font-size:13px; font-weight:700;}
+  .res-pill .g{ color:var(--gold); }
+
+  .nav-row{ position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:center; gap:4px; padding:8px;
+    background:rgba(18,14,10,.95); border-top:1px solid var(--line); z-index:5;}
+  .nav-btn{ flex:1; max-width:110px; background:none; border:none; color:var(--ink-dim); font-family:inherit; font-size:11px;
+    display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 4px; border-radius:6px;}
+  .nav-btn.active{ color:var(--gold); background:rgba(232,178,61,.08); }
+  .nav-btn .ic{ font-size:20px; }
+
+  .content{ width:100%; max-width:520px; padding:14px 4px 20px; }
+
+  .kingdom-name{ text-align:center; font-size:20px; margin:6px 0 14px; }
+
+  .building-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .b-card{ background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 10px; }
+  .b-card .bic{ font-size:26px; }
+  .b-card .bname{ font-size:13px; font-weight:700; margin-top:2px; }
+  .b-card .blvl{ font-size:11px; color:var(--gold); margin-top:2px; }
+  .b-card .bdesc{ font-size:10px; color:var(--ink-dim); margin-top:4px; line-height:1.5; min-height:30px;}
+  .b-card .bcost{ font-size:11px; margin-top:6px; color:var(--ink-dim); }
+  .b-card button{ width:100%; margin-top:6px; }
+
+  .troop-row{ display:flex; align-items:center; justify-content:space-between; background:var(--panel);
+    border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:8px; gap:8px;}
+  .troop-row .tinfo{ display:flex; align-items:center; gap:8px; }
+  .troop-row .tic{ font-size:24px; }
+  .troop-row .tname{ font-size:13px; font-weight:700; }
+  .troop-row .tstat{ font-size:10px; color:var(--ink-dim); }
+  .troop-row .tcount{ font-size:16px; font-weight:700; color:var(--gold); min-width:34px; text-align:center; }
+  .qty-stepper{ display:flex; align-items:center; gap:6px; }
+  .qty-stepper button{ width:30px; height:30px; border-radius:6px; border:1px solid var(--line); background:#1c150f; color:var(--ink); font-size:16px; padding:0; min-width:0;}
+  .qty-stepper input{ width:44px; text-align:center; background:#0f0b07; border:1px solid var(--line); color:var(--ink); border-radius:4px; padding:4px 2px; font-family:inherit; }
+
+  .search-result-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-bottom:1px solid var(--line); }
+  .search-result-row:last-child{ border-bottom:none; }
+  .list-wrap{ background:var(--panel); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+
+  .battle-banner{ text-align:center; padding:20px; border-radius:10px; margin-bottom:14px; }
+  .battle-banner.win{ background:rgba(90,155,90,.12); border:1px solid var(--green); }
+  .battle-banner.lose{ background:rgba(193,68,60,.12); border:1px solid var(--red); }
+  .battle-banner .bigline{ font-size:22px; font-weight:700; }
+  .stat-line{ display:flex; justify-content:space-between; padding:10px 14px; background:var(--panel); border:1px solid var(--line); border-radius:6px; margin-bottom:8px; font-size:14px;}
+
+  .inbox-row{ padding:12px; border-bottom:1px solid var(--line); font-size:13px; }
+  .inbox-row:last-child{ border-bottom:none; }
+  .inbox-row .res-win{ color:var(--green); font-weight:700; }
+  .inbox-row .res-lose{ color:var(--red); font-weight:700; }
+  .inbox-row .meta{ color:var(--ink-dim); font-size:11px; margin-top:3px; }
+
+  .err-note{ color:var(--red); font-size:13px; min-height:16px; }
+  #conn-status.ok{ color:var(--green); }
+  #conn-status.pending{ color:var(--ink-dim); }
+  .section-title{ font-size:14px; color:var(--gold); margin:16px 0 8px; padding-inline-start:4px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- NAME ENTRY -->
+  <div id="screen-name" class="screen center">
+    <div class="brand-eyebrow">فرمانروایان قلمرو</div>
+    <h1 class="brand-title fancy">🏰 قلمرو تو</h1>
+    <p class="brand-sub">اسمت رو وارد کن — همون اسم پادشاهی و اکانتته. یکتا انتخابش کن.</p>
+    <input id="input-name" class="text-input" type="text" maxlength="16" placeholder="اسم فرمانروا…">
+    <button id="btn-name-next" class="btn btn-primary">ورود به قلمرو</button>
+    <div id="conn-status" class="err-note">در حال بررسی اتصال…</div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="screen-main" class="screen hidden" style="padding-bottom:70px;">
+    <div class="topbar">
+      <div class="res-pill">🪙 <span class="g" id="res-gold">0</span></div>
+      <div class="kingdom-name" style="margin:0; font-size:14px;" id="topbar-name">—</div>
+      <div class="res-pill">⚡ <span class="g" id="res-energy">0</span></div>
+    </div>
+
+    <div class="content">
+      <!-- KINGDOM VIEW -->
+      <div id="view-kingdom">
+        <div class="section-title">ساختمان‌های قلمرو</div>
+        <div class="building-grid" id="building-grid"></div>
+      </div>
+
+      <!-- BARRACKS / TRAIN -->
+      <div id="view-barracks" class="hidden">
+        <div class="section-title">آموزش نیرو</div>
+        <div id="troop-train-list"></div>
+      </div>
+
+      <!-- ATTACK SEARCH -->
+      <div id="view-attack" class="hidden">
+        <div class="section-title">حمله به قلمرو دیگه</div>
+        <input id="input-target-search" class="text-input" style="width:100%;" type="text" placeholder="اسم فرمانروا رو سرچ کن…">
+        <div class="list-wrap" id="attack-search-results" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- ATTACK COMPOSE -->
+      <div id="view-compose" class="hidden">
+        <div class="section-title">آماده‌سازی نیرو برای حمله به <span id="compose-target-name" style="color:var(--gold);"></span></div>
+        <div id="compose-troop-list"></div>
+        <div class="err-note" id="compose-err"></div>
+        <button id="btn-launch-attack" class="btn btn-red" style="width:100%; margin-top:10px;">⚔️ شروع حمله</button>
+        <button id="btn-compose-back" class="btn btn-ghost" style="width:100%; margin-top:8px;">بازگشت</button>
+      </div>
+
+      <!-- BATTLE RESULT -->
+      <div id="view-battle-result" class="hidden">
+        <div id="battle-banner-box"></div>
+        <div class="stat-line"><span>💰 غنیمت</span><b id="res-loot">0</b></div>
+        <div class="stat-line"><span>🪖 نیروی از دست‌رفته</span><b id="res-lost">0</b></div>
+        <div class="stat-line"><span>💥 تخریب دفاع دشمن</span><b id="res-walldmg">0٪</b></div>
+        <button id="btn-battle-done" class="btn btn-primary" style="width:100%; margin-top:10px;">باشه</button>
+      </div>
+
+      <!-- INBOX -->
+      <div id="view-inbox" class="hidden">
+        <div class="section-title">گزارش حمله‌ها به قلمروت</div>
+        <div class="list-wrap" id="inbox-list"></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn active" data-view="kingdom"><span class="ic">🏰</span>قلمرو</button>
+      <button class="nav-btn" data-view="barracks"><span class="ic">🪖</span>پادگان</button>
+      <button class="nav-btn" data-view="attack"><span class="ic">⚔️</span>حمله</button>
+      <button class="nav-btn" data-view="inbox"><span class="ic">📜</span>گزارش‌ها</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  window.firebaseReady = false;
+  window.firebaseConnected = null;
+  window.firebaseConnectError = "";
+  (function loadFirebase(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgioiIJHG_agoWFwzDSA30PiDZkthfuL8",
+      authDomain: "game-4aaa3.firebaseapp.com",
+      databaseURL: "https://game-4aaa3-default-rtdb.firebaseio.com",
+      projectId: "game-4aaa3",
+      storageBucket: "game-4aaa3.firebasestorage.app",
+      messagingSenderId: "21636147776",
+      appId: "1:21636147776:web:68c84217ec801f300d4da5"
+    };
+    const s1 = document.createElement('script');
+    s1.src = "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js";
+    s1.onload = function(){
+      const s2 = document.createElement('script');
+      s2.src = "https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js";
+      s2.onload = function(){
+        try{
+          firebase.initializeApp(firebaseConfig);
+          window.firebaseReady = true;
+          runConnectivityTest();
+        }catch(e){ window.firebaseConnected=false; window.firebaseConnectError=String(e&&e.message||e); }
+      };
+      s2.onerror = function(){ window.firebaseConnected=false; window.firebaseConnectError='اسکریپت دیتابیس لود نشد'; };
+      document.head.appendChild(s2);
+    };
+    s1.onerror = function(){ window.firebaseConnected=false; window.firebaseConnectError='اسکریپت اصلی Firebase لود نشد'; };
+    document.head.appendChild(s1);
+  })();
+  function runConnectivityTest(){
+    const testRef = firebase.database().ref('_connectivity_test');
+    const timeout = setTimeout(()=>{ window.firebaseConnected=false; window.firebaseConnectError='تایم‌اوت اتصال'; }, 6000);
+    testRef.set({ok:true,t:Date.now()}).then(()=>testRef.once('value')).then(snap=>{
+      clearTimeout(timeout);
+      window.firebaseConnected = snap.exists();
+      if(!window.firebaseConnected) window.firebaseConnectError='خوندن جواب نداد';
+    }).catch(err=>{ clearTimeout(timeout); window.firebaseConnected=false; window.firebaseConnectError=(err&&err.code)||String(err); });
+  }
+</script>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   STORAGE HELPERS
+============================================================ */
+function toPath(key){ return String(key).split(':').map(s=>s.replace(/[.#$\[\]]/g,'_')).join('/'); }
+async function sGet(key){ if(typeof firebase==='undefined') return null;
+  try{ const snap = await firebase.database().ref(toPath(key)).once('value'); return snap.exists()?snap.val():null; }
+  catch(e){ return null; } }
+async function sSet(key,val){ if(typeof firebase==='undefined') return null;
+  try{ await firebase.database().ref(toPath(key)).set(val); return true; }catch(e){ return null; } }
+async function sGetJSON(key, fallback){ const v=await sGet(key); if(v===null||v===undefined) return fallback;
+  if(typeof v==='object') return v; try{ return JSON.parse(v); }catch(e){ return fallback; } }
+async function sSetJSON(key, obj){ return sSet(key, JSON.stringify(obj)); }
+function persianDigits(n){ const m=["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"]; return String(n).replace(/[0-9]/g,d=>m[d]); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmtNum(n){ return persianDigits(Math.floor(n).toLocaleString('en-US')); }
+
+const REGISTRY_KEY = "kingdom-registry";
+async function ensureRegistered(name){
+  let reg = await sGetJSON(REGISTRY_KEY, []);
+  if(!reg.includes(name)){ reg.push(name); reg=reg.slice(-500); await sSetJSON(REGISTRY_KEY, reg); }
+}
+async function searchKingdoms(q){
+  const reg = await sGetJSON(REGISTRY_KEY, []);
+  const query = q.trim().toLowerCase();
+  if(!query) return [];
+  return reg.filter(n=>n.toLowerCase().includes(query) && n!==myName).slice(0,15);
+}
+
+/* ============================================================
+   GAME DEFINITIONS
+============================================================ */
+const BUILDINGS = {
+  castle:  {icon:'🏰', name:'قلعه',          desc:'سطح کلی قلمرو رو مشخص می‌کنه', baseCost:200},
+  treasury:{icon:'🪙', name:'خزانه',          desc:'تولید طلا رو زیاد می‌کنه',      baseCost:150},
+  barracks:{icon:'🪖', name:'پادگان',         desc:'هزینه‌ی آموزش نیرو رو کم می‌کنه', baseCost:180},
+  weapons: {icon:'🏹', name:'کارخانه سلاح',   desc:'قدرت حمله‌ی نیروها رو زیاد می‌کنه', baseCost:220},
+  wall:    {icon:'🧱', name:'دیوار دفاعی',    desc:'دفاع قلمرو در برابر حمله رو زیاد می‌کنه', baseCost:200},
+  power:   {icon:'⚡', name:'منبع انرژی',     desc:'انرژی لازم برای ساختمون‌های دیگه', baseCost:250},
+  lab:     {icon:'🔬', name:'آزمایشگاه',      desc:'با تحقیق، نیروها رو قوی‌تر می‌کنه', baseCost:300},
+};
+const MAX_LEVEL = 15;
+function upgradeCost(baseCost, level){ return Math.round(baseCost * Math.pow(1.55, level-1)); }
+
+const TROOPS = {
+  soldier:   {icon:'🪖', name:'سرباز',        cost:20,   power:3},
+  sniper:    {icon:'🎯', name:'تک‌تیرانداز',   cost:60,   power:8},
+  tank:      {icon:'🚜', name:'تانک',         cost:300,  power:40},
+  commander: {icon:'⭐', name:'فرمانده',       cost:1000, power:150},
+};
+
+function freshKingdom(name){
+  return {
+    name, gold: 500, lastUpdate: Date.now(),
+    buildings: {castle:1, treasury:1, barracks:1, weapons:1, wall:1, power:1, lab:1},
+    troops: {soldier:5, sniper:0, tank:0, commander:0},
+    inbox: []
+  };
+}
+function goldPerSec(k){ return k.buildings.treasury * 0.6; }
+function energyCap(k){ return k.buildings.power * 10; }
+function trainCostMul(k){ return Math.max(0.6, 1 - (k.buildings.barracks-1)*0.03); }
+function attackPowerMul(k){ return (1 + (k.buildings.weapons-1)*0.08) * (1 + (k.buildings.lab-1)*0.05); }
+function defensePowerMul(k){ return (1 + (k.buildings.lab-1)*0.05); }
+function troopsPower(troops){ let p=0; for(const t in TROOPS) p += (troops[t]||0)*TROOPS[t].power; return p; }
+
+/* ============================================================
+   STATE
+============================================================ */
+let myName = "";
+let myKingdom = null;
+let attackTarget = null;      // {name, kingdom}
+let composeQty = {};          // troop -> qty chosen for attack
+let goldTicker = null;
+
+/* ============================================================
+   PERSISTENCE / OFFLINE PROGRESS
+============================================================ */
+async function loadKingdom(name){
+  let k = await sGetJSON(`kingdom:${name}`, null);
+  if(!k) k = freshKingdom(name);
+  // offline gold accrual, capped at 12 hours
+  const elapsedSec = Math.min((Date.now()-(k.lastUpdate||Date.now()))/1000, 12*3600);
+  if(elapsedSec>0){ k.gold += elapsedSec*goldPerSec(k); }
+  k.lastUpdate = Date.now();
+  await sSetJSON(`kingdom:${name}`, k);
+  return k;
+}
+async function saveKingdom(k){ k.lastUpdate = Date.now(); await sSetJSON(`kingdom:${k.name}`, k); }
+
+/* ============================================================
+   RENDER: TOP BAR
+============================================================ */
+function renderTopbar(){
+  document.getElementById("res-gold").textContent = fmtNum(myKingdom.gold);
+  document.getElementById("res-energy").textContent = fmtNum(energyCap(myKingdom));
+  document.getElementById("topbar-name").textContent = "🏰 " + myKingdom.name;
+}
+
+/* ============================================================
+   RENDER: KINGDOM (buildings)
+============================================================ */
+function renderKingdom(){
+  const grid = document.getElementById("building-grid");
+  grid.innerHTML = Object.keys(BUILDINGS).map(key=>{
+    const def = BUILDINGS[key];
+    const level = myKingdom.buildings[key];
+    const maxed = level>=MAX_LEVEL;
+    const cost = upgradeCost(def.baseCost, level);
+    const canAfford = myKingdom.gold >= cost;
+    return `<div class="b-card">
+      <div class="bic">${def.icon}</div>
+      <div class="bname">${def.name}</div>
+      <div class="blvl">سطح ${persianDigits(level)}${maxed?' (حداکثر)':''}</div>
+      <div class="bdesc">${def.desc}</div>
+      ${maxed ? '' : `<div class="bcost">هزینه: 🪙 ${fmtNum(cost)}</div>
+      <button class="btn btn-sm ${canAfford?'btn-primary':''}" data-upgrade="${key}" ${canAfford?'':'disabled'}>ارتقا</button>`}
+    </div>`;
+  }).join("");
+  grid.querySelectorAll("[data-upgrade]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.upgrade;
+      const def = BUILDINGS[key];
+      const level = myKingdom.buildings[key];
+      const cost = upgradeCost(def.baseCost, level);
+      if(myKingdom.gold < cost || level>=MAX_LEVEL) return;
+      myKingdom.gold -= cost;
+      myKingdom.buildings[key] += 1;
+      renderTopbar(); renderKingdom();
+      await saveKingdom(myKingdom);
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: BARRACKS (train troops)
+============================================================ */
+function renderBarracks(){
+  const box = document.getElementById("troop-train-list");
+  const mul = trainCostMul(myKingdom);
+  box.innerHTML = Object.keys(TROOPS).map(key=>{
+    const def = TROOPS[key];
+    const cost = Math.max(1, Math.round(def.cost*mul));
+    const have = myKingdom.troops[key]||0;
+    return `<div class="troop-row">
+      <div class="tinfo">
+        <span class="tic">${def.icon}</span>
+        <div><div class="tname">${def.name}</div><div class="tstat">قدرت ${persianDigits(def.power)} · هزینه 🪙${fmtNum(cost)}</div></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="tcount">${persianDigits(have)}</span>
+        <button class="btn btn-sm btn-primary" data-train="${key}">آموزش +۱</button>
+      </div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-train]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.train;
+      const def = TROOPS[key];
+      const cost = Math.max(1, Math.round(def.cost*trainCostMul(myKingdom)));
+      if(myKingdom.gold < cost) return;
+      myKingdom.gold -= cost;
+      myKingdom.troops[key] = (myKingdom.troops[key]||0)+1;
+      renderTopbar(); renderBarracks();
+      await saveKingdom(myKingdom);
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: ATTACK SEARCH
+============================================================ */
+let searchDebounce=null;
+document.getElementById("input-target-search").addEventListener("input", e=>{
+  clearTimeout(searchDebounce);
+  const q = e.target.value;
+  searchDebounce = setTimeout(async ()=>{
+    const box = document.getElementById("attack-search-results");
+    if(!q.trim()){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`; return; }
+    const results = await searchKingdoms(q);
+    if(results.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">کسی پیدا نشد.</div>`; return; }
+    box.innerHTML = results.map(n=>`<div class="search-result-row">
+      <span>🏰 ${escapeHtml(n)}</span>
+      <button class="btn btn-sm btn-red" data-attack-target="${escapeHtml(n)}">⚔️ حمله</button>
+    </div>`).join("");
+    box.querySelectorAll("[data-attack-target]").forEach(btn=>{
+      btn.addEventListener("click", ()=> openCompose(btn.dataset.attackTarget));
+    });
+  }, 300);
+});
+
+async function openCompose(targetName){
+  const err = document.getElementById("compose-err");
+  err.textContent = "در حال بارگذاری اطلاعات هدف…";
+  showView('compose');
+  const targetKingdom = await sGetJSON(`kingdom:${targetName}`, null);
+  if(!targetKingdom){ err.textContent = "این قلمرو پیدا نشد."; return; }
+  attackTarget = {name:targetName, kingdom:targetKingdom};
+  err.textContent = "";
+  document.getElementById("compose-target-name").textContent = targetName;
+  composeQty = {}; Object.keys(TROOPS).forEach(k=>composeQty[k]=0);
+  renderCompose();
+}
+function renderCompose(){
+  const box = document.getElementById("compose-troop-list");
+  box.innerHTML = Object.keys(TROOPS).map(key=>{
+    const def = TROOPS[key];
+    const have = myKingdom.troops[key]||0;
+    return `<div class="troop-row">
+      <div class="tinfo">
+        <span class="tic">${def.icon}</span>
+        <div><div class="tname">${def.name}</div><div class="tstat">داری: ${persianDigits(have)} · قدرت ${persianDigits(def.power)}</div></div>
+      </div>
+      <div class="qty-stepper">
+        <button data-step="${key}" data-dir="-1">−</button>
+        <input type="text" inputmode="numeric" id="qty-${key}" value="${composeQty[key]}" readonly>
+        <button data-step="${key}" data-dir="1">+</button>
+      </div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-step]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const key = btn.dataset.step, dir = parseInt(btn.dataset.dir,10);
+      const have = myKingdom.troops[key]||0;
+      let v = composeQty[key] + dir*(have>50?5:1);
+      v = Math.max(0, Math.min(have, v));
+      composeQty[key] = v;
+      document.getElementById(`qty-${key}`).value = v;
+    });
+  });
+}
+document.getElementById("btn-compose-back").addEventListener("click", ()=> showView('attack'));
+document.getElementById("btn-launch-attack").addEventListener("click", async ()=>{
+  const totalSent = Object.values(composeQty).reduce((a,b)=>a+b,0);
+  const err = document.getElementById("compose-err");
+  if(totalSent<=0){ err.textContent = "حداقل یه نیرو انتخاب کن."; return; }
+  err.textContent = "";
+  await launchAttack();
+});
+
+/* ============================================================
+   BATTLE RESOLUTION
+============================================================ */
+async function launchAttack(){
+  const defenderName = attackTarget.name;
+  let defKingdom = await sGetJSON(`kingdom:${defenderName}`, null);
+  if(!defKingdom){ document.getElementById("compose-err").textContent="قلمرو هدف دیگه پیدا نشد."; return; }
+
+  const sentTroops = {...composeQty};
+  const attackerPower = troopsPower(sentTroops) * attackPowerMul(myKingdom);
+  const defenderDefense = 40 + defKingdom.buildings.wall*55 + troopsPower(defKingdom.troops)*0.4*defensePowerMul(defKingdom);
+  const rand = 0.85 + Math.random()*0.3;
+  const effective = attackerPower*rand;
+  const ratio = effective/Math.max(1,defenderDefense);
+
+  let win, lootPct, lossPct, wallDmgPct;
+  if(ratio>=1.1){ win=true; lootPct=0.30; lossPct=0.15; wallDmgPct=Math.min(40,Math.round((ratio-1)*40)); }
+  else if(ratio>=0.9){ win=Math.random()<0.5; lootPct=0.15; lossPct=0.30; wallDmgPct=10; }
+  else { win=false; lootPct=0.05; lossPct=0.55; wallDmgPct=2; }
+
+  const loot = win ? Math.round(defKingdom.gold*lootPct) : Math.round(defKingdom.gold*0.03);
+  let totalLost = 0;
+  for(const key in sentTroops){
+    const sent = sentTroops[key];
+    if(sent<=0) continue;
+    const lost = Math.round(sent*lossPct);
+    totalLost += lost;
+    myKingdom.troops[key] = Math.max(0, (myKingdom.troops[key]||0) - lost);
+  }
+  myKingdom.gold += loot;
+  defKingdom.gold = Math.max(0, defKingdom.gold - loot);
+
+  defKingdom.inbox = defKingdom.inbox || [];
+  defKingdom.inbox.unshift({attacker:myName, defenderWon: !win, lootLost:loot, wallDamagePct:wallDmgPct, t:Date.now()});
+  defKingdom.inbox = defKingdom.inbox.slice(0,20);
+
+  await saveKingdom(myKingdom);
+  await saveKingdom(defKingdom);
+
+  document.getElementById("res-loot").textContent = "🪙 "+fmtNum(loot);
+  document.getElementById("res-lost").textContent = persianDigits(totalLost);
+  document.getElementById("res-walldmg").textContent = persianDigits(wallDmgPct)+"٪";
+  document.getElementById("battle-banner-box").innerHTML = win
+    ? `<div class="battle-banner win"><div>⚔️ نبرد به پایان رسید</div><div class="bigline">🟢 پیروزی!</div></div>`
+    : `<div class="battle-banner lose"><div>⚔️ نبرد به پایان رسید</div><div class="bigline">🔴 شکست!</div></div>`;
+  showView('battle-result');
+  renderTopbar();
+}
+document.getElementById("btn-battle-done").addEventListener("click", ()=>{
+  showView('kingdom');
+});
+
+/* ============================================================
+   RENDER: INBOX
+============================================================ */
+function renderInbox(){
+  const box = document.getElementById("inbox-list");
+  const list = myKingdom.inbox || [];
+  if(list.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">هنوز کسی به قلمروت حمله نکرده.</div>`; return; }
+  box.innerHTML = list.map(e=>{
+    const d = new Date(e.t);
+    const dateStr = d.toLocaleDateString('fa-IR') + ' ' + d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="inbox-row">
+      <div><b>${escapeHtml(e.attacker)}</b> بهت حمله کرد — <span class="${e.defenderWon?'res-win':'res-lose'}">${e.defenderWon?'دفاع موفق! 🟢':'شکست خوردی! 🔴'}</span></div>
+      <div class="meta">🪙 ${fmtNum(e.lootLost)} غنیمت رفت · 💥 ${persianDigits(e.wallDamagePct)}٪ تخریب دیوار · ${dateStr}</div>
+    </div>`;
+  }).join("");
+}
+
+/* ============================================================
+   NAV / VIEW SWITCHING
+============================================================ */
+function showView(name){
+  document.querySelectorAll('[id^="view-"]').forEach(v=>v.classList.add('hidden'));
+  document.getElementById('view-'+name).classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.view===name));
+  if(name==='kingdom') renderKingdom();
+  if(name==='barracks') renderBarracks();
+  if(name==='attack'){
+    document.getElementById('input-target-search').value='';
+    document.getElementById('attack-search-results').innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`;
+  }
+  if(name==='inbox') renderInbox();
+}
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const view = btn.dataset.view;
+    if(['kingdom','barracks','attack','inbox'].includes(view)) showView(view);
+  });
+});
+
+/* ============================================================
+   CONNECTION STATUS
+============================================================ */
+function updateConnStatus(){
+  const el = document.getElementById("conn-status");
+  if(!el) return;
+  if(window.firebaseConnected===true){ el.textContent="🟢 وصل شدی"; el.className="err-note ok"; }
+  else if(window.firebaseConnected===false){ el.textContent="🔴 وصل نشد: "+(window.firebaseConnectError||"نامشخص"); el.className="err-note"; }
+  else { el.textContent="🟡 در حال بررسی اتصال…"; el.className="err-note pending"; }
+}
+setInterval(updateConnStatus, 1000);
+
+/* ============================================================
+   INIT
+============================================================ */
+document.getElementById("btn-name-next").addEventListener("click", async ()=>{
+  if(window.firebaseConnected!==true){ alert("هنوز وصل نشدیم به سرور، چند ثانیه صبر کن و دوباره امتحان کن."); return; }
+  const v = document.getElementById("input-name").value.trim();
+  myName = v || "فرمانروای ناشناس";
+  await ensureRegistered(myName);
+  myKingdom = await loadKingdom(myName);
+  document.getElementById("screen-name").classList.add("hidden");
+  document.getElementById("screen-main").classList.remove("hidden");
+  renderTopbar();
+  showView('kingdom');
+  goldTicker = setInterval(()=>{
+    myKingdom.gold += goldPerSec(myKingdom);
+    renderTopbar();
+    if(!document.getElementById('view-kingdom').classList.contains('hidden')) renderKingdom();
+  }, 1000);
+  setInterval(()=>{ if(myKingdom) saveKingdom(myKingdom); }, 15000);
+});
+document.getElementById("input-name").addEventListener("keydown", e=>{ if(e.key==="Enter") document.getElementById("btn-name-next").click(); });
+
+updateConnStatus();
+})();
+</script>
+</body>
+</html>
