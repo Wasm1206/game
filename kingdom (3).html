@@ -1,0 +1,3022 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>فرمانروایان قلمرو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Cinzel:wght@700;900&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14; --gold:#f0c14a; --gold-dim:#8a6a2888; --stone:#3d4a5c; --ink:#e8eef6; --ink-dim:#8a9aab;
+    --red:#e05555; --green:#4ecb7a; --blue:#4a9eff; --purple:#a78bfa; --line:#1e2a3a; --panel:#111821; --panel2:#0d131c;
+    --cyan:#2dd4bf; --oil:#7c5c2a;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{ margin:0; padding:0; width:100%; height:100%; overflow-x:hidden; background:var(--bg); color:var(--ink);
+    font-family:'Chakra Petch', system-ui, sans-serif; -webkit-user-select:none; user-select:none; }
+  .fancy{ font-family:'Cinzel', serif; letter-spacing:1px; }
+  .mono{ font-family:'Space Mono', monospace; }
+  #app{ min-height:100vh; display:flex; flex-direction:column; }
+  .hidden{ display:none !important; }
+
+  .screen{ min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:20px 14px 88px;
+    background:
+      radial-gradient(ellipse at 30% 0%, #1a2740 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, #1a1530 0%, transparent 40%),
+      linear-gradient(180deg, #0a0e14 0%, #0c1219 100%); }
+  .screen.center{ justify-content:center; text-align:center; gap:12px; }
+
+  .brand-eyebrow{ font-size:11px; letter-spacing:5px; color:var(--cyan); border:1px solid rgba(45,212,191,.35); padding:6px 16px; border-radius:20px; background:rgba(45,212,191,.08);}
+  .brand-title{ font-size:34px; margin:10px 0 0; background:linear-gradient(135deg,var(--gold),#fff6c8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .brand-sub{ font-size:13px; color:var(--ink-dim); max-width:340px; line-height:1.85; }
+
+  input.text-input{ width:min(280px,78vw); padding:13px 16px; font-size:16px; background:#0a1018; border:1px solid var(--stone);
+    color:var(--ink); border-radius:12px; text-align:center; font-family:inherit; outline:none; transition:border .2s, box-shadow .2s;}
+  input.text-input:focus{ border-color:var(--cyan); box-shadow:0 0 0 3px rgba(45,212,191,.15); }
+
+  .btn{ font-family:inherit; font-weight:700; font-size:14px; padding:12px 22px; border-radius:12px;
+    border:1px solid var(--stone); background:linear-gradient(180deg, #1a2433, #101820); color:var(--ink);
+    letter-spacing:.3px; cursor:pointer; min-width:180px; transition:transform .1s, filter .15s;}
+  .btn:active{ transform:scale(.97); }
+  .btn-primary{ border-color:rgba(240,193,74,.5); background:linear-gradient(180deg,#c99220,#7a5810); color:#fff8e0; box-shadow:0 4px 16px rgba(240,193,74,.2);}
+  .btn-red{ border-color:rgba(224,85,85,.5); background:linear-gradient(180deg,#8a3030,#4a1818); color:#ffe8e4;}
+  .btn-green{ border-color:rgba(78,203,122,.45); background:linear-gradient(180deg,#2a6a40,#1a3a28); color:#e4ffe8;}
+  .btn-purple{ border-color:rgba(167,139,250,.45); background:linear-gradient(180deg,#5a3a90,#3a2460); color:#f0e6fa;}
+  .btn-ghost{ background:transparent; border-color:var(--line); color:var(--ink-dim); font-size:13px; padding:9px 16px; min-width:0;}
+  .btn-sm{ font-size:12px; padding:7px 12px; min-width:0; border-radius:10px;}
+  .btn:disabled{ opacity:.35; pointer-events:none; }
+
+  .topbar{ position:sticky; top:0; width:100%; max-width:560px; display:flex; flex-direction:column; gap:6px;
+    padding:12px 12px 10px; background:rgba(10,14,20,.92); border-bottom:1px solid var(--line); z-index:5; backdrop-filter:blur(10px);}
+  .topbar-row{ display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; }
+  .res-pill{ display:flex; align-items:center; gap:4px; background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:5px 11px; font-size:12px; font-weight:700; }
+  .res-pill .g{ color:var(--gold); }
+  .res-pill .o{ color:#d4a84b; }
+  .lvl-chip{ background:linear-gradient(135deg,#5a3a90,#3a2460); border:1px solid var(--purple); border-radius:20px; padding:4px 12px; font-size:11px; font-weight:700; color:#f0e6fa;}
+  .extract-note{ font-size:10px; color:var(--ink-dim); }
+  .badge-dot{ position:absolute; top:-3px; right:-3px; width:9px; height:9px; border-radius:50%; background:var(--red); border:1px solid #0a0e14; display:none;}
+
+  .nav-row{ position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:flex-start; gap:2px; padding:8px 4px;
+    background:rgba(10,14,20,.96); border-top:1px solid var(--line); z-index:5; overflow-x:auto; }
+  .nav-btn{ flex:0 0 auto; min-width:56px; background:none; border:none; color:var(--ink-dim); font-family:inherit; font-size:9px;
+    display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 3px; border-radius:12px; position:relative;}
+  .nav-btn.active{ color:var(--cyan); background:rgba(45,212,191,.1); }
+  .nav-btn .ic{ font-size:17px; }
+
+  .content{ width:100%; max-width:560px; padding:12px 4px 16px; }
+  .section-title{ font-size:14px; color:var(--cyan); margin:14px 0 8px; padding-inline-start:4px; display:flex; align-items:center; gap:6px; font-weight:700; }
+  .section-note{ font-size:11px; color:var(--ink-dim); margin:-2px 0 10px 4px; line-height:1.7; }
+
+  .building-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .b-card{ background:linear-gradient(160deg,var(--panel2),var(--panel)); border:1px solid var(--line); border-radius:16px; padding:14px 12px; position:relative; overflow:hidden;}
+  .b-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--cyan),transparent); }
+  .b-card .bic{ font-size:26px; }
+  .b-card .bname{ font-size:13px; font-weight:700; margin-top:4px; }
+  .b-card .blvl{ font-size:11px; color:var(--gold); margin-top:2px; font-weight:700; }
+  .b-card .bdesc{ font-size:10px; color:var(--ink-dim); margin-top:4px; line-height:1.6; min-height:28px;}
+  .b-card .bcost{ font-size:11px; margin-top:6px; color:var(--ink-dim); }
+  .b-card button{ width:100%; margin-top:8px; }
+
+  .troop-row,.equip-row{ display:flex; align-items:center; justify-content:space-between; background:linear-gradient(160deg,var(--panel2),var(--panel));
+    border:1px solid var(--line); border-radius:14px; padding:11px 12px; margin-bottom:8px; gap:8px;}
+  .troop-row .tinfo{ display:flex; align-items:center; gap:9px; }
+  .troop-row .tic,.equip-row .eic{ font-size:22px; }
+  .troop-row .tname,.equip-row .ename{ font-size:13px; font-weight:700; }
+  .troop-row .tstat,.equip-row .edesc{ font-size:10px; color:var(--ink-dim); }
+  .troop-row .tdesc{ font-size:9px; color:var(--ink-dim); opacity:.85; margin-top:1px; }
+  .troop-row .tcount{ font-size:16px; font-weight:700; color:var(--gold); min-width:34px; text-align:center; }
+  .equip-row .elvl{ font-size:11px; color:var(--blue); font-weight:700; margin-top:2px;}
+  .qty-stepper{ display:flex; align-items:center; gap:6px; }
+  .qty-stepper button{ width:30px; height:30px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font-size:16px; padding:0; min-width:0;}
+  .qty-stepper input{ width:44px; text-align:center; background:#0a1018; border:1px solid var(--line); color:var(--ink); border-radius:8px; padding:4px 2px; font-family:inherit; }
+
+  .search-result-row{ display:flex; align-items:center; justify-content:space-between; padding:11px 12px; border-bottom:1px solid var(--line); gap:8px;}
+  .search-result-row:last-child{ border-bottom:none; }
+  .list-wrap{ background:linear-gradient(160deg,var(--panel2),var(--panel)); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+
+  .battle-banner{ text-align:center; padding:22px; border-radius:16px; margin-bottom:14px; }
+  .battle-banner.win{ background:rgba(78,203,122,.12); border:1px solid var(--green); }
+  .battle-banner.lose{ background:rgba(224,85,85,.12); border:1px solid var(--red); }
+  .battle-banner .bigline{ font-size:22px; font-weight:700; }
+  .stat-line{ display:flex; justify-content:space-between; padding:11px 14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; margin-bottom:8px; font-size:14px;}
+
+  .inbox-row{ padding:12px; border-bottom:1px solid var(--line); font-size:13px; }
+  .inbox-row:last-child{ border-bottom:none; }
+  .inbox-row .res-win{ color:var(--green); font-weight:700; }
+  .inbox-row .res-lose{ color:var(--red); font-weight:700; }
+  .inbox-row .meta{ color:var(--ink-dim); font-size:11px; margin-top:3px; }
+  .inbox-row .actions{ margin-top:6px; display:flex; gap:6px; flex-wrap:wrap; }
+
+  .err-note{ color:var(--red); font-size:13px; min-height:16px; }
+  .ok-note{ color:var(--green); font-size:13px; min-height:16px; }
+  #conn-status.ok{ color:var(--green); }
+  #conn-status.pending{ color:var(--ink-dim); }
+  .conn-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-inline-end:4px; background:#8a8a8a; }
+  .conn-dot.green{ background:var(--green); box-shadow:0 0 6px var(--green); }
+  .conn-dot.yellow{ background:#e8d94d; box-shadow:0 0 6px #e8d94d; }
+  .conn-dot.red{ background:var(--red); box-shadow:0 0 6px var(--red); }
+
+  .profile-card{ background:linear-gradient(160deg,var(--panel2),var(--panel)); border:1px solid rgba(240,193,74,.25); border-radius:18px; padding:20px; text-align:center; }
+  .profile-avatar{ font-size:42px; }
+  .profile-name{ font-size:18px; font-weight:700; margin-top:4px; }
+  .xp-bar-bg{ width:100%; height:8px; background:#152028; border-radius:4px; margin-top:10px; overflow:hidden;}
+  .xp-bar-fill{ height:100%; background:linear-gradient(90deg,var(--purple),var(--cyan)); border-radius:4px; }
+  .profile-stats-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; }
+  .pstat{ background:#0a1018; border:1px solid var(--line); border-radius:12px; padding:10px; }
+  .pstat .pval{ font-size:16px; font-weight:700; color:var(--gold); }
+  .pstat .plabel{ font-size:10px; color:var(--ink-dim); margin-top:2px; }
+  .profile-actions{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; justify-content:center; }
+
+  .battling-log{ background:#060a10; border:1px solid var(--line); border-radius:14px; padding:16px; min-height:240px; }
+  .battling-title{ text-align:center; font-size:16px; font-weight:700; color:var(--gold); margin-bottom:12px; }
+  .log-line{ font-size:12.5px; padding:5px 0; color:#7dcea0; white-space:pre-wrap; }
+  .log-cursor{ display:inline-block; width:7px; height:13px; background:var(--cyan); animation:blink 0.8s steps(1) infinite; vertical-align:middle; margin-inline-start:2px;}
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .presence-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-inline-end:5px; }
+  .presence-dot.on{ background:var(--green); box-shadow:0 0 6px var(--green); }
+  .presence-dot.off{ background:#4a5568; }
+  .stage-badge{ display:inline-block; background:linear-gradient(180deg,#8a3030,#4a1818); border:1px solid var(--red); border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;}
+
+  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.75); display:flex; align-items:center; justify-content:center; z-index:50; padding:20px;}
+  .modal-box{ background:var(--panel); border:1px solid rgba(45,212,191,.3); border-radius:18px; padding:22px; max-width:340px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.5); }
+  .modal-box h3{ margin:0 0 8px; font-size:16px; color:var(--gold); }
+  .modal-box p{ font-size:12px; color:var(--ink-dim); line-height:1.7; margin-bottom:14px; }
+  .modal-actions{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+
+  .chat-box{ background:#060a10; border:1px solid var(--line); border-radius:12px; max-height:200px; overflow-y:auto; padding:8px; text-align:right; margin:8px 0; }
+  .chat-msg{ padding:7px 8px; border-bottom:1px solid var(--line); font-size:12px; }
+  .chat-msg .who{ color:var(--gold); font-weight:700; margin-left:6px; }
+  .chat-msg .when{ color:var(--ink-dim); font-size:10px; }
+  .chat-msg .seen{ color:var(--ink-dim); font-size:9px; margin-top:2px; }
+  .exchange-card{ background:linear-gradient(160deg,var(--panel2),var(--panel)); border:1px solid rgba(212,168,75,.3); border-radius:16px; padding:14px; margin-top:12px; }
+  .exchange-row{ display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- NAME ENTRY / AUTH -->
+  <div id="screen-name" class="screen center" style="position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; pointer-events:none; background:
+      radial-gradient(circle at 20% 20%, rgba(234,181,74,0.12), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(155,107,208,0.10), transparent 45%);"></div>
+    <div class="brand-eyebrow" style="animation:pulseGold 2.4s ease-in-out infinite;">⚔ فرمانروایان قلمرو ⚔</div>
+    <h1 class="brand-title fancy" style="font-size:34px; margin-top:14px;">🏰 قلمرو تو</h1>
+    <p class="brand-sub" style="opacity:.9;">قلعه‌ات را بساز · لشکر جمع کن · دشمن را درهم بکوب</p>
+    <div style="width:min(220px,70vw); height:4px; border-radius:4px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:8px 0 16px;"></div>
+
+    <div id="auth-choice">
+      <p class="brand-sub">حساب داری یا می‌خوای یکی بسازی؟</p>
+      <div style="display:flex; flex-direction:column; gap:10px; width:min(260px,80vw); margin-top:8px;">
+        <button id="btn-auth-login" class="btn btn-primary">📥 رفتن داخل حساب</button>
+        <button id="btn-auth-create" class="btn btn-green">➕ ساخت حساب</button>
+      </div>
+    </div>
+
+    <div id="auth-form" class="hidden" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+      <p class="brand-sub" id="auth-form-title">-</p>
+      <input id="input-name" class="text-input" type="text" maxlength="16" placeholder="اسم فرمانروا…">
+      <input id="input-pin" class="text-input" type="tel" maxlength="6" placeholder="رمز حساب (اجباری)">
+      <button id="btn-auth-submit" class="btn btn-primary">تایید</button>
+      <button id="btn-auth-back" class="btn btn-ghost">بازگشت</button>
+    </div>
+
+    <div id="conn-status" class="err-note" style="margin-top:14px;">🟡 Connecting...</div>
+    <div style="margin-top:18px; font-size:11px; color:var(--ink-dim); letter-spacing:1px;">نسخه قلمرو · آنلاین</div>
+  </div>
+
+  <!-- JAIL SCREEN -->
+  <div id="screen-jail" class="screen center hidden" style="z-index:40; position:fixed; inset:0; background:#0a0805;">
+    <div class="brand-eyebrow" style="border-color:var(--red); color:var(--red);">⛓️ زندان بانک</div>
+    <h1 class="brand-title fancy" style="color:#f0a0a0;">دستگیر شدی!</h1>
+    <p class="brand-sub">تا پایان زمان نمی‌تونی کاری بکنی. با بقیه زندانی‌ها چت کن.</p>
+    <div class="lvl-chip" id="jail-timer" style="margin:10px 0; background:#4a1815; border-color:var(--red);">۶۰ ثانیه</div>
+    <div class="list-wrap" id="jail-chat-list" style="width:min(340px,92vw); max-height:220px; overflow-y:auto; text-align:right; margin:10px 0;"></div>
+    <div style="display:flex; gap:6px; width:min(340px,92vw);">
+      <input id="jail-chat-input" class="text-input" style="flex:1; min-width:0;" maxlength="80" placeholder="پیام به گروه زندان…">
+      <button id="btn-jail-send" class="btn btn-sm btn-primary" style="min-width:0;">ارسال</button>
+    </div>
+  </div>
+
+
+  <!-- MAIN APP -->
+  <div id="screen-main" class="screen hidden" style="padding-bottom:70px;">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="res-pill">🪙 <span class="g" id="res-gold">0</span></div>
+        <div class="res-pill">🛢️ <span class="o" id="res-oil">0</span></div>
+        <div class="lvl-chip" id="topbar-level">سطح ۱</div>
+        <div class="res-pill">⚡ قدرت قلمرو: <span class="g" id="res-power">0</span></div>
+      </div>
+      <div class="topbar-row" style="margin-top:2px;">
+        <div class="extract-note" style="text-align:right; flex:1;">🪙 <span id="extract-rate">0</span>/ث · 🛢️ <span id="oil-rate">0</span>/ث</div>
+        <div class="res-pill" style="font-size:10px; padding:3px 8px;"><span class="conn-dot" id="topbar-conn-dot"></span><span id="topbar-conn-text">...</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- KINGDOM VIEW -->
+      <div id="view-kingdom">
+        <div class="section-title">🏰 ساختمان‌های قلمرو</div>
+        <div class="section-note">هر ساختمون یه کارکرد مشخص داره — اگه طلا داشتی ارتقاش بده.</div>
+        <div class="building-grid" id="building-grid"></div>
+        <div class="exchange-card" id="oil-exchange">
+          <div class="section-title" style="margin:0 0 6px;">🔄 تبادل نفت ↔ سکه</div>
+          <div class="section-note" style="margin:0;">هر ۵ بشکه نفت = ۱۰ سکه</div>
+          <div class="exchange-row">
+            <input id="oil-trade-amount" class="text-input" style="width:100px;min-width:0;" type="number" min="5" step="5" placeholder="نفت…">
+            <button id="btn-oil-to-gold" class="btn btn-sm btn-primary">نفت → سکه</button>
+            <button id="btn-gold-to-oil" class="btn btn-sm btn-ghost">سکه → نفت</button>
+          </div>
+          <div class="section-note" id="oil-trade-hint" style="margin-top:6px;">۵ نفت = ۱۰ سکه · ۱۰ سکه = ۵ نفت</div>
+        </div>
+      </div>
+
+      <!-- BARRACKS / TRAIN -->
+      <div id="view-barracks" class="hidden">
+        <div class="section-title">🪖 آموزش نیرو</div>
+        <div class="section-note">نیروهات رو اینجا می‌بینی و آموزش می‌دی.</div>
+        <div id="troop-train-list"></div>
+      </div>
+
+      <!-- EQUIPMENT -->
+      <div id="view-equipment" class="hidden">
+        <div class="section-title">🎒 تجهیزات</div>
+        <div class="section-note">این‌ها روی کل قلمرو تاثیر می‌ذارن.</div>
+        <div id="equip-list"></div>
+      </div>
+
+      <!-- ATTACK CHOICE -->
+      <div id="view-attack-choice" class="hidden">
+        <div class="section-title">⚔️ حمله</div>
+        <div class="section-note">می‌خوای با یه بازیکن واقعی بجنگی یا تو حالت داستانی با ربات؟ می‌تونی با دوست هم حمله کنی.</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+          <button id="btn-choice-online" class="btn btn-red" style="width:100%;">⚔️ نبرد آنلاین</button>
+          <button id="btn-choice-offline" class="btn" style="width:100%;">🤖 نبرد آفلاین</button>
+          <button id="btn-choice-missions" class="btn btn-purple" style="width:100%;">🗺️ ماموریت‌های ویژه</button>
+        </div>
+      </div>
+
+      <!-- BANK REMOVED -->
+
+      <!-- MISSIONS PLACEHOLDER -->
+      <div id="view-missions" class="hidden">
+        <div class="section-title">🗺️ ماموریت‌های ویژه</div>
+        <div class="section-note">ماموریت غار (سطح ۱۰)، زندان (۱۷)، زامبی (۲۰) — با دوست اجباری.</div>
+        <div id="missions-list"></div>
+        <button id="btn-missions-back" class="btn btn-ghost" style="width:100%;margin-top:10px;">بازگشت</button>
+      </div>
+
+<!-- COOP LOBBY -->
+      <div id="view-coop-lobby" class="hidden">
+        <div class="section-title">👥 لابی حمله مشترک</div>
+        <div class="section-note" id="coop-lobby-desc">منتظر آمادگی هر دو نفر…</div>
+        <div class="list-wrap" id="coop-lobby-players" style="margin:10px 0;"></div>
+        <div class="section-note">نیروهای مشترک (مجموع):</div>
+        <div class="list-wrap" id="coop-lobby-troops" style="margin-bottom:10px; max-height:180px; overflow-y:auto;"></div>
+        <div class="err-note" id="coop-lobby-err"></div>
+        <button id="btn-coop-ready" class="btn btn-green" style="width:100%;">✅ استارت (آماده)</button>
+        <button id="btn-coop-add-friend" class="btn btn-purple" style="width:100%; margin-top:8px;">➕ افزودن / عوض کردن دوست</button>
+        <button id="btn-coop-cancel" class="btn btn-ghost" style="width:100%; margin-top:8px;">لغو لابی</button>
+      </div>
+
+      <!-- ATTACK SEARCH (online PvP) -->
+      <div id="view-attack" class="hidden">
+        <div class="section-title">⚔️ حمله به قلمرو دیگه</div>
+        <div class="section-note">نیروهای فعلی طرف خودکار دفاع می‌کنن؛ نیازی نیست آنلاین باشه.</div>
+        <input id="input-target-search" class="text-input" style="width:100%;" type="text" placeholder="اسم فرمانروا رو سرچ کن…">
+        <div class="list-wrap" id="attack-search-results" style="margin-top:10px;"></div>
+        <button id="btn-attack-back" class="btn btn-ghost" style="width:100%; margin-top:10px;">بازگشت</button>
+      </div>
+
+      <!-- STORY / BOT BATTLE -->
+      <div id="view-bot" class="hidden">
+        <div class="section-title">📖 حالت داستانی (نبرد با ربات)</div>
+        <div class="section-note" id="bot-story-blurb">هر مرحله از قبلی سخت‌تره. ببین تا کجا پیش می‌ری!</div>
+        <div class="profile-card" style="margin-bottom:14px;">
+          <div class="stage-badge" id="bot-stage-badge">مرحله ۱</div>
+          <div class="profile-avatar" style="margin-top:8px;">🤖</div>
+          <div class="profile-name" id="bot-name-display">ربات مهاجم</div>
+          <div class="section-note" style="margin:8px 0 0;">قدرت دفاعی: <b id="bot-power-est" style="color:var(--gold);">-</b></div>
+        </div>
+        <button id="btn-bot-fight" class="btn btn-red" style="width:100%;">⚔️ آماده‌سازی نیرو برای نبرد</button>
+        <button id="btn-bot-back" class="btn btn-ghost" style="width:100%; margin-top:8px;">بازگشت</button>
+      </div>
+
+      <!-- ATTACK COMPOSE -->
+      <div id="view-compose" class="hidden">
+        <div class="section-title">آماده‌سازی نیرو برای حمله به <span id="compose-target-name" style="color:var(--gold);"></span></div>
+        <div id="compose-mode-note" class="section-note" style="display:none;"></div>
+        <div id="compose-troop-list"></div>
+        <div class="err-note" id="compose-err"></div>
+        <button id="btn-launch-attack" class="btn btn-red" style="width:100%; margin-top:10px;">⚔️ شروع حمله</button>
+        <button id="btn-compose-back" class="btn btn-ghost" style="width:100%; margin-top:8px;">بازگشت</button>
+      </div>
+
+      <!-- BATTLING NARRATION -->
+      <div id="view-battling" class="hidden">
+        <div class="battling-title">💥 حمله در حال انجام است…</div>
+        <div class="battling-log mono" id="battling-log"></div>
+      </div>
+
+      <!-- BATTLE RESULT -->
+      <div id="view-battle-result" class="hidden">
+        <div id="battle-banner-box"></div>
+        <div class="stat-line"><span>💰 غنیمت</span><b id="res-loot">0</b></div>
+        <div class="stat-line"><span>🪖 نیروی از دست‌رفته</span><b id="res-lost">0</b></div>
+        <div class="stat-line"><span>💥 تخریب دفاع دشمن</span><b id="res-walldmg">0٪</b></div>
+        <div class="stat-line"><span>✨ تجربه‌ی به‌دست‌اومده</span><b id="res-xp">0</b></div>
+        <button id="btn-battle-done" class="btn btn-primary" style="width:100%; margin-top:10px;">باشه</button>
+      </div>
+
+      <!-- INBOX -->
+      <div id="view-inbox" class="hidden">
+        <div class="section-title">📜 گزارش حمله‌ها</div>
+        <div class="section-note" style="margin-top:0;">نیروهات خودکار از قلمروت دفاع می‌کنن. نتیجه‌ی هر حمله‌ای که بهت شده اینجاست:</div>
+        <div class="list-wrap" id="inbox-list"></div>
+      </div>
+
+      <!-- FRIENDS -->
+      <div id="view-friends" class="hidden">
+        <div class="section-title">👥 دوستان</div>
+        <input id="input-friend-search" class="text-input" style="width:100%;" type="text" placeholder="اسم فرمانروا رو سرچ کن…">
+        <div class="list-wrap" id="friend-search-results" style="margin:10px 0 14px;"></div>
+        <div class="section-note" style="margin-top:0;">درخواست‌های دوستی:</div>
+        <div class="list-wrap" id="friend-requests-list" style="margin-bottom:14px;"></div>
+        <div class="section-note">لیست دوستان من:</div>
+        <div class="list-wrap" id="friends-list"></div>
+      </div>
+
+      <!-- CLUB -->
+      <div id="view-club" class="hidden">
+        <div class="section-title">🏛️ کلاب</div>
+        <div class="section-note">ساخت ۸۰۰ سکه · حداقل ۳ نفر · چت، لیدربورد، گزارش حملات</div>
+        <div id="club-panel"><div class="section-note">در حال بارگذاری…</div></div>
+      </div>
+
+      <!-- PROFILE / ACCOUNT -->
+      <div id="view-profile" class="hidden">
+        <div class="section-title">👤 مشخصات فرمانروا</div>
+        <div class="profile-card">
+          <div class="profile-avatar">👑</div>
+          <div class="profile-name" id="profile-name-display">-</div>
+          <div class="lvl-chip" id="profile-level-display" style="margin-top:8px; display:inline-block;">سطح ۱</div>
+          <div class="xp-bar-bg"><div class="xp-bar-fill" id="profile-xpbar" style="width:0%"></div></div>
+          <div class="section-note" style="text-align:center; margin:6px 0 0;">XP: <span id="profile-xp-text">0/0</span></div>
+          <div class="profile-stats-grid">
+            <div class="pstat"><div class="pval" id="pstat-power">0</div><div class="plabel">قدرت کل قلمرو</div></div>
+            <div class="pstat"><div class="pval" id="pstat-gold-total">0</div><div class="plabel">کل طلای استخراج‌شده</div></div>
+            <div class="pstat"><div class="pval" id="pstat-wins">0</div><div class="plabel">پیروزی‌ها</div></div>
+            <div class="pstat"><div class="pval" id="pstat-losses">0</div><div class="plabel">شکست‌ها</div></div>
+            <div class="pstat"><div class="pval" id="pstat-bot">0</div><div class="plabel">مرحله‌ی داستانی</div></div>
+            <div class="pstat"><div class="pval" id="pstat-troops">0</div><div class="plabel">کل نیروها</div></div>
+          </div>
+          <div class="profile-actions">
+            <button id="btn-change-name" class="btn btn-sm btn-ghost">✏️ تغییر نام (۳۰۰🪙)</button>
+            <button id="btn-change-pin" class="btn btn-sm btn-ghost">🔑 تغییر رمز (۵۰۰🪙)</button>
+            <button id="btn-delete-account" class="btn btn-sm btn-ghost" style="border-color:var(--red); color:var(--red);">🗑️ حذف اکانت</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn active" data-view="kingdom"><span class="ic">🏰</span>قلمرو</button>
+      <button class="nav-btn" data-view="barracks"><span class="ic">🪖</span>پادگان</button>
+      <button class="nav-btn" data-view="equipment"><span class="ic">🎒</span>تجهیزات</button>
+      <button class="nav-btn" data-view="attack-choice"><span class="ic">⚔️</span>حمله</button>
+      <button class="nav-btn" data-view="inbox"><span class="ic">📜</span>گزارش<div class="badge-dot" id="nav-badge-inbox"></div></button>
+      <button class="nav-btn" data-view="friends"><span class="ic">👥</span>دوستان<div class="badge-dot" id="nav-badge-friends"></div></button>
+      <button class="nav-btn" data-view="club"><span class="ic">🏛️</span>کلاب</button>
+      <button class="nav-btn" data-view="profile"><span class="ic">👤</span>اکانت</button>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+</div>
+
+<script>
+  window.firebaseReady = false;
+  window.firebaseConnected = null;
+  window.firebaseConnectError = "";
+  window.firebasePing = null;
+  (function loadFirebase(){
+    const firebaseConfig = {
+      apiKey: "AIzaSyCgioiIJHG_agoWFwzDSA30PiDZkthfuL8",
+      authDomain: "game-4aaa3.firebaseapp.com",
+      databaseURL: "https://game-4aaa3-default-rtdb.firebaseio.com",
+      projectId: "game-4aaa3",
+      storageBucket: "game-4aaa3.firebasestorage.app",
+      messagingSenderId: "21636147776",
+      appId: "1:21636147776:web:68c84217ec801f300d4da5"
+    };
+    const s1 = document.createElement('script');
+    s1.src = "https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js";
+    s1.onload = function(){
+      const s2 = document.createElement('script');
+      s2.src = "https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js";
+      s2.onload = function(){
+        try{
+          firebase.initializeApp(firebaseConfig);
+          window.firebaseReady = true;
+          runConnectivityTest();
+          setInterval(runConnectivityTest, 12000);
+        }catch(e){ window.firebaseConnected=false; window.firebaseConnectError=String(e&&e.message||e); }
+      };
+      s2.onerror = function(){ window.firebaseConnected=false; window.firebaseConnectError='اسکریپت دیتابیس لود نشد'; };
+      document.head.appendChild(s2);
+    };
+    s1.onerror = function(){ window.firebaseConnected=false; window.firebaseConnectError='اسکریپت اصلی Firebase لود نشد'; };
+    document.head.appendChild(s1);
+  })();
+  function runConnectivityTest(){
+    const startedAt = Date.now();
+    const testRef = firebase.database().ref('_connectivity_test');
+    const timeout = setTimeout(()=>{ window.firebaseConnected=false; window.firebasePing=null; window.firebaseConnectError='تایم‌اوت اتصال (شاید نیاز به VPN داری)'; }, 6000);
+    testRef.set({ok:true,t:Date.now()}).then(()=>testRef.once('value')).then(snap=>{
+      clearTimeout(timeout);
+      window.firebaseConnected = snap.exists();
+      window.firebasePing = Date.now()-startedAt;
+      if(!window.firebaseConnected) window.firebaseConnectError='خوندن جواب نداد';
+    }).catch(err=>{ clearTimeout(timeout); window.firebaseConnected=false; window.firebasePing=null; window.firebaseConnectError=(err&&err.code)||String(err); });
+  }
+</script>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   TAP SOUND — tiny synthesized click feedback (no audio files)
+============================================================ */
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){ try{ audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ audioCtx=null; } }
+  if(audioCtx && audioCtx.state==='suspended') audioCtx.resume().catch(()=>{});
+}
+function playTap(){
+  if(!audioCtx) return;
+  try{
+    const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+    osc.type='square'; const t0=audioCtx.currentTime;
+    osc.frequency.setValueAtTime(720,t0); osc.frequency.exponentialRampToValueAtTime(280,t0+0.07);
+    gain.gain.setValueAtTime(0.22,t0); gain.gain.exponentialRampToValueAtTime(0.001,t0+0.08);
+    osc.connect(gain); gain.connect(audioCtx.destination); osc.start(t0); osc.stop(t0+0.08);
+    // second click layer for louder feel
+    const osc2=audioCtx.createOscillator(), gain2=audioCtx.createGain();
+    osc2.type='triangle';
+    osc2.frequency.setValueAtTime(180,t0);
+    gain2.gain.setValueAtTime(0.12,t0); gain2.gain.exponentialRampToValueAtTime(0.001,t0+0.05);
+    osc2.connect(gain2); gain2.connect(audioCtx.destination); osc2.start(t0); osc2.stop(t0+0.05);
+  }catch(e){}
+}
+function vibrateDevice(pattern){
+  try{ if(navigator.vibrate) navigator.vibrate(pattern||[40,30,40]); }catch(e){}
+}
+document.addEventListener('touchstart', ensureAudio, {once:true, passive:true});
+document.addEventListener('mousedown', ensureAudio, {once:true});
+document.addEventListener('click', e=>{ if(e.target.closest('.btn')) playTap(); });
+
+/* Global disconnect guard: while offline, intercept every click (except retry/close
+   buttons and the auth-back button) and explain what's going on instead of letting
+   broken requests fail silently. */
+document.addEventListener('click', function(e){
+  if(window.firebaseConnected===false){
+    if(e.target.closest('#disconnect-toast')) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    showDisconnectToast();
+  }
+}, true);
+function showDisconnectToast(){
+  if(document.getElementById('disconnect-toast')) return;
+  const toast = document.createElement('div');
+  toast.id = 'disconnect-toast';
+  toast.style.cssText = 'position:fixed; top:10px; left:10px; right:10px; z-index:70; background:linear-gradient(180deg,#7a2a26,#4a1815); border:1px solid var(--red); border-radius:10px; padding:14px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,.5);';
+  toast.innerHTML = `<div style="font-weight:700; margin-bottom:8px;">🔴 سرورها متصل نیست، مطمئن باش اتصال اینترنتی داری.</div>
+    <button class="btn btn-sm btn-primary" id="disconnect-retry">باشه</button>`;
+  document.body.appendChild(toast);
+  document.getElementById('disconnect-retry').addEventListener('click', ()=> toast.remove());
+  setTimeout(()=>{ if(toast.parentNode) toast.remove(); }, 6000);
+}
+
+/* ============================================================
+   STORAGE HELPERS
+============================================================ */
+function toPath(key){ return String(key).split(':').map(s=>s.replace(/[.#$\[\]]/g,'_')).join('/'); }
+async function sGet(key){ if(typeof firebase==='undefined') return null;
+  try{ const snap = await firebase.database().ref(toPath(key)).once('value'); return snap.exists()?snap.val():null; }
+  catch(e){ return null; } }
+async function sSet(key,val){ if(typeof firebase==='undefined') return null;
+  try{ await firebase.database().ref(toPath(key)).set(val); return true; }catch(e){ return null; } }
+async function sDel(key){ if(typeof firebase==='undefined') return;
+  try{ await firebase.database().ref(toPath(key)).remove(); }catch(e){} }
+async function sGetJSON(key, fallback){
+  const v=await sGet(key);
+  if(v===null||v===undefined) return fallback;
+  let cur=v;
+  // unwrap double-encoded JSON strings (common bug)
+  for(let i=0;i<3;i++){
+    if(typeof cur==='object' && cur!==null) return cur;
+    if(typeof cur!=='string') break;
+    try{ cur=JSON.parse(cur); }catch(e){ break; }
+  }
+  if(typeof cur==='object' && cur!==null) return cur;
+  return fallback;
+}
+async function sSetJSON(key, obj){
+  // always store as JSON string for compatibility with existing DB
+  try{
+    const payload = (typeof obj==='string') ? obj : JSON.stringify(obj);
+    return await sSet(key, payload);
+  }catch(e){ return null; }
+}
+
+async function loadKingdomByName(name){
+  if(!name) return null;
+  let k = await sGetJSON('kingdom:'+name, null);
+  if(k && typeof k==='object') return hydrateKingdom(k);
+  // fallback: try raw get
+  try{
+    const raw = await sGet('kingdom:'+name);
+    if(raw==null) return null;
+    if(typeof raw==='object') return hydrateKingdom(raw);
+    if(typeof raw==='string'){
+      let p=raw;
+      for(let i=0;i<3;i++){ try{ p=JSON.parse(p); }catch(e){ break; } if(typeof p==='object') break; }
+      if(typeof p==='object' && p) return hydrateKingdom(p);
+    }
+  }catch(e){}
+  return null;
+}
+
+function persianDigits(n){ const m=["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"]; return String(n).replace(/[0-9]/g,d=>m[d]); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmtNum(n){ return persianDigits(Math.floor(n).toLocaleString('en-US')); }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+const REGISTRY_KEY = "kingdom-registry";
+async function ensureRegistered(name){
+  let reg = await sGetJSON(REGISTRY_KEY, []);
+  if(!Array.isArray(reg)) reg = [];
+  reg = reg.filter(n=>typeof n==='string' && n);
+  if(!reg.includes(name)){ reg.push(name); reg=reg.slice(-800); await sSetJSON(REGISTRY_KEY, reg); }
+}
+async function unregister(name){
+  let reg = await sGetJSON(REGISTRY_KEY, []);
+  if(!Array.isArray(reg)) reg = [];
+  reg = reg.filter(n=>n!==name && typeof n==='string');
+  await sSetJSON(REGISTRY_KEY, reg);
+}
+async function searchKingdoms(q, excludeSelf){
+  let reg = await sGetJSON(REGISTRY_KEY, []);
+  if(!Array.isArray(reg)) reg = [];
+  reg = reg.filter(n=>typeof n==='string' && n);
+  const query = q.trim().toLowerCase();
+  if(!query) return [];
+  return reg.filter(n=>n.toLowerCase().includes(query) && (!excludeSelf || n!==myName)).slice(0,15);
+}
+
+/* ============================================================
+   GAME DEFINITIONS
+============================================================ */
+const BUILDINGS = {
+  castle:  {icon:'🏰', name:'قلعه',          desc:'سطح کلی قلمرو رو مشخص می‌کنه', baseCost:200},
+  treasury:{icon:'🪙', name:'خزانه',          desc:'سرعت استخراج طلا رو زیاد می‌کنه', baseCost:150},
+  barracks:{icon:'🪖', name:'پادگان',         desc:'هزینه‌ی آموزش نیرو رو کم می‌کنه', baseCost:180},
+  weapons: {icon:'🏹', name:'کارخانه سلاح',   desc:'قدرت حمله‌ی نیروها رو زیاد می‌کنه', baseCost:220},
+  wall:    {icon:'🧱', name:'دیوار دفاعی',    desc:'دفاع قلمرو رو زیاد می‌کنه', baseCost:200},
+  power:   {icon:'⚡', name:'منبع انرژی',     desc:'انرژی لازم برای ساختمون‌های دیگه', baseCost:250},
+  lab:     {icon:'🔬', name:'آزمایشگاه',      desc:'حمله و دفاع نیروها رو قوی‌تر می‌کنه', baseCost:300},
+};
+const MAX_LEVEL = 15;
+function upgradeCost(baseCost, level){ return Math.round(baseCost * Math.pow(1.55, level-1)); }
+
+const TROOPS = {
+  militia:   {icon:'🔪', name:'شبه‌نظامی',     cost:10,   power:1.5, desc:'ارزون‌ترین نیرو'},
+  slinger:   {icon:'🪃', name:'فلاخن‌انداز',   cost:12,   power:1.8, desc:'ارزون‌ترین گزینه‌ی شروع'},
+  spearman:  {icon:'🗡️', name:'نیزه‌دار',      cost:15,   power:2.2, desc:'ارزون و سریع، خط اول حمله'},
+  barbarian: {icon:'🪓', name:'بربر',         cost:25,   power:3.5, desc:'نیروی وحشی و ارزون'},
+  soldier:   {icon:'🪖', name:'سرباز',        cost:20,   power:3,   desc:'نیروی پایه، مستقیم شلیک می‌کنه'},
+  axeman:    {icon:'⚔️', name:'تبرزن',        cost:22,   power:3.2, desc:'ضربه‌ی نزدیک قدرتمند'},
+  engineer:  {icon:'👷', name:'مهندس',        cost:30,   power:2,   desc:'رخنه تو دیوار دشمن پیدا می‌کنه'},
+  archer:    {icon:'🏹', name:'کماندار',       cost:35,   power:5,   desc:'از راه دور ضربه می‌زنه'},
+  rifleman:  {icon:'🔫', name:'تفنگچی',        cost:45,   power:7,   desc:'شلیک دقیق از فاصله‌ی متوسط'},
+  grenadier: {icon:'🧨', name:'خمپاره‌انداز',   cost:90,   power:12,  desc:'ضربه‌ی انفجاری کوچیک'},
+  sniper:    {icon:'🎯', name:'تک‌تیرانداز',   cost:60,   power:8,   desc:'دقت بالا، ضربه‌ی حساب‌شده'},
+  cavalry:   {icon:'🐎', name:'سواره‌نظام',    cost:120,  power:16,  desc:'سریع، ضربه‌ی غافلگیرکننده'},
+  gunTruck:  {icon:'🛻', name:'ماشین تیربار',  cost:130,  power:18,  desc:'شلیک سریع و پیوسته'},
+  apprentice:{icon:'🧝', name:'شاگرد جادوگر', cost:150,  power:22,  desc:'جادوی ابتدایی ولی موثر'},
+  berserker: {icon:'😤', name:'دیوانه‌ی جنگ',  cost:170,  power:26,  desc:'بی‌محابا می‌جنگه'},
+  ninja:     {icon:'🥷', name:'نینجا',         cost:180,  power:28,  desc:'ناشناخته حمله می‌کنه، ضربه‌ی سنگین'},
+  knight:    {icon:'🛡️', name:'شوالیه',       cost:200,  power:30,  desc:'زره سنگین، مقاوم تو نبرد'},
+  catapult:  {icon:'🪨', name:'منجنیق',       cost:250,  power:35,  desc:'سنگ‌های بزرگ پرتاب می‌کنه، به دیوار هم آسیب می‌زنه'},
+  mage:      {icon:'🧙', name:'جادوگر',       cost:260,  power:38,  desc:'حمله‌ی جادویی از راه دور'},
+  paladin:   {icon:'🏵️', name:'پالادین',      cost:320,  power:45,  desc:'مبارز مقدس، دفاع و حمله‌ش بالاست'},
+  siegeTower:{icon:'🏗️', name:'برج محاصره',   cost:380,  power:50,  desc:'مستقیم می‌ره سراغ دیوار دشمن'},
+  sheriff:   {icon:'🤠', name:'کلانتر',        cost:400,  power:55,  desc:'نظم رو با خودش میاره، ضربه‌ی سنگین می‌زنه'},
+  golem:     {icon:'🗿', name:'گولم سنگی',    cost:500,  power:65,  desc:'کند ولی تقریباً نابودنشدنی'},
+  tank:      {icon:'🚜', name:'تانک',         cost:300,  power:40,  desc:'دیوارهای دشمن رو داغون می‌کنه'},
+  artillery: {icon:'💣', name:'توپخانه',       cost:550,  power:70,  desc:'دیوار دشمن رو تا سطح مشخصی کامل نابود می‌کنه'},
+  robot:     {icon:'🤖', name:'ربات جنگی',    cost:700,  power:95,  desc:'ماشین جنگی خودکار'},
+  helicopter:{icon:'🚁', name:'بالگرد',        cost:800,  power:100, desc:'از روی دیوار دشمن رد می‌شه، دفاع دیوار روش اثر کمی داره'},
+  griffin:   {icon:'🦅', name:'گریفین',        cost:900,  power:130, desc:'پرنده‌ی جنگی، از روی دیوار عبور می‌کنه'},
+  commander: {icon:'⭐', name:'فرمانده',       cost:1000, power:150, desc:'به همه‌ی نیروها روحیه می‌ده'},
+  phoenix:   {icon:'🔥', name:'ققنوس',        cost:1200, power:170, desc:'موجود افسانه‌ای آتشین، از روی دیوار رد می‌شه'},
+  dragon:    {icon:'🐉', name:'اژدها',        cost:1500, power:200, desc:'نیروی افسانه‌ای، از روی دیوار رد می‌شه'},
+  fighter:   {icon:'✈️', name:'جنگنده',        cost:1800, power:220, desc:'حمله‌ی هوایی سنگین، از روی دیوار هم رد می‌شه'},
+  titan:     {icon:'🗻', name:'تایتان',        cost:2500, power:320, desc:'قدرتمندترین نیروی زمینی موجود'},
+  nurse:     {icon:'🚑', name:'پرستار',        cost:80,   power:1,   desc:'هرچی بیشتر باشه، تلفات نیروهات رو بیشتر کم می‌کنه', requiresEquip:'clinic'},
+  medic:{icon:'🩺',name:'امدادگر',cost:95,power:2,desc:'درمان میدانی',requiresEquip:'clinic'},
+  scout:{icon:'🛰️',name:'دیده‌بان',cost:55,power:4,desc:'شناسایی سریع'},
+  sapper:{icon:'🧰',name:'تخریب‌چی',cost:140,power:20,desc:'متخصص تخریب'},
+  mortar:{icon:'💥',name:'خمپاره‌زن',cost:190,power:30,desc:'آتش غیرمستقیم'},
+  apc:{icon:'🚙',name:'نفربر زرهی',cost:260,power:42,desc:'پشتیبانی زرهی'},
+  howitzer:{icon:'🛞',name:'هویتزر',cost:650,power:82,desc:'توپخانه سنگین'},
+  radar:{icon:'📡',name:'واحد رادار',cost:500,power:18,desc:'شناسایی هوایی'},
+  jetBomber:{icon:'🛩️',name:'جنگنده بمب‌افکن',cost:2300,power:260,desc:'حمله هوایی سنگین'},
+  transport:{icon:'🚚',name:'کامیون تدارکات',cost:180,power:8,desc:'پشتیبانی نیروها'},
+  commando:{icon:'🥾',name:'کماندو',cost:420,power:62,desc:'عملیات ویژه'},
+  // —— نیروهای جدید و قوی‌تر ——
+  shadowBlade:{icon:'🗡️',name:'شمشیر سایه',cost:2800,power:360,desc:'قاتل مخفی نسل جدید'},
+  plasmaGunner:{icon:'💠',name:'تفنگدار پلاسما',cost:3200,power:400,desc:'سلاح انرژی پیشرفته'},
+  mechWalker:{icon:'🦿',name:'مکانیکی جنگجو',cost:4500,power:520,desc:'ربات دوپا زرهی'},
+  voidMage:{icon:'🌌',name:'جادوگر خلأ',cost:5000,power:580,desc:'جادوی سیاه فضایی'},
+  thunderRider:{icon:'⚡',name:'سوار رعد',cost:3800,power:450,desc:'سوارهٔ الکتریکی سریع'},
+  orbitalCanon:{icon:'🛰️',name:'توپ مداری',cost:6000,power:700,desc:'آتش از مدار، نابودگر دیوار'},
+  hydraBeast:{icon:'🐍',name:'هیولای هیدرا',cost:7000,power:800,desc:'چند سر، تلفات سخت'},
+  starDestroyer:{icon:'💫',name:'نابودگر ستاره',cost:9000,power:1000,desc:'قدرتمندترین واحد هوا-فضا'},
+  chronomancer:{icon:'⏳',name:'زمان‌پیچ',cost:5500,power:620,desc:'زمان دشمن را کند می‌کند'},
+  leviathan:{icon:'🐋',name:'لویاتان',cost:12000,power:1400,desc:'غول دریایی افسانه‌ای'},
+};
+const WALL_BREAKERS = ['tank','artillery','engineer','catapult','siegeTower','orbitalCanon','mechWalker'];
+const RANGED = ['archer','sniper','artillery','helicopter','fighter','rifleman','mage','griffin','dragon','grenadier','apprentice','phoenix','plasmaGunner','voidMage','orbitalCanon','starDestroyer'];
+const FLYERS = ['helicopter','fighter','griffin','dragon','phoenix','starDestroyer'];
+
+const MISSILES = {
+  hypersonic: {icon:'🚀', name:'موشک هایپرسونیک', cost:90,  power:100, desc:'سریع و قدرتمند'},
+  intercontinental: {icon:'🌍', name:'موشک قاره‌پیما', cost:130, power:140, desc:'برد بسیار بالا'},
+  precision: {icon:'🎯', name:'موشک نقطه‌زن', cost:160, power:180, desc:'دقیق‌ترین و قوی‌ترین'},
+};
+
+const EQUIPMENT = {
+  armor:  {icon:'🛡️', name:'زره پیشرفته',      desc:'دفاع کلی قلمرو رو زیاد می‌کنه', baseCost:300, max:10},
+  scope:  {icon:'🔭', name:'دوربین هدف‌گیری',   desc:'قدرت حمله‌ی همه‌ی نیروها رو زیاد می‌کنه', baseCost:350, max:10},
+  engine: {icon:'⚙️', name:'موتور سریع',        desc:'هزینه‌ی آموزش نیرو رو کم می‌کنه', baseCost:280, max:10},
+  drone:  {icon:'🛰️', name:'پهپاد شناسایی',     desc:'قدرت واقعی دشمن رو دقیق‌تر نشون می‌ده', baseCost:400, max:10},
+  clinic: {icon:'🏥', name:'درمانگاه',          desc:'پرستار رو به لیست نیروها اضافه می‌کنه', baseCost:4000, max:1},
+  siege:  {icon:'💥', name:'فناوری محاصره',     desc:'حداکثر سطح دیواری که توپخانه/تانکت می‌تونه کامل نابود کنه رو بالا می‌بره (پایه: سطح ۲)', baseCost:500, max:10},
+  extractor: {icon:'🎛️', name:'دستگاه استخراج سکه', desc:'سرعت استخراج طلای خزانه رو بیشتر افزایش می‌ده', baseCost:400, max:10},
+  missileFactory: {icon:'🏭', name:'کارخانه موشک‌سازی', desc:'بخش «تولید موشک» رو باز می‌کنه', baseCost:3500, max:1},
+  launcher: {icon:'🚀', name:'لانچر', desc:'اجازه می‌ده موشک‌هات رو تو حمله شلیک کنی (هر نبرد حداقل ۳ تا ۴ موشک مصرف می‌شه)', baseCost:1000, max:1},
+  airDefense: {icon:'📡', name:'پدافند',        desc:'نیروهای هوایی دشمن رو خنثی می‌کنه', baseCost:6000, max:10},
+  ironDome: {icon:'🛡️‍🚀', name:'گنبد آهنین',    desc:'دفاع هوایی خیلی قوی‌تر', baseCost:8000, max:15},
+  antiHack: {icon:'🔒', name:'ضد هک', desc:'هر سطح ریسک حمله ربات هکر را کمتر می‌کند (پایه ۲۰٬۰۰۰ سکه)', baseCost:20000, max:10},
+  oilPump: {icon:'🛢️', name:'استخراج نفت', desc:'هر سطح سرعت استخراج نفت را افزایش می‌دهد', baseCost:500, max:15},
+};
+
+function freshKingdom(name, pin){
+  return {
+    name, pin: pin||'', gold: 500, oil: 0, lastUpdate: Date.now(), createdAt: Date.now(),
+    xp: 0, wins: 0, losses: 0, botStage: 0, totalGoldEarned: 500,
+    buildings: {castle:1, treasury:1, barracks:1, weapons:1, wall:1, power:1, lab:1},
+    equipment: {armor:0, scope:0, engine:0, drone:0, clinic:0, siege:0, extractor:0, missileFactory:0, launcher:0, airDefense:0, ironDome:0, antiHack:0, oilPump:0},
+    troops: {militia:8, soldier:3, engineer:0, archer:0, sniper:0, cavalry:0, sheriff:0, tank:0, artillery:0, helicopter:0, fighter:0, commander:0, nurse:0},
+    missiles: {hypersonic:0, intercontinental:0, precision:0},
+    energyGate: {active:false, powerLevelAtTrigger:0, upgradesNeeded:0},
+    purchaseStreak: 0,
+    revengeAttackAt: 0,
+    bankStage: 0,
+    inbox: []
+  };
+}
+function goldPerSec(k){ return k.buildings.treasury * 0.12 * (1 + (k.equipment.extractor||0)*0.15); }
+function oilPerSec(k){ return 0.05 + (k.equipment.oilPump||0) * 0.08; }
+function treasuryCap(k){ return Math.round(700 * Math.pow(3000/700, k.buildings.treasury-1)); }
+function troopCap(k){ return 40 * Math.pow(2, k.buildings.barracks-1); }
+function energyCap(k){ return k.buildings.power * 12; }
+function energyUsed(k){
+  let u=0; for(const b in k.buildings) if(b!=='power') u += k.buildings[b]*1.5;
+  for(const e in k.equipment) u += (k.equipment[e]||0)*3;
+  return Math.round(u);
+}
+function trainCostMul(k){ return Math.max(0.50, 1 - (k.buildings.barracks-1)*0.03 - (k.equipment.engine||0)*0.02); }
+function attackPowerMul(k){ return (1 + (k.buildings.weapons-1)*0.08) * (1 + (k.buildings.lab-1)*0.05) * (1 + (k.equipment.scope||0)*0.04); }
+function defensePowerMul(k){ return (1 + (k.buildings.lab-1)*0.05) * (1 + (k.equipment.armor||0)*0.04); }
+function troopsPower(troops){ let p=0; for(const t in TROOPS) p += (troops[t]||0)*TROOPS[t].power; return p; }
+function totalTroopCount(troops){ let c=0; for(const t in TROOPS) c += (troops[t]||0); return c; }
+function missilesPower(missiles){ if(!missiles) return 0; let p=0; for(const m in MISSILES) p += (missiles[m]||0)*MISSILES[m].power; return p; }
+function kingdomPower(k){
+  let bp=0; for(const b in BUILDINGS) bp += k.buildings[b]*15;
+  return Math.round(bp + troopsPower(k.troops)*attackPowerMul(k) + missilesPower(k.missiles));
+}
+function xpForLevel(level){ return Math.round(120 * Math.pow(1.35, level-1)); }
+function levelFromXp(xp){
+  let lvl=1, acc=0;
+  while(acc + xpForLevel(lvl) <= xp){ acc += xpForLevel(lvl); lvl++; }
+  return {level:lvl, into: xp-acc, need: xpForLevel(lvl)};
+}
+function clampPct(v){ return Math.max(0,Math.min(100,v)); }
+
+/* ============================================================
+   ENERGY GATE — occasionally requires a Power Plant upgrade
+============================================================ */
+function checkEnergyGate(k, key){
+  if(key==='power') return true;
+  const temp=JSON.parse(JSON.stringify(k));
+  if(temp.buildings[key]!==undefined) temp.buildings[key]++;
+  else temp.equipment[key]=(temp.equipment[key]||0)+1;
+  if(energyUsed(temp)>energyCap(k)){ alert('⚡ برق کافی نیست؛ منبع انرژی را ارتقا بده.'); return false; }
+  return true;
+}
+function registerPurchaseForEnergyGate(k){ k.purchaseStreak=0; k.energyGate={active:false,powerLevelAtTrigger:0,upgradesNeeded:0}; }
+
+/* ============================================================
+   STATE
+============================================================ */
+let myName = "";
+let myKingdom = null;
+let attackTarget = null;   // {name, kingdom, isBot, matchType}
+let composeQty = {};
+let composeMissileQty = {};
+let goldTicker = null, presenceTicker=null, requestPollTicker=null, alertPollTicker=null, revengeTicker=null;
+
+/* ============================================================
+   PERSISTENCE / OFFLINE PROGRESS
+============================================================ */
+function hydrateKingdom(k){
+  if(k.pin===undefined) k.pin='';
+  if(k.xp===undefined) k.xp=0;
+  if(k.wins===undefined) k.wins=0;
+  if(k.losses===undefined) k.losses=0;
+  if(k.botStage===undefined) k.botStage=0;
+  if(k.totalGoldEarned===undefined) k.totalGoldEarned=k.gold||0;
+  if(!k.equipment) k.equipment={armor:0,scope:0,engine:0,drone:0,clinic:0,siege:0,extractor:0,missileFactory:0,launcher:0,airDefense:0,ironDome:0};
+  if(k.equipment.clinic===undefined) k.equipment.clinic=0;
+  if(k.equipment.siege===undefined) k.equipment.siege=0;
+  if(k.equipment.extractor===undefined) k.equipment.extractor=0;
+  if(k.equipment.missileFactory===undefined) k.equipment.missileFactory=0;
+  if(k.equipment.launcher===undefined) k.equipment.launcher=0;
+  if(k.equipment.airDefense===undefined) k.equipment.airDefense=0;
+  if(k.equipment.ironDome===undefined) k.equipment.ironDome=0;
+  if(k.bankStage===undefined) k.bankStage=0;
+  if(k.jailUntil===undefined) k.jailUntil=0;
+  if(!k.missiles) k.missiles={hypersonic:0,intercontinental:0,precision:0};
+  for(const m in MISSILES) if(k.missiles[m]===undefined) k.missiles[m]=0;
+  if(!k.energyGate) k.energyGate={active:false,powerLevelAtTrigger:0,upgradesNeeded:0};
+  if(k.purchaseStreak===undefined) k.purchaseStreak=0;
+  if(k.revengeAttackAt===undefined) k.revengeAttackAt=0;
+  if(k.lastSeenInboxCount===undefined) k.lastSeenInboxCount=(k.inbox||[]).length;
+  if(k.lastAlertSeenTs===undefined) k.lastAlertSeenTs=0;
+  if(k.botRaidNextAt===undefined) k.botRaidNextAt=0;
+  if(!k.bankVaults) k.bankVaults={};
+  if(!k.createdAt) k.createdAt=Date.now();
+  if(!k.troops) k.troops={};
+  for(const t in TROOPS) if(k.troops[t]===undefined) k.troops[t]=0;
+
+  if(k.oil===undefined) k.oil=0;
+  if(k.equipment && k.equipment.oilPump===undefined) k.equipment.oilPump=0;
+  const elapsedSec = Math.min((Date.now()-(k.lastUpdate||Date.now()))/1000, 12*3600);
+  if(elapsedSec>0){
+    const gain=elapsedSec*goldPerSec(k);
+    if(k.gold < treasuryCap(k)) k.gold = Math.min(treasuryCap(k), k.gold+gain);
+    k.totalGoldEarned+=gain;
+    k.oil = (Number(k.oil)||0) + elapsedSec*oilPerSec(k);
+  }
+  k.lastUpdate = Date.now();
+  return k;
+}
+async function loginToAccount(name, pin){
+  let k = await loadKingdomByName(name);
+  if(!k) {
+    // try without hydrate path
+    k = await sGetJSON('kingdom:'+name, null);
+    if(!k) return {error:'no-account'};
+    k = hydrateKingdom(k);
+  }
+  if((k.pin||'') !== (pin||'')) return {error:'wrong-pin'};
+  await sSetJSON('kingdom:'+name, k);
+  return {kingdom:k};
+}
+async function createAccount(name, pin){
+  const existing = await sGetJSON(`kingdom:${name}`, null);
+  if(existing) return {error:'name-taken'};
+  const usedPins = await sGetJSON('used-pins', []);
+  if(usedPins.includes(pin)) return {error:'pin-taken'};
+  let k = hydrateKingdom(freshKingdom(name, pin));
+  await sSetJSON(`kingdom:${name}`, k);
+  usedPins.push(pin);
+  await sSetJSON('used-pins', usedPins.slice(-2000));
+  return {kingdom:k};
+}
+async function saveKingdom(k){ k.lastUpdate = Date.now(); await sSetJSON(`kingdom:${k.name}`, k); }
+function addXp(amount){ myKingdom.xp = Math.max(0, myKingdom.xp + amount); return amount; }
+
+/* ============================================================
+   PRESENCE (online/offline)
+============================================================ */
+async function heartbeat(){ if(myName) await sSetJSON(`presence:${myName}`, {t:Date.now()}); }
+
+/* ============================================================
+   LIVE ATTACK ALERTS ("X is attacking you" while you're online)
+============================================================ */
+let lastAlertSeenTs = 0;
+async function pushAttackAlert(targetName, fromName, lines){
+  await sSetJSON(`alerts:${targetName}`, {from:fromName, t:Date.now(), lines: lines||[]});
+}
+async function pollForLiveAlerts(){
+  if(!myName) return;
+  const alert = await sGetJSON(`alerts:${myName}`, null);
+  const seen=Math.max(lastAlertSeenTs||0,myKingdom.lastAlertSeenTs||0);
+  if(alert && alert.t>seen){
+    lastAlertSeenTs=alert.t; myKingdom.lastAlertSeenTs=alert.t;
+    await sDel(`alerts:${myName}`); saveKingdom(myKingdom);
+    showAttackToast(alert.from, alert.lines);
+  }
+}
+async function checkScheduledBotRaid(){
+ if(!myKingdom||levelFromXp(myKingdom.xp).level<5)return;
+ // هر حدود ۳۰ دقیقه (۲۵–۳۵ دقیقه رندوم)
+ if(!myKingdom.botRaidNextAt){
+   myKingdom.botRaidNextAt=Date.now()+(25+Math.floor(Math.random()*11))*60000;
+   await saveKingdom(myKingdom);return;
+ }
+ const left=myKingdom.botRaidNextAt-Date.now();
+ if(left>0&&left<180000&&!myKingdom.botRaidWarnedAt){
+   myKingdom.botRaidWarnedAt=Date.now();await saveKingdom(myKingdom);
+   alert('⚠️ تهدید ربات‌ها: «به‌زودی حمله می‌کنیم!»');return;
+ }
+ if(left>0)return;
+ const stage=5+Math.floor(Math.random()*15), bot=generateBotKingdom(stage);
+ const botAtk=troopsPower(bot.troops)*attackPowerMul(bot);
+ const myDef=40+myKingdom.buildings.wall*55+troopsPower(myKingdom.troops)*0.4*defensePowerMul(myKingdom);
+ const win=botAtk>myDef;
+ const lost=win?Math.round((myKingdom.gold||0)*0.12):0;
+ myKingdom.gold=Math.max(0,myKingdom.gold-lost);
+ myKingdom.inbox.unshift({id:uid(),attacker:'ربات مهاجم مرحله '+stage+' 🤖',defenderWon:!win,lootLost:lost,wallDamagePct:0,defenderTroopsLost:0,t:Date.now(),lines:['⚠️ تهدید رباتی عملی شد.','🤖 ربات‌ها به قلمرو حمله کردند.',win?'🔴 بخشی از سکه‌ها غارت شد.':'🟢 دفاع موفق بود.']});
+ myKingdom.inbox=myKingdom.inbox.slice(0,30);
+ myKingdom.botRaidNextAt=Date.now()+(25+Math.floor(Math.random()*11))*60000;
+ myKingdom.botRaidWarnedAt=0;
+ await saveKingdom(myKingdom);
+ showAttackToast('ربات‌های مهاجم 🤖');
+ if(win) vibrateDevice([80,40,80]);
+}
+
+async function checkRevengeAttack(){
+  if(!myKingdom || !myKingdom.revengeAttackAt) return;
+  if(Date.now() < myKingdom.revengeAttackAt) return;
+  const stage = myKingdom.botStage || 5;
+  const bot = generateBotKingdom(stage);
+  const botPower = troopsPower(bot.troops) * attackPowerMul(bot);
+  const myDefense = 40 + myKingdom.buildings.wall*55 + troopsPower(myKingdom.troops)*0.4*defensePowerMul(myKingdom);
+  const battleRatio = botPower / Math.max(1, myDefense);
+  const kpRatio = kingdomPower(bot) / Math.max(1, kingdomPower(myKingdom));
+  const ratio = 0.7*kpRatio + 0.3*battleRatio;
+  const botWins = ratio >= 1.0;
+
+  let lootLost=0, troopsLost=0;
+  if(botWins){
+    const lossPct = ratio>=1.5 ? 0.25 : ratio>=1.15 ? 0.15 : 0.08;
+    lootLost = Math.round((myKingdom.gold||0) * (ratio>=1.5?0.4:0.2));
+    myKingdom.gold = Math.max(0, myKingdom.gold - lootLost);
+    for(const key in myKingdom.troops){
+      const have = myKingdom.troops[key]||0;
+      if(have<=0) continue;
+      const lost = Math.round(have*lossPct);
+      troopsLost += lost;
+      myKingdom.troops[key] = Math.max(0, have-lost);
+    }
+    myKingdom.losses += 1;
+  } else {
+    myKingdom.wins += 1;
+  }
+  let inbox = myKingdom.inbox||[];
+  inbox.unshift({attacker:'ربات‌های انتقام‌جو 👹', defenderWon: !botWins, lootLost, wallDamagePct:0, defenderTroopsLost:troopsLost, t:Date.now()});
+  myKingdom.inbox = inbox.slice(0,20);
+  myKingdom.revengeAttackAt = 0;
+  await saveKingdom(myKingdom);
+  renderTopbar();
+  showAttackToast(botWins ? 'ربات‌های انتقام‌جو (موفق شدن!) 👹' : 'ربات‌های انتقام‌جو (دفاعت جلوشون رو گرفت!) 👹');
+}
+function showAttackToast(fromName, lines){
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed; top:10px; left:10px; right:10px; z-index:60; background:linear-gradient(180deg,#7a2a26,#4a1815); border:1px solid var(--red); border-radius:10px; padding:14px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,.5);';
+  toast.innerHTML = `<div style="font-weight:700; margin-bottom:8px;">⚔️ ${escapeHtml(fromName)} داره بهت حمله می‌کنه!</div>
+    <div style="display:flex; gap:8px; justify-content:center;">
+      <button class="btn btn-sm btn-primary" id="toast-view">مشاهده‌ی گزارش</button>
+      <button class="btn btn-sm btn-ghost" id="toast-dismiss">باشه</button>
+    </div>`;
+  document.body.appendChild(toast);
+  toast.querySelector('#toast-view').addEventListener('click', async ()=>{
+    toast.remove();
+    if(lines && lines.length>0){ 
+  // Club attack report
+  try{
+    if(myKingdom && myKingdom.clubId && !opts.isMission){
+      const club = await sGetJSON('club:'+myKingdom.clubId, null);
+      if(club){
+        club.attackLog = Array.isArray(club.attackLog)?club.attackLog:[];
+        club.attackLog.unshift({from:myName, to:(defenderKingdomSnapshot&&defenderKingdomSnapshot.name)||'?', win:!!win, loot:finalLoot||0, type:isBot?'ربات':'PvP', t:Date.now()});
+        club.attackLog = club.attackLog.slice(0,40);
+        await sSetJSON('club:'+myKingdom.clubId, club);
+      }
+    }
+  }catch(e){}
+
+await playNarration(lines); }
+    showView('inbox');
+  });
+  toast.querySelector('#toast-dismiss').addEventListener('click', ()=> toast.remove());
+  setTimeout(()=>{ if(toast.parentNode) toast.remove(); }, 8000);
+}
+async function isOnline(name){
+  const p = await sGetJSON(`presence:${name}`, null);
+  return !!(p && (Date.now()-p.t) < 15000);
+}
+
+/* ============================================================
+   FRIENDS
+============================================================ */
+async function loadFriends(){ return await sGetJSON(`friends:${myName}`, []); }
+async function loadFriendRequests(){ return await sGetJSON(`friend-requests:${myName}`, []); }
+async function sendFriendRequest(target){
+  if(!target || target===myName) return false;
+  // verify target exists
+  const exists = await loadKingdomByName(target);
+  if(!exists){ alert('این حساب پیدا نشد. مطمئن شو اسم دقیق است و طرف حداقل یک‌بار وارد شده.'); return false; }
+  let list = await sGetJSON('friend-requests:'+target, []);
+  if(!Array.isArray(list)) list = [];
+  if(list.some(r=>r && r.from===myName)) return false;
+  list.push({from:myName, t:Date.now()});
+  await sSetJSON('friend-requests:'+target, list);
+  return true;
+}
+async function acceptFriendRequest(fromName){
+  let mine = await sGetJSON('friends:'+myName, []);
+  if(!Array.isArray(mine)) mine = [];
+  if(!mine.includes(fromName)) mine.push(fromName);
+  await sSetJSON('friends:'+myName, mine);
+  let theirs = await sGetJSON('friends:'+fromName, []);
+  if(!Array.isArray(theirs)) theirs = [];
+  if(!theirs.includes(myName)) theirs.push(myName);
+  await sSetJSON('friends:'+fromName, theirs);
+  let reqs = await sGetJSON('friend-requests:'+myName, []);
+  if(!Array.isArray(reqs)) reqs = [];
+  reqs = reqs.filter(r=>r && r.from!==fromName);
+  await sSetJSON('friend-requests:'+myName, reqs);
+}
+async function declineFriendRequest(fromName){
+  let reqs = await sGetJSON(`friend-requests:${myName}`, []);
+  reqs = reqs.filter(r=>r.from!==fromName);
+  await sSetJSON(`friend-requests:${myName}`, reqs);
+}
+
+/* ============================================================
+   RENDER: TOP BAR
+============================================================ */
+function renderTopbar(){
+  document.getElementById("res-gold").textContent = fmtNum(myKingdom.gold);
+  const oilEl=document.getElementById("res-oil"); if(oilEl) oilEl.textContent = fmtNum(myKingdom.oil||0);
+  const maxEl=document.getElementById("res-gold-max"); if(maxEl) maxEl.style.display = myKingdom.gold>=treasuryCap(myKingdom) ? 'inline' : 'none';
+  document.getElementById("res-power").textContent = fmtNum(kingdomPower(myKingdom));
+  document.getElementById("extract-rate").textContent = persianDigits(goldPerSec(myKingdom).toFixed(2));
+  const or=document.getElementById("oil-rate"); if(or) or.textContent = persianDigits(oilPerSec(myKingdom).toFixed(2));
+  const lvl = levelFromXp(myKingdom.xp).level;
+  document.getElementById("topbar-level").textContent = "سطح "+persianDigits(lvl);
+}
+
+/* ============================================================
+   RENDER: KINGDOM (buildings)
+============================================================ */
+function renderKingdom(){
+  const grid = document.getElementById("building-grid");
+  grid.innerHTML = Object.keys(BUILDINGS).map(key=>{
+    const def = BUILDINGS[key];
+    const level = myKingdom.buildings[key];
+    const maxed = level>=MAX_LEVEL;
+    const cost = upgradeCost(def.baseCost, level);
+    const canAfford = myKingdom.gold >= cost;
+    let desc = def.desc;
+    if(key==='treasury') desc = `حداقل مخزن طلا رو افزایش می‌ده — الان تا 🪙${fmtNum(treasuryCap(myKingdom))} جا می‌گیره`;
+    if(key==='barracks') desc = `حداقل ظرفیت نیروهات رو افزایش می‌ده — الان تا ${persianDigits(troopCap(myKingdom))} نیرو جا می‌گیره`;
+    if(key==='power') desc = `${def.desc} — ظرفیت انرژی: ${persianDigits(energyCap(myKingdom))} / مصرف فعلی: ${persianDigits(energyUsed(myKingdom))}`;
+    return `<div class="b-card">
+      <div class="bic">${def.icon}</div>
+      <div class="bname">${def.name}</div>
+      <div class="blvl">سطح ${persianDigits(level)}${maxed?' (حداکثر)':''}</div>
+      <div class="bdesc">${desc}</div>
+      ${maxed ? '' : `<div class="bcost">هزینه: 🪙 ${fmtNum(cost)}</div>
+      <button class="btn btn-sm ${canAfford?'btn-primary':''}" data-upgrade="${key}" ${canAfford?'':'disabled'}>ارتقا</button>`}
+    </div>`;
+  }).join("");
+  grid.querySelectorAll("[data-upgrade]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.upgrade;
+      const def = BUILDINGS[key];
+      const level = myKingdom.buildings[key];
+      const cost = upgradeCost(def.baseCost, level);
+      if(myKingdom.gold < cost || level>=MAX_LEVEL) return;
+      if(!checkEnergyGate(myKingdom, key)) return;
+      myKingdom.gold -= cost;
+      myKingdom.buildings[key] += 1;
+      addXp(Math.round(cost/15));
+      registerPurchaseForEnergyGate(myKingdom);
+      renderTopbar(); renderKingdom();
+      await saveKingdom(myKingdom);
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: BARRACKS
+============================================================ */
+function renderBarracks(){
+  const box = document.getElementById("troop-train-list");
+  const mul = trainCostMul(myKingdom);
+  const cap = troopCap(myKingdom);
+  const totalNow = totalTroopCount(myKingdom.troops);
+  box.innerHTML = `<div class="section-note" style="margin:0 0 10px;">ظرفیت نیرو: ${persianDigits(totalNow)} / ${persianDigits(cap)}</div>` +
+    Object.keys(TROOPS).map(key=>{
+    const def = TROOPS[key];
+    if(def.requiresEquip && !(myKingdom.equipment[def.requiresEquip]>=1)) return '';
+    const cost = Math.max(1, Math.round(def.cost*mul));
+    const have = myKingdom.troops[key]||0;
+    const atCap = totalNow>=cap;
+    return `<div class="troop-row">
+      <div class="tinfo">
+        <span class="tic">${def.icon}</span>
+        <div>
+          <div class="tname">${def.name}</div>
+          <div class="tstat">قدرت ${persianDigits(def.power)} · هزینه 🪙${fmtNum(cost)}</div>
+          <div class="tdesc">${def.desc}</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="tcount">${persianDigits(have)}</span>
+        <button class="btn btn-sm ${atCap?'':'btn-primary'}" data-train="${key}" ${atCap?'disabled':''}>+۱</button>
+      </div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-train]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.train;
+      const def = TROOPS[key];
+      const cost = Math.max(1, Math.round(def.cost*trainCostMul(myKingdom)));
+      if(myKingdom.gold < cost) return;
+      if(totalTroopCount(myKingdom.troops) >= troopCap(myKingdom)){ alert('ظرفیت پادگانت پره — پادگان رو ارتقا بده.'); return; }
+      myKingdom.gold -= cost;
+      myKingdom.troops[key] = (myKingdom.troops[key]||0)+1;
+      addXp(Math.round(def.power));
+      renderTopbar(); renderBarracks();
+      await saveKingdom(myKingdom);
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: EQUIPMENT
+============================================================ */
+function renderEquipment(){
+  const box = document.getElementById("equip-list");
+  box.innerHTML = Object.keys(EQUIPMENT).map(key=>{
+    const def = EQUIPMENT[key];
+    const level = myKingdom.equipment[key]||0;
+    const maxed = level>=def.max;
+    const cost = upgradeCost(def.baseCost, level+1);
+    const canAfford = myKingdom.gold>=cost;
+    return `<div class="equip-row">
+      <div style="display:flex; align-items:center; gap:9px;">
+        <span class="eic">${def.icon}</span>
+        <div>
+          <div class="ename">${def.name}</div>
+          <div class="edesc">${def.desc}</div>
+          <div class="elvl">${def.max===1 ? (level>=1?'خریداری شده ✅':'خریداری‌نشده') : 'سطح '+persianDigits(level)+(maxed?' (حداکثر)':'')}</div>
+        </div>
+      </div>
+      ${maxed?'':`<button class="btn btn-sm ${canAfford?'btn-primary':''}" data-equip="${key}" ${canAfford?'':'disabled'} style="min-width:70px;">🪙${fmtNum(cost)}</button>`}
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-equip]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.equip;
+      const def = EQUIPMENT[key];
+      const level = myKingdom.equipment[key]||0;
+      const cost = upgradeCost(def.baseCost, level+1);
+      if(myKingdom.gold<cost || level>=def.max) return;
+      if(!checkEnergyGate(myKingdom, key)) return;
+      myKingdom.gold -= cost;
+      myKingdom.equipment[key] = level+1;
+      addXp(Math.round(cost/15));
+      registerPurchaseForEnergyGate(myKingdom);
+      renderTopbar(); renderEquipment(); renderBarracks();
+      await saveKingdom(myKingdom);
+      if(key==='clinic') alert('🏥 درمانگاه ساخته شد! پرستار به لیست نیروهای پادگان اضافه شد.');
+      if(key==='missileFactory') alert('🏭 کارخانه موشک‌سازی ساخته شد! بخش «تولید موشک» رو پایین همین صفحه ببین.');
+      if(key==='launcher') alert('🚀 لانچر خریداری شد! حالا تو آماده‌سازی حمله می‌تونی موشک شلیک کنی.');
+    });
+  });
+  renderMissileFactory();
+}
+
+function renderMissileFactory(){
+  let box = document.getElementById("missile-factory-list");
+  if(!(myKingdom.equipment.missileFactory>=1)){
+    if(box) box.innerHTML = '';
+    return;
+  }
+  if(!box){
+    const section = document.createElement('div');
+    section.innerHTML = `<div class="section-title">🚀 تولید موشک</div><div id="missile-factory-list"></div>`;
+    document.getElementById("view-equipment").appendChild(section);
+    box = document.getElementById("missile-factory-list");
+  }
+  box.innerHTML = Object.keys(MISSILES).map(key=>{
+    const def = MISSILES[key];
+    const have = myKingdom.missiles[key]||0;
+    const canAfford = myKingdom.gold>=def.cost;
+    return `<div class="troop-row">
+      <div class="tinfo">
+        <span class="tic">${def.icon}</span>
+        <div><div class="tname">${def.name}</div><div class="tstat">قدرت ${persianDigits(def.power)} · هزینه 🪙${fmtNum(def.cost)}</div><div class="tdesc">${def.desc}</div></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="tcount">${persianDigits(have)}</span>
+        <button class="btn btn-sm ${canAfford?'btn-primary':''}" data-missile="${key}" ${canAfford?'':'disabled'}>+۱</button>
+      </div>
+    </div>`;
+  }).join("");
+  box.querySelectorAll("[data-missile]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const key = btn.dataset.missile;
+      const def = MISSILES[key];
+      if(myKingdom.gold<def.cost) return;
+      myKingdom.gold -= def.cost;
+      myKingdom.missiles[key] = (myKingdom.missiles[key]||0)+1;
+      addXp(Math.round(def.power/3));
+      renderTopbar(); renderMissileFactory();
+      await saveKingdom(myKingdom);
+    });
+  });
+}
+
+/* ============================================================
+   RENDER: ATTACK SEARCH (PvP)
+============================================================ */
+let searchDebounce=null;
+document.getElementById("input-target-search").addEventListener("input", e=>{
+  clearTimeout(searchDebounce);
+  const q = e.target.value;
+  searchDebounce = setTimeout(async ()=>{
+    const box = document.getElementById("attack-search-results");
+    if(!q.trim()){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`; return; }
+    const results = await searchKingdoms(q, true);
+    if(results.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">کسی پیدا نشد.</div>`; return; }
+    const friends = await loadFriends();
+    box.innerHTML = results.map(n=>`<div class="search-result-row">
+      <span>🏰 ${escapeHtml(n)}${friends.includes(n)?' <span style="color:var(--gold); font-size:11px;">(دوست)</span>':''}</span>
+      <button class="btn btn-sm btn-red" data-attack-target="${escapeHtml(n)}">⚔️ حمله</button>
+    </div>`).join("");
+    box.querySelectorAll("[data-attack-target]").forEach(btn=>{
+      btn.addEventListener("click", ()=> startPvpFlow(btn.dataset.attackTarget));
+    });
+  }, 300);
+});
+async function startPvpFlow(targetName){
+  const friends = await loadFriends();
+  if(friends.includes(targetName)){
+    showModal({
+      title: `حمله به ${targetName}`,
+      body: 'چون دوستته، می‌خوای دوستانه بازی کنی یا مبارزه‌ی واقعی؟ تو حالت دوستانه طلا/نیرو از دست نمی‌ری.',
+      actions: [
+        {label:'🤝 دوستانه', cls:'btn-green', onClick: ()=> openComposePvP(targetName, 'friendly')},
+        {label:'⚔️ مبارزه‌ی واقعی', cls:'btn-red', onClick: ()=> openComposePvP(targetName, 'battle')},
+      ]
+    });
+  } else {
+    openComposePvP(targetName, 'battle');
+  }
+}
+async function openComposePvP(targetName, matchType){
+  closeModal();
+  const err = document.getElementById("compose-err");
+  err.textContent = "در حال بارگذاری اطلاعات هدف…";
+  showView('compose');
+  const targetKingdom = await loadKingdomByName(targetName);
+  if(!targetKingdom){ err.textContent = "این قلمرو پیدا نشد. (نام را دقیق وارد کن)"; return; }
+  attackTarget = {name:targetName, kingdom:targetKingdom, isBot:false, matchType: matchType||'battle'};
+  err.textContent = "";
+  document.getElementById("compose-target-name").textContent = targetName;
+  const modeNote = document.getElementById("compose-mode-note");
+  modeNote.style.display='block';
+  modeNote.textContent = attackTarget.matchType==='friendly'
+    ? '🤝 حالت دوستانه: نتیجه فقط برای سرگرمیه، طلا/نیرو کم نمی‌شه.'
+    : '⚔️ مبارزه‌ی واقعی: نیروهای فعلی طرف خودکار دفاع می‌کنن. می‌تونی با دوست هم حمله کنی.';
+  composeQty = {}; Object.keys(TROOPS).forEach(k=>composeQty[k]=0);
+  composeMissileQty = {}; Object.keys(MISSILES).forEach(k=>composeMissileQty[k]=0);
+  renderCompose();
+}
+
+/* ============================================================
+   STORY MODE (bot)
+============================================================ */
+const STAGE_TITLES = [
+  {max:3, title:'قبیله‌های محلی'}, {max:6, title:'راهزنان مرزی'}, {max:10, title:'ارتش شورشی'},
+  {max:15, title:'امپراتوری شرق'}, {max:22, title:'سپاه سایه'}, {max:999, title:'افسانه‌ی نهایی'},
+];
+function stageTitle(stage){ return (STAGE_TITLES.find(s=>stage<=s.max)||STAGE_TITLES[STAGE_TITLES.length-1]).title; }
+function stageStory(stage){
+  if(stage<=3) return `یه قلمروی کوچیک این دور و اطراف هست که چند تا شبه‌نظامی ازش دفاع می‌کنن. دیوارشون هنوز خیلی محکم نیست — با چند تا نیروی ساده هم می‌شه ترتیبشو داد.`;
+  if(stage<=6) return `یه گروه راهزن مرزی این منطقه رو قرق کردن. کمی سازمان‌یافته‌تر شدن و یه دیوار دفاعی ابتدایی ساختن.`;
+  if(stage<=10) return `یه ارتش شورشی داره قدرت می‌گیره. نیروهاشون متنوع‌تر شده و دیوارشون دیگه یه بازی بچگونه نیست.`;
+  if(stage<=15) return `پات به قلمرو امپراتوری شرق باز شده. اینا ارتش منظم و ساختمون‌های قوی دارن — نقشه بکش قبل از حمله.`;
+  if(stage<=22) return `سپاه سایه از هیچ‌جا ظاهر شدن. دفاعشون سنگینه، نیرو و تجهیزات درست‌وحسابی می‌خواد.`;
+  return `اینجا افسانه‌ی نهایی شروع می‌شه — قدرتمندترین دشمنی که تا حالا دیدی.`;
+}
+function generateBotKingdom(stage){
+  const b = {};
+  // gentler ramp for the first 5 stages, steeper later on
+  const buildingLvl = stage<=5 ? Math.min(MAX_LEVEL, Math.ceil(stage*0.4)) : Math.min(MAX_LEVEL, 2+Math.floor((stage-5)*0.6));
+  Object.keys(BUILDINGS).forEach(k=> b[k]=Math.max(1,buildingLvl));
+  const budget = stage<=5 ? (15 + stage*stage*6) : (165 + (stage-5)*130);
+  const troops = {}; Object.keys(TROOPS).forEach(k=>troops[k]=0);
+  const keys = Object.keys(TROOPS).filter(k=>!TROOPS[k].requiresEquip);
+  const weight = Math.min(1, stage/12);
+  let remaining = budget;
+  let guard=0;
+  while(remaining>10 && guard<400){
+    guard++;
+    const idx = Math.min(keys.length-1, Math.floor(Math.random()*keys.length*(0.4+weight*0.6)));
+    const key = keys[idx];
+    const p = TROOPS[key].power;
+    if(p<=remaining){ troops[key]+=1; remaining-=p; } else { remaining-=10; }
+  }
+  return {
+    name:`ربات مهاجم — مرحله ${stage}`, gold: 150+stage*150, lastUpdate:Date.now(),
+    buildings:b,
+    equipment:{
+      armor:Math.min(10,Math.max(0,Math.floor((stage-5)/2))), scope:0, engine:0, drone:0, clinic:0, siege:0, extractor:0,
+      missileFactory:0,
+      airDefense: stage>=9 ? Math.min(10, 1+Math.floor((stage-9)/2)) : 0,
+      ironDome: stage>=14 ? Math.min(15, 1+Math.floor((stage-14)/2)) : 0,
+    },
+    troops, xp:0, wins:0, losses:0
+  };
+}
+function refreshBotView(){
+  const stage = (myKingdom.botStage||0)+1;
+  const bot = generateBotKingdom(stage);
+  attackTarget = {name:bot.name, kingdom:bot, isBot:true, matchType:'battle'};
+  document.getElementById("bot-stage-badge").textContent = "مرحله "+persianDigits(stage)+" — "+stageTitle(stage);
+  document.getElementById("bot-name-display").textContent = bot.name;
+  document.getElementById("bot-story-blurb").textContent = stageStory(stage);
+  const defense = 40+bot.buildings.wall*55+troopsPower(bot.troops)*0.4*defensePowerMul(bot);
+  document.getElementById("bot-power-est").textContent = fmtNum(defense);
+}
+document.getElementById("btn-bot-fight").addEventListener("click", ()=>{
+  document.getElementById("compose-target-name").textContent = attackTarget.name;
+  document.getElementById("compose-mode-note").style.display='none';
+  composeQty = {}; Object.keys(TROOPS).forEach(k=>composeQty[k]=0);
+  composeMissileQty = {}; Object.keys(MISSILES).forEach(k=>composeMissileQty[k]=0);
+  document.getElementById("compose-err").textContent = "";
+  showView('compose');
+  renderCompose();
+});
+
+/* ============================================================
+   COMPOSE ATTACK
+============================================================ */
+function renderCompose(){
+  const box = document.getElementById("compose-troop-list");
+  let html = `<button id="btn-select-all-troops" class="btn btn-sm btn-primary" style="width:100%;margin-bottom:10px;">☑️ انتخاب همه نیروها</button>`;
+  html += Object.keys(TROOPS).map(key=>{
+    const def = TROOPS[key];
+    const have = myKingdom.troops[key]||0;
+    if(have<=0 && def.requiresEquip && !(myKingdom.equipment[def.requiresEquip]>=1)) return '';
+    return `<div class="troop-row">
+      <div class="tinfo">
+        <span class="tic">${def.icon}</span>
+        <div><div class="tname">${def.name}</div><div class="tstat">داری: ${persianDigits(have)} · قدرت ${persianDigits(def.power)}</div></div>
+      </div>
+      <div class="qty-stepper">
+        <button data-step="${key}" data-dir="-1">−</button>
+        <input type="text" inputmode="numeric" id="qty-${key}" value="${composeQty[key]||0}" readonly>
+        <button data-step="${key}" data-dir="1">+</button>
+      </div>
+    </div>`;
+  }).join("");
+  // Missiles section — only if launcher owned
+  if((myKingdom.equipment.launcher||0)>=1){
+    html += `<div class="section-title" style="margin-top:14px;">🚀 موشک‌ها (نیاز به لانچر)</div>
+      <div class="section-note">هر نبرد حداقل ۳ تا ۴ موشک از هر نوع شلیک‌شده مصرف می‌شه.</div>`;
+    html += Object.keys(MISSILES).map(key=>{
+      const def = MISSILES[key];
+      const have = myKingdom.missiles[key]||0;
+      return `<div class="troop-row">
+        <div class="tinfo">
+          <span class="tic">${def.icon}</span>
+          <div><div class="tname">${def.name}</div><div class="tstat">داری: ${persianDigits(have)} · قدرت ${persianDigits(def.power)}</div></div>
+        </div>
+        <div class="qty-stepper">
+          <button data-mstep="${key}" data-dir="-1">−</button>
+          <input type="text" inputmode="numeric" id="mqty-${key}" value="${composeMissileQty[key]||0}" readonly>
+          <button data-mstep="${key}" data-dir="1">+</button>
+        </div>
+      </div>`;
+    }).join("");
+  } else {
+    html += `<div class="section-note" style="margin-top:10px; color:var(--ink-dim);">🚀 برای شلیک موشک، لانچر رو از بخش تجهیزات بخر (۱۰۰۰ سکه).</div>`;
+  }
+  html += `<button id="btn-compose-with-friend" class="btn btn-sm btn-purple" style="width:100%;margin-top:12px;">👥 حمله با دوست (نیروها جمع می‌شه)</button>`;
+  box.innerHTML = html;
+  box.querySelector("#btn-select-all-troops").addEventListener("click",()=>{ Object.keys(TROOPS).forEach(k=>composeQty[k]=myKingdom.troops[k]||0); renderCompose(); });
+  box.querySelectorAll("[data-step]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const key = btn.dataset.step, dir = parseInt(btn.dataset.dir,10);
+      const have = myKingdom.troops[key]||0;
+      let v = (composeQty[key]||0) + dir*(have>50?5:1);
+      v = Math.max(0, Math.min(have, v));
+      composeQty[key] = v;
+      document.getElementById(`qty-${key}`).value = v;
+    });
+  });
+  box.querySelectorAll("[data-mstep]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const key = btn.dataset.mstep, dir = parseInt(btn.dataset.dir,10);
+      const have = myKingdom.missiles[key]||0;
+      let v = (composeMissileQty[key]||0) + dir;
+      v = Math.max(0, Math.min(have, v));
+      composeMissileQty[key] = v;
+      const el = document.getElementById(`mqty-${key}`);
+      if(el) el.value = v;
+    });
+  });
+  const friendBtn = box.querySelector("#btn-compose-with-friend");
+  if(friendBtn) friendBtn.addEventListener("click", ()=> openCoopFriendPicker());
+}
+document.getElementById("btn-compose-back").addEventListener("click", ()=> showView(attackTarget && attackTarget.isBot ? 'bot' : (attackTarget && attackTarget.isBank ? 'bank' : 'attack')));
+document.getElementById("btn-launch-attack").addEventListener("click", async ()=>{
+  const totalSent = Object.values(composeQty).reduce((a,b)=>a+b,0);
+  const missileSent = Object.values(composeMissileQty||{}).reduce((a,b)=>a+b,0);
+  const err = document.getElementById("compose-err");
+  if(totalSent<=0 && missileSent<=0){ err.textContent = "حداقل یه نیرو یا موشک انتخاب کن."; return; }
+  err.textContent = "";
+  const sent = {...composeQty};
+  for(const m in (composeMissileQty||{})){ if(composeMissileQty[m]>0) sent[m]=composeMissileQty[m]; }
+  let defenderSnapshot = attackTarget.kingdom;
+  if(!attackTarget.isBot && !attackTarget.isBank){
+    const fresh = await sGetJSON(`kingdom:${attackTarget.name}`, null);
+    if(!fresh){ err.textContent = "این قلمرو دیگه پیدا نشد."; return; }
+    defenderSnapshot = fresh;
+  }
+  await resolveBattleNow(myKingdom, defenderSnapshot, sent, attackTarget.matchType, attackTarget.isBot || attackTarget.isBank, {isBank: !!attackTarget.isBank, bankReward: attackTarget.bankReward||0});
+});
+
+/* ============================================================
+   AIR DEFENSE / IRON DOME — neutralizes attacking flyers
+============================================================ */
+const IRON_DOME_TABLE = {
+  helicopter: {unlock:6,  baseCap:15},
+  fighter:    {unlock:9,  baseCap:23},
+  griffin:    {unlock:12, baseCap:20},
+  dragon:     {unlock:15, baseCap:15},
+  phoenix:    {unlock:15, baseCap:15},
+};
+function applyAirDefense(sentTroops, defenderKingdom){
+  const adjusted = {...sentTroops};
+  const neutralized = {};
+  const airLvl = (defenderKingdom.equipment && defenderKingdom.equipment.airDefense) || 0;
+  const domeLvl = (defenderKingdom.equipment && defenderKingdom.equipment.ironDome) || 0;
+  for(const f of FLYERS){
+    let count = adjusted[f]||0;
+    if(count<=0) continue;
+    let remaining = count;
+    let killed = 0;
+    // Iron Dome: hard, full neutralization up to a cap once unlocked
+    const domeInfo = IRON_DOME_TABLE[f];
+    if(domeInfo && domeLvl>=domeInfo.unlock){
+      const cap = domeInfo.baseCap + (domeLvl-domeInfo.unlock)*2;
+      const domeKilled = Math.min(remaining, cap);
+      killed += domeKilled;
+      remaining -= domeKilled;
+    }
+    // basic Air Defense: chance-based (computed deterministically as an expected value),
+    // harder to track the more flyers are sent at once
+    if(airLvl>0 && remaining>0){
+      const baseChance = Math.min(0.95, 0.20 + (airLvl-1)*0.10);
+      const trackingPenalty = 1/(1+0.08*(count-1));
+      const effChance = baseChance*trackingPenalty;
+      const adKilled = Math.round(remaining*effChance);
+      killed += adKilled;
+      remaining -= adKilled;
+    }
+    adjusted[f] = remaining;
+    if(killed>0) neutralized[f]=killed;
+  }
+  return {adjusted, neutralized};
+}
+
+/* ============================================================
+   BATTLE RESOLUTION (deterministic, ~10s narrated)
+============================================================ */
+async function resolveBattleNow(attackerKingdomSnapshot, defenderKingdomSnapshot, sentTroops, matchType, isBot, opts){
+  opts = opts || {};
+  const {adjusted: effectiveSent, neutralized: airNeutralized} = applyAirDefense(sentTroops, defenderKingdomSnapshot);
+  let missileP = 0;
+  for(const m in MISSILES) missileP += (sentTroops[m]||0) * MISSILES[m].power;
+  const attackerPower = troopsPower(effectiveSent) * attackPowerMul(attackerKingdomSnapshot) + missileP;
+
+  // wall effectiveness: engineers sabotage it, helicopters/jets mostly fly over it (whatever got through air defense)
+  let wallMul = 1 - Math.min(0.35, (sentTroops.engineer||0)*0.015);
+  const flyerCount = FLYERS.reduce((sum,k)=> sum+(effectiveSent[k]||0), 0);
+  wallMul *= 1 - Math.min(0.6, flyerCount*0.05);
+  const defenderDefense = (40 + defenderKingdomSnapshot.buildings.wall*55*wallMul + troopsPower(defenderKingdomSnapshot.troops)*0.4*defensePowerMul(defenderKingdomSnapshot));
+  const battleRatio = attackerPower / Math.max(1, defenderDefense);
+
+  // early/weak walls (up to 2 + siege-tech level) don't block anything — troops just walk through.
+  // above that cap, you need dedicated siege units to make even a partial dent.
+  const siegeCap = 2 + (attackerKingdomSnapshot.equipment && attackerKingdomSnapshot.equipment.siege || 0);
+  const wallWeakEnough = defenderKingdomSnapshot.buildings.wall <= siegeCap;
+  const hasBreacherUnit = ((sentTroops.artillery||0)>0 || (sentTroops.tank||0)>0 || (sentTroops.engineer||0)>0);
+  const canRazeWall = wallWeakEnough; // any troops at all pass through a weak wall
+
+  // overall kingdom power (buildings+all troops, not just what's sent) drives 70% of the outcome;
+  // the specific battle matchup (sent troops vs defense) drives the other 30%
+  const kpRatio = kingdomPower(attackerKingdomSnapshot) / Math.max(1, kingdomPower(defenderKingdomSnapshot));
+  const ratio = 0.7*kpRatio + 0.3*battleRatio;
+
+  let win, lootPct, lossPct, wallDmgPct, emptied=false;
+  if(ratio>=1.5){ win=true; lossPct=0.10; wallDmgPct=canRazeWall?45:(hasBreacherUnit?15:0); emptied=canRazeWall; lootPct=emptied?1.0:0.35; }
+  else if(ratio>=1.15){ win=true; lootPct=0.35; lossPct=0.20; wallDmgPct=canRazeWall?25:(hasBreacherUnit?10:0); }
+  else if(ratio>=1.0){ win=true; lootPct=0.15; lossPct=0.35; wallDmgPct=canRazeWall?12:(hasBreacherUnit?5:0); }
+  else if(ratio>=0.7){ win=false; lootPct=0.04; lossPct=0.45; wallDmgPct=canRazeWall?5:0; }
+  else { win=false; lootPct=0.01; lossPct=0.65; wallDmgPct=0; }
+
+  const nurseSent = sentTroops.nurse||0;
+  if(nurseSent>0) lossPct = Math.max(lossPct*0.15, lossPct - nurseSent*0.012);
+
+  const friendly = matchType==='friendly';
+  const loot = friendly ? 0 : Math.round(defenderKingdomSnapshot.gold*lootPct);
+  let totalLost = 0;
+  const lossDetail = {};
+  for(const key in sentTroops){
+    const sent = sentTroops[key]||0;
+    if(sent<=0) continue;
+    const lost = friendly ? 0 : Math.round(sent*lossPct);
+    totalLost += lost;
+    lossDetail[key]=lost;
+  }
+  // flyers shot down by air defense / iron dome are gone regardless of the overall outcome
+  let airDefenseTotalKilled = 0;
+  for(const key in airNeutralized){
+    const already = lossDetail[key]||0;
+    const extra = Math.max(0, airNeutralized[key]-already); // don't double count what regular losses already covered
+    lossDetail[key] = already + extra;
+    totalLost += extra;
+    airDefenseTotalKilled += airNeutralized[key];
+  }
+  // missiles are single-use — at least 3–4 of any type sent are always spent/lost, win or lose
+  if(!friendly){
+    for(const missileKey of ['hypersonic','intercontinental','precision']){
+      const sent = sentTroops[missileKey]||0;
+      if(sent<=0) continue;
+      const minLoss = Math.min(sent, 3 + Math.floor(Math.random()*2)); // 3 or 4
+      const already = lossDetail[missileKey]||0;
+      if(minLoss>already){
+        totalLost += (minLoss-already);
+        lossDetail[missileKey] = minLoss;
+      }
+    }
+  }
+
+  // defender's own home troops take some losses too, scaled with how badly the defense went
+  const defenderLossPct = friendly ? 0 : (win ? (ratio>=1.5?0.30:ratio>=1.15?0.20:0.12) : (ratio>=0.7?0.05:0.02));
+  let defenderTotalLost = 0;
+  const defenderLossDetail = {};
+  if(!friendly){
+    for(const key in defenderKingdomSnapshot.troops){
+      const have = defenderKingdomSnapshot.troops[key]||0;
+      if(have<=0) continue;
+      const lost = Math.round(have*defenderLossPct);
+      defenderTotalLost += lost;
+      defenderLossDetail[key]=lost;
+      defenderKingdomSnapshot.troops[key] = Math.max(0, have-lost);
+    }
+  }
+
+  // attacker's own kingdom always updates locally
+  for(const key in lossDetail){
+    if(MISSILES[key]){
+      myKingdom.missiles[key] = Math.max(0,(myKingdom.missiles[key]||0)-lossDetail[key]);
+    } else {
+      myKingdom.troops[key] = Math.max(0,(myKingdom.troops[key]||0)-lossDetail[key]);
+    }
+  }
+  // bank mission: opts.bankReward = سهم هر نفر از جایزه
+  let finalLoot = loot;
+  if(opts.isBank){
+    if(win){
+      finalLoot = (opts.bankReward!=null ? Number(opts.bankReward) : loot);
+      if(!opts.skipBankStageInc) myKingdom.bankStage = (myKingdom.bankStage||0)+1;
+    } else {
+      finalLoot = 0;
+      const jailMs = Math.max(20000, 60000 - ((myKingdom.equipment.timeLock||0)*15000));
+      myKingdom.jailUntil = Date.now() + jailMs;
+      setTimeout(()=> enterJail(jailMs), 500);
+    }
+  }
+  if(!friendly){
+    myKingdom.gold = (Number(myKingdom.gold)||0) + finalLoot;
+    myKingdom.totalGoldEarned = (Number(myKingdom.totalGoldEarned)||0) + finalLoot;
+    if(win) myKingdom.wins+=1; else myKingdom.losses+=1;
+  }
+  try{ if(win) vibrateDevice([30,20,30,20,60]); else vibrateDevice([100,50,100]); }catch(e){}
+  if(isBot && !opts.isBank && win){
+    myKingdom.botStage = (myKingdom.botStage||0)+1;
+    if(myKingdom.botStage===5){
+      myKingdom.revengeAttackAt = Date.now() + 5*60*1000;
+      setTimeout(()=>{ alert('👹 ما انتقام خواهیم گرفت! (تا ۵ دقیقه‌ی دیگه به قلمروت حمله می‌کنیم — اگه نیروهای دفاعیت قوی باشن جلوشون رو می‌گیری)'); }, 800);
+    }
+  }
+  const xpGain = friendly ? 0 : addXp(win ? 90 : (battleRatio<0.7 ? -45 : -25));
+  await saveKingdom(myKingdom);
+
+  // ---- narrative lines (built before we push to the defender, so they can replay the same log) ----
+  const hasWallBreaker = WALL_BREAKERS.some(k=>sentTroops[k]>0);
+  const hasRanged = RANGED.some(k=>sentTroops[k]>0);
+  const hasGround = ['militia','soldier','cavalry','sheriff'].some(k=>sentTroops[k]>0);
+  const lines = ["🪖 نیروها وارد میدان نبرد شدن..."];
+  if(hasGround) lines.push("🔫 سربازها شلیک می‌کنن و پیش می‌رن...");
+  if(hasRanged) lines.push("🏹 نیروهای دوربرد از فاصله شلیک می‌کنن...");
+  if(sentTroops.helicopter>0) lines.push("🚁 بالگردها از روی دیوار دشمن رد می‌شن...");
+  if(airDefenseTotalKilled>0) lines.push(`📡 پدافند دشمن ${persianDigits(airDefenseTotalKilled)} تا از نیروهای هوایی‌ت رو زد!`);
+  if((sentTroops.hypersonic||0)+(sentTroops.intercontinental||0)+(sentTroops.precision||0) > 0) lines.push("🚀 موشک‌ها شلیک شدن و مصرف شدن...");
+  if(sentTroops.engineer>0) lines.push("👷 مهندسین دارن رخنه تو دیوار دشمن پیدا می‌کنن...");
+  if(canRazeWall && wallDmgPct>=25) lines.push("🧱 دیوار دفاعی دشمن کاملاً نابود شد!");
+  else if(!wallWeakEnough && hasBreacherUnit) lines.push("🧱 نیروهات به این دیوار قوی آسیب زدن ولی نتونستن کاملاً نابودش کنن (نیاز به فناوری محاصره‌ی بیشتر داری)...");
+  else lines.push(wallDmgPct>=10 ? "🧱 دیوار دفاعی دشمن ترک خورد..." : "🧱 دیوار دفاعی دشمن مقاومت کرد.");
+  if(!friendly){
+    if(opts.isBank) lines.push(win ? `🪙 بانک غارت شد! جایزه: ${fmtNum(finalLoot)} سکه` : "🪙 حمله به بانک شکست خورد.");
+    else lines.push(emptied ? "🪙 خزانه‌ی دشمن کاملاً خالی شد!" : (finalLoot>0 ? "🪙 خزانه‌ی دشمن در حال خالی شدنه..." : "🪙 خزانه‌ی دشمن تقریباً خالی بود."));
+  } else {
+    lines.push("🤝 این یه نبرد دوستانه‌ست، غنیمتی رد و بدل نمی‌شه.");
+  }
+  if(nurseSent>0) lines.push("🚑 کادر درمان اعزام شد، بخشی از نیروها نجات پیدا کردن.");
+  if(defenderTotalLost>0) lines.push(`💀 ${persianDigits(defenderTotalLost)} تا از نیروهای دفاعی دشمن کشته شدن.`);
+  if(win){ lines.push("🛡️ نیروهای دفاعی دشمن شکست خوردن!"); lines.push("🏆 پیروزی به دست اومد!"); }
+  else { lines.push("🛡️ نیروهای دفاعی دشمن مقاومت کردن..."); lines.push("☠️ نیروها مجبور به عقب‌نشینی شدن."); }
+
+  // real PvP (not bot, not friendly): defender's current stored troops/buildings auto-defend,
+  // no accept step needed — we write the outcome straight to their kingdom + inbox, and ping them live
+  if(!isBot){
+    defenderKingdomSnapshot.gold = friendly ? defenderKingdomSnapshot.gold : Math.max(0, (defenderKingdomSnapshot.gold||0) - loot);
+    let inbox = defenderKingdomSnapshot.inbox||[];
+    inbox.unshift({id:uid(), attacker:myName, defenderWon: !win, lootLost:loot, wallDamagePct:wallDmgPct, defenderTroopsLost:defenderTotalLost, friendly, t:Date.now(), lines});
+    defenderKingdomSnapshot.inbox = inbox.slice(0,20);
+    await saveKingdom(defenderKingdomSnapshot);
+    await pushAttackAlert(defenderKingdomSnapshot.name, myName, lines);
+  }
+
+  const resultForMe = { win: win, loot: friendly?0:finalLoot, totalLost, wallDmgPct, xpGain };
+  document.getElementById("res-loot").textContent = "🪙 "+fmtNum(resultForMe.loot);
+  document.getElementById("res-lost").textContent = persianDigits(resultForMe.totalLost);
+  document.getElementById("res-walldmg").textContent = persianDigits(wallDmgPct)+"٪";
+  document.getElementById("res-xp").textContent = "✨ "+(xpGain>=0?"+":"")+persianDigits(xpGain);
+  document.getElementById("battle-banner-box").innerHTML = resultForMe.win
+    ? `<div class="battle-banner win"><div>⚔️ نبرد به پایان رسید</div><div class="bigline">🟢 پیروزی!</div></div>`
+    : `<div class="battle-banner lose"><div>⚔️ نبرد به پایان رسید</div><div class="bigline">🔴 شکست!</div></div>`;
+
+  await playNarration(lines);
+  showView('battle-result');
+  renderTopbar();
+}
+
+async function playNarration(lines){
+  showView('battling');
+  const log = document.getElementById("battling-log");
+  log.innerHTML = "";
+  const totalBudget = 10000;
+  const perLine = Math.max(500, Math.floor(totalBudget/lines.length));
+  for(const line of lines){
+    const div = document.createElement('div');
+    div.className = 'log-line';
+    const cursor = document.createElement('span');
+    cursor.className = 'log-cursor';
+    log.appendChild(div); div.appendChild(document.createTextNode('')); div.appendChild(cursor);
+    const charBudget = Math.max(15, perLine-150);
+    const perChar = Math.max(6, Math.floor(charBudget/Math.max(1,line.length)));
+    let shown = "";
+    for(const ch of line){
+      shown += ch;
+      div.firstChild.nodeValue = shown;
+      log.scrollTop = log.scrollHeight;
+      await sleep(perChar);
+    }
+    cursor.remove();
+    await sleep(120);
+  }
+  await sleep(300);
+}
+document.getElementById("btn-battle-done").addEventListener("click", ()=> showView('kingdom'));
+
+/* ============================================================
+   RENDER: INBOX
+============================================================ */
+function renderInboxHistory(){
+  const box = document.getElementById("inbox-list");
+  const list = myKingdom.inbox || [];
+  if(list.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">هنوز کسی به قلمروت حمله نکرده.</div>`; return; }
+  box.innerHTML = list.map((e,idx)=>{
+    const d = new Date(e.t);
+    const dateStr = d.toLocaleDateString('fa-IR') + ' ' + d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+    const resultText = e.friendly ? 'نبرد دوستانه 🤝' : (e.defenderWon?'دفاع موفق! 🟢':'شکست خوردی! 🔴');
+    const resultCls = e.friendly ? '' : (e.defenderWon?'res-win':'res-lose');
+    return `<div class="inbox-row">
+      <div><b>${escapeHtml(e.attacker)}</b> بهت حمله کرد — <span class="${resultCls}">${resultText}</span></div>
+      <div class="meta">🪙 ${fmtNum(e.lootLost)} غنیمت رفت · 🪖 ${persianDigits(e.defenderTroopsLost||0)} نیروی دفاعی از دست رفت · 💥 ${persianDigits(e.wallDamagePct)}٪ تخریب دیوار · ${dateStr}</div>
+      <div class="actions">
+        ${e.lines ? `<button class="btn btn-sm btn-ghost" data-view-battle="${idx}">👁 مشاهده‌ی نبرد</button>` : ''}
+        <button class="btn btn-sm btn-ghost" data-delete-report="${idx}" style="border-color:var(--red); color:var(--red);">🗑️ حذف</button>
+      </div>
+    </div>`;
+  }).join("");
+  
+  box.querySelectorAll("[data-view-battle]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const idx = parseInt(btn.dataset.viewBattle,10);
+      const entry = (myKingdom.inbox||[])[idx];
+      if(entry && entry.lines) await playNarration(entry.lines);
+      showView('inbox');
+    });
+  });
+  box.querySelectorAll("[data-delete-report]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const idx = parseInt(btn.dataset.deleteReport,10);
+      myKingdom.inbox.splice(idx,1);
+      await saveKingdom(myKingdom);
+      renderInboxHistory();
+    });
+  });
+}
+async function refreshInboxView(){
+  // re-fetch our own kingdom in case someone attacked us while we were away
+  const fresh = await sGetJSON(`kingdom:${myName}`, null);
+  if(fresh) myKingdom.inbox = fresh.inbox || [];
+  myKingdom.lastSeenInboxCount = myKingdom.inbox.length;
+  document.getElementById("nav-badge-inbox").style.display = 'none';
+  await saveKingdom(myKingdom);
+  renderInboxHistory();
+}
+async function checkInboxBadge(){
+  if(!myKingdom) return;
+  const fresh = await sGetJSON(`kingdom:${myName}`, null);
+  if(!fresh) return;
+  const freshCount = (fresh.inbox||[]).length;
+  const seen = myKingdom.lastSeenInboxCount||0;
+  document.getElementById("nav-badge-inbox").style.display = freshCount>seen ? 'block' : 'none';
+}
+
+/* ============================================================
+   RENDER: FRIENDS
+============================================================ */
+let friendSearchDebounce=null;
+document.getElementById("input-friend-search").addEventListener("input", e=>{
+  clearTimeout(friendSearchDebounce);
+  const q = e.target.value;
+  friendSearchDebounce = setTimeout(async ()=>{
+    const box = document.getElementById("friend-search-results");
+    if(!q.trim()){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`; return; }
+    const results = await searchKingdoms(q, true);
+    const friends = await loadFriends();
+    if(results.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">کسی پیدا نشد.</div>`; return; }
+    box.innerHTML = results.map(n=>{
+      const already = friends.includes(n);
+      return `<div class="search-result-row">
+        <span>🏰 ${escapeHtml(n)}</span>
+        ${already ? '<span style="color:var(--gold); font-size:11px;">قبلاً دوستی ✅</span>' : `<button class="btn btn-sm btn-purple" data-add-friend="${escapeHtml(n)}">➕ افزودن</button>`}
+      </div>`;
+    }).join("");
+    box.querySelectorAll("[data-add-friend]").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        btn.disabled = true;
+        const ok = await sendFriendRequest(btn.dataset.addFriend);
+        if(ok){ btn.textContent = "✔ فرستاده شد"; }
+        else { btn.textContent = "➕ افزودن"; btn.disabled = false; }
+      });
+    });
+  }, 300);
+});
+async function renderFriendRequests(){
+  const box = document.getElementById("friend-requests-list");
+  const reqs = await loadFriendRequests();
+  document.getElementById("nav-badge-friends").style.display = reqs.length>0 ? 'block':'none';
+  if(reqs.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">درخواست دوستی نداری.</div>`; return; }
+  box.innerHTML = reqs.map(r=>`<div class="search-result-row">
+    <span>👤 ${escapeHtml(r.from)}</span>
+    <div style="display:flex; gap:6px;">
+      <button class="btn btn-sm btn-green" data-friend-accept="${escapeHtml(r.from)}">✅</button>
+      <button class="btn btn-sm btn-ghost" data-friend-decline="${escapeHtml(r.from)}">❌</button>
+    </div>
+  </div>`).join("");
+  box.querySelectorAll("[data-friend-accept]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{ await acceptFriendRequest(btn.dataset.friendAccept); renderFriendsView(); });
+  });
+  box.querySelectorAll("[data-friend-decline]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{ await declineFriendRequest(btn.dataset.friendDecline); renderFriendsView(); });
+  });
+}
+async function renderFriendsList(){
+  const box = document.getElementById("friends-list");
+  const friends = await loadFriends();
+  if(friends.length===0){ box.innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">هنوز دوستی اضافه نکردی.</div>`; return; }
+  const rows = await Promise.all(friends.map(async name=>{
+    const online = await isOnline(name);
+    return `<div class="search-result-row">
+      <span class="friend-name-click" data-view-friend="${escapeHtml(name)}" style="cursor:pointer;"><span class="presence-dot ${online?'on':'off'}"></span>${escapeHtml(name)} <span style="font-size:10px; color:var(--ink-dim);">${online?'آنلاین':'آفلاین'}</span></span>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-sm" style="border-color:var(--blue); color:var(--blue);" data-friend-gift="${escapeHtml(name)}">🎁</button>
+        <button class="btn btn-sm btn-red" data-friend-attack="${escapeHtml(name)}">⚔️</button>
+      </div>
+    </div>`;
+  }));
+  box.innerHTML = rows.join("");
+  box.querySelectorAll("[data-friend-attack]").forEach(btn=>{
+    btn.addEventListener("click", ()=> startPvpFlow(btn.dataset.friendAttack));
+  });
+  box.querySelectorAll("[data-view-friend]").forEach(el=>{
+    el.addEventListener("click", ()=> showFriendProfile(el.dataset.viewFriend));
+  });
+  box.querySelectorAll("[data-friend-gift]").forEach(btn=>{
+    btn.addEventListener("click", ()=> openGiftModal(btn.dataset.friendGift));
+  });
+}
+function openGiftModal(friendName){
+  const equipOpts = Object.keys(EQUIPMENT).filter(k=>(myKingdom.equipment[k]||0)>0)
+    .map(k=>`${EQUIPMENT[k].icon} ${EQUIPMENT[k].name} (سطح ${persianDigits(myKingdom.equipment[k])}) · کلید: ${k}`).join('\n') || 'هیچ تجهیزی نداری.';
+  showModal({
+    title: `🎁 هدیه برای ${friendName}`,
+    body: `🪙 طلا داری: ${fmtNum(myKingdom.gold)}\n\nتجهیزات قابل هدیه:\n${equipOpts}\n\nبرای طلا: عدد سکه رو وارد کن و «هدیه‌ی طلا» بزن.\nبرای تجهیزات: کلید انگلیسی (مثل armor) رو وارد کن و «هدیه‌ی تجهیزات» بزن.`,
+    input: true,
+    actions:[
+      {label:'🪙 هدیه‌ی طلا', cls:'btn-primary', onClick: async (val)=>{
+        try{
+          const amount = parseInt(String(val||'').replace(/[^\d]/g,''),10);
+          if(!amount || amount<=0){ alert('عدد معتبر وارد کن.'); return; }
+          // refresh my gold from server first
+          const freshMe = await sGetJSON(`kingdom:${myName}`, null);
+          if(freshMe){ myKingdom = hydrateKingdom(freshMe); }
+          if(amount > (myKingdom.gold||0)){ alert('سکه کافی نداری. موجودی: '+fmtNum(myKingdom.gold||0)); return; }
+          let friendK = await loadKingdomByName(friendName);
+          if(!friendK){ alert('این حساب پیدا نشد.'); return; }
+          const actual = Math.min(amount, Math.floor(myKingdom.gold||0));
+          if(actual<=0){ alert('مبلغ نامعتبر.'); return; }
+          // allow gift even if over treasury cap (gift overflow OK)
+          friendK.gold = (Number(friendK.gold)||0) + actual;
+          friendK.totalGoldEarned = (Number(friendK.totalGoldEarned)||0) + actual;
+          friendK.lastUpdate = Date.now();
+          const okFriend = await sSet(`kingdom:${friendName}`, JSON.stringify(friendK));
+          if(!okFriend){ alert('ذخیره برای دوست ناموفق بود. اتصال/VPN رو چک کن.'); return; }
+          myKingdom.gold = Math.max(0, (Number(myKingdom.gold)||0) - actual);
+          myKingdom.lastUpdate = Date.now();
+          const okMe = await sSet(`kingdom:${myName}`, JSON.stringify(myKingdom));
+          if(!okMe){ alert('کم کردن از حساب تو ناموفق بود؛ دوباره تلاش کن.'); return; }
+          renderTopbar();
+          closeModal();
+          alert(`🎁 ${fmtNum(actual)} سکه برای ${friendName} فرستاده شد.`);
+        }catch(err){ alert('خطا در انتقال: '+(err&&err.message||err)); }
+      }},
+      {label:'🎒 هدیه‌ی تجهیزات (+۱ سطح)', cls:'btn-purple', onClick: async (val)=>{
+        const key = (val||'').trim();
+        if(!EQUIPMENT[key]){ alert('کلید تجهیزات معتبر نیست (مثل armor, launcher, clinic, ...).'); return; }
+        if((myKingdom.equipment[key]||0)<1){ alert('این تجهیز رو نداری.'); return; }
+        const def = EQUIPMENT[key];
+        let friendK = await sGetJSON(`kingdom:${friendName}`, null);
+        if(!friendK){ alert('این حساب دیگه پیدا نشد.'); return; }
+        friendK = hydrateKingdom(friendK);
+        if(!friendK.equipment) friendK.equipment={};
+        const curLvl = friendK.equipment[key]||0;
+        if(curLvl >= def.max){ alert('دوستت حداکثر سطح این تجهیز رو داره.'); return; }
+        friendK.equipment[key] = curLvl + 1;
+        const ok = await sSetJSON(`kingdom:${friendName}`, friendK);
+        if(!ok){ alert('انتقال انجام نشد؛ اتصال رو چک کن.'); return; }
+        myKingdom.equipment[key] = Math.max(0, (myKingdom.equipment[key]||0)-1);
+        await saveKingdom(myKingdom);
+        renderTopbar(); renderEquipment();
+        closeModal();
+        alert(`🎁 یک سطح ${def.name} برای ${friendName} فرستاده شد.`);
+      }},
+      {label:'بستن', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+}
+async function showFriendProfile(name){
+  const k = await sGetJSON(`kingdom:${name}`, null);
+  if(!k){ alert('این حساب دیگه پیدا نشد.'); return; }
+  const {level} = levelFromXp(k.xp||0);
+  const online = await isOnline(name);
+  showModal({
+    title: `👤 ${name}`,
+    body: `${online?'🟢 آنلاین':'⚪ آفلاین'}\nسطح: ${persianDigits(level)}\nقدرت قلمرو: ${fmtNum(kingdomPower(k))}\nپیروزی: ${persianDigits(k.wins||0)} · شکست: ${persianDigits(k.losses||0)}\nمرحله‌ی داستانی: ${persianDigits(k.botStage||0)}`,
+    actions:[
+      {label:'❌ حذف دوست', cls:'btn-red', onClick: async ()=>{
+        let mine = await sGetJSON(`friends:${myName}`, []);
+        mine = mine.filter(n=>n!==name);
+        await sSetJSON(`friends:${myName}`, mine);
+        let theirs = await sGetJSON(`friends:${name}`, []);
+        theirs = theirs.filter(n=>n!==myName);
+        await sSetJSON(`friends:${name}`, theirs);
+        closeModal();
+        renderFriendsList();
+      }},
+      {label:'بستن', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+}
+async function renderFriendsView(){
+  document.getElementById("input-friend-search").value="";
+  document.getElementById("friend-search-results").innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`;
+  await renderFriendRequests();
+  await renderFriendsList();
+}
+
+/* ============================================================
+   RENDER: PROFILE / ACCOUNT
+============================================================ */
+function renderProfile(){
+  const {level, into, need} = levelFromXp(myKingdom.xp);
+  document.getElementById("profile-name-display").textContent = myKingdom.name;
+  document.getElementById("profile-level-display").textContent = "سطح "+persianDigits(level);
+  document.getElementById("profile-xpbar").style.width = clampPct(into/need*100)+"%";
+  document.getElementById("profile-xp-text").textContent = fmtNum(into)+"/"+fmtNum(need);
+  document.getElementById("pstat-power").textContent = fmtNum(kingdomPower(myKingdom));
+  document.getElementById("pstat-gold-total").textContent = fmtNum(myKingdom.totalGoldEarned);
+  document.getElementById("pstat-wins").textContent = persianDigits(myKingdom.wins||0);
+  document.getElementById("pstat-losses").textContent = persianDigits(myKingdom.losses||0);
+  document.getElementById("pstat-bot").textContent = persianDigits(myKingdom.botStage||0);
+  document.getElementById("pstat-troops").textContent = persianDigits(totalTroopCount(myKingdom.troops));
+}
+document.getElementById("btn-change-name").addEventListener("click", ()=>{
+  if(myKingdom.gold < 300){ alert('تغییر نام ۳۰۰ سکه هزینه دارد.'); return; }
+  showModal({
+    title:'تغییر نام (۳۰۰ سکه)',
+    body:'اسم جدیدت رو وارد کن. هزینه: ۳۰۰ سکه.',
+    input:true,
+    actions:[
+      {label:'ثبت', cls:'btn-primary', onClick: async (val)=>{
+        const newName = (val||'').trim();
+        if(!newName || newName===myName) { closeModal(); return; }
+        const exists = await sGetJSON(`kingdom:${newName}`, null);
+        if(exists){ alert('این اسم قبلاً گرفته شده.'); return; }
+        if(myKingdom.gold < 300){ alert('سکه کافی نیست.'); return; }
+        myKingdom.gold -= 300;
+        const oldName = myName;
+        myKingdom.name = newName;
+        await sSetJSON(`kingdom:${newName}`, myKingdom);
+        await sDel(`kingdom:${oldName}`);
+        await unregister(oldName);
+        await ensureRegistered(newName);
+        myName = newName;
+        closeModal();
+        renderTopbar(); renderProfile();
+      }},
+      {label:'انصراف', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+});
+document.getElementById("btn-delete-account").addEventListener("click", ()=>{
+  const needsPin = !!myKingdom.pin;
+  showModal({
+    title:'🗑️ حذف اکانت',
+    body: needsPin
+      ? 'مطمئنی؟ این کار برگشت‌ناپذیره. برای تایید، رمزت رو دوباره وارد کن.'
+      : 'مطمئنی؟ همه‌ی قلمرو، نیروها و پیشرفتت برای همیشه پاک می‌شه. این کار برگشت‌ناپذیره.',
+    input: needsPin,
+    actions:[
+      {label:'بله، پاک کن', cls:'btn-red', onClick: async (val)=>{
+        if(needsPin && (val||'').trim() !== myKingdom.pin){ alert('رمز اشتباهه.'); return; }
+        await fullyDeleteAccount(myName);
+        closeModal();
+        location.reload();
+      }},
+      {label:'انصراف', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+});
+async function fullyDeleteAccount(name){
+  // remove me from every friend's own friend list
+  const myFriends = await sGetJSON(`friends:${name}`, []);
+  for(const f of myFriends){
+    let theirList = await sGetJSON(`friends:${f}`, []);
+    theirList = theirList.filter(n=>n!==name);
+    await sSetJSON(`friends:${f}`, theirList);
+  }
+  if(myKingdom && myKingdom.pin){
+    let usedPins = await sGetJSON('used-pins', []);
+    usedPins = usedPins.filter(p=>p!==myKingdom.pin);
+    await sSetJSON('used-pins', usedPins);
+  }
+  await sDel(`friends:${name}`);
+  await sDel(`friend-requests:${name}`);
+  await sDel(`presence:${name}`);
+  await sDel(`alerts:${name}`);
+  await sDel(`sent-requests:${name}`);
+  await sDel(`attack-requests:${name}`);
+  await sDel(`kingdom:${name}`);
+  await unregister(name); // removes from the searchable commander/kingdom list
+}
+
+/* ============================================================
+   CO-OP LOBBY & BANK MISSION
+============================================================ */
+const BANK_REWARDS = [2000,4000,8000,16000,32000,64000,128000];
+let currentLobby = null; // {id, host, partner, type:'attack'|'bank', target, ready:{host:false,partner:false}, troopsHost, troopsPartner}
+let lobbyPollTicker = null;
+
+function ensureBankMission(){ /* noop — keeps older calls safe */ }
+
+function bankRewardForStage(stage){ // stage 1..7
+  return BANK_REWARDS[Math.min(6, Math.max(0, stage-1))];
+}
+function generateBankBot(stage){
+  const s = 8 + stage*3;
+  return generateBotKingdom(s);
+}
+function refreshBankView(){
+  const stage = Math.min(7, (myKingdom.bankStage||0)+1);
+  document.getElementById("bank-stage-badge").textContent = "مرحله "+persianDigits(stage)+" / ۷";
+  document.getElementById("bank-reward").textContent = fmtNum(bankRewardForStage(stage));
+  const locked = levelFromXp(myKingdom.xp).level < 15;
+  document.getElementById("btn-bank-start").disabled = locked || stage>7;
+  document.getElementById("btn-bank-start").textContent = locked ? '🔒 سطح ۱۵ لازم است' : (stage>7 ? '✅ همه مراحل تموم شد' : '👥 انتخاب دوست و شروع لابی');
+}
+
+async function openCoopFriendPicker(){
+  const friends = await loadFriends();
+  if(friends.length===0){ alert('اول باید دوست اضافه کنی.'); return; }
+  const onlineFriends = [];
+  for(const f of friends){ if(await isOnline(f)) onlineFriends.push(f); }
+  const list = onlineFriends.length ? onlineFriends : friends;
+  showModal({
+    title: '👥 انتخاب دوست برای حمله مشترک',
+    body: (onlineFriends.length? 'دوست‌های آنلاین:\n' : 'دوست‌های تو (آنلاین اولویت دارن):\n') + list.join('\n') + '\n\nاسم دوست رو وارد کن:',
+    input: true,
+    actions:[
+      {label:'دعوت', cls:'btn-purple', onClick: async (val)=>{
+        const partner = (val||'').trim();
+        if(!list.includes(partner) && !friends.includes(partner)){ alert('این اسم تو لیست دوستات نیست.'); return; }
+        closeModal();
+        await createCoopLobby(partner, 'attack');
+      }},
+      {label:'انصراف', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+}
+
+async function createCoopLobby(partner, type){
+  const id = uid();
+  const lobby = {
+    id, host: myName, partner, type,
+    target: attackTarget ? {name: attackTarget.name, isBot: !!attackTarget.isBot, isBank: !!attackTarget.isBank, bankReward: attackTarget.bankReward||0, matchType: attackTarget.matchType||'battle'} : null,
+    ready: {},
+    troops: {},
+    status: 'waiting',
+    t: Date.now()
+  };
+  lobby.ready[myName] = false;
+  lobby.ready[partner] = false;
+  lobby.troops[myName] = null;
+  lobby.troops[partner] = null;
+  if(type==='bank'){
+    const stage = Math.min(7, (myKingdom.bankStage||0)+1);
+    lobby.target = {name:'بانک — مرحله '+stage, isBot:true, isBank:true, bankReward: bankRewardForStage(stage), matchType:'battle', bankStage: stage};
+  }
+  await sSetJSON(`coop-lobby:${id}`, lobby);
+  await sSetJSON(`coop-invite:${partner}`, {lobbyId:id, from:myName, type, t:Date.now()});
+  currentLobby = lobby;
+  showView('coop-lobby');
+  renderCoopLobby();
+  startLobbyPolling(id);
+  alert(`دعوت برای ${partner} فرستاده شد. منتظر قبول و استارت هر دو بمان.`);
+}
+
+async function acceptCoopInvite(lobbyId){
+  const lobby = await sGetJSON(`coop-lobby:${lobbyId}`, null);
+  if(!lobby || (lobby.status!=='waiting' && lobby.status!=='ready')){ alert('این لابی دیگه معتبر نیست.'); return; }
+  currentLobby = lobby;
+  await sDel(`coop-invite:${myName}`);
+  showView('coop-lobby');
+  renderCoopLobby();
+  startLobbyPolling(lobbyId);
+}
+
+function startLobbyPolling(id){
+  if(lobbyPollTicker) clearInterval(lobbyPollTicker);
+  lobbyPollTicker = setInterval(async ()=>{
+    const lobby = await sGetJSON(`coop-lobby:${id}`, null);
+    if(!lobby){ clearInterval(lobbyPollTicker); currentLobby=null; return; }
+    currentLobby = lobby;
+    renderCoopLobby();
+    if(lobby.status==='ready' && lobby.ready && lobby.ready[lobby.host] && lobby.ready[lobby.partner]){
+      clearInterval(lobbyPollTicker);
+      await runCoopBattle(lobby);
+    }
+    if(lobby.status==='cancelled'){
+      clearInterval(lobbyPollTicker);
+      currentLobby=null;
+      alert('لابی لغو شد.');
+      showView('attack-choice');
+    }
+    if(lobby.status==='done'){
+      clearInterval(lobbyPollTicker);
+    }
+  }, 2000);
+}
+
+function renderCoopLobby(){
+  if(!currentLobby) return;
+  const L = currentLobby;
+  const boxP = document.getElementById("coop-lobby-players");
+  const boxT = document.getElementById("coop-lobby-troops");
+  if(!boxP || !boxT) return;
+  const hostReady = !!(L.ready && L.ready[L.host]);
+  const partnerReady = !!(L.ready && L.ready[L.partner]);
+  document.getElementById("coop-lobby-desc").textContent =
+    L.type==='bank' ? `مأموریت بانک — ${L.target && L.target.name || ''}` : `حمله مشترک به ${L.target && L.target.name || 'هدف'}`;
+  boxP.innerHTML = `
+    <div class="search-result-row"><span>👑 ${escapeHtml(L.host||'-')}</span><span>${hostReady?'✅ آماده':'⏳ منتظر استارت'}</span></div>
+    <div class="search-result-row"><span>👤 ${escapeHtml(L.partner||'دوست انتخاب نشده')}</span><span>${L.partner?(partnerReady?'✅ آماده':'⏳ منتظر استارت'):'—'}</span></div>`;
+  const combined = {};
+  if(L.troops){
+    for(const who of [L.host, L.partner]){
+      const t = L.troops[who];
+      if(!t || typeof t!=='object') continue;
+      for(const k in t){ combined[k] = (combined[k]||0) + (t[k]||0); }
+    }
+  }
+  const lines = Object.keys(combined).filter(k=>combined[k]>0).map(k=>{
+    const def = TROOPS[k]||MISSILES[k];
+    return def ? `${def.icon} ${def.name}: ${persianDigits(combined[k])}` : '';
+  }).filter(Boolean);
+  boxT.innerHTML = lines.length
+    ? lines.map(l=>`<div class="search-result-row"><span>${l}</span></div>`).join('')
+    : `<div class="search-result-row" style="color:var(--ink-dim);">هنوز نیرویی ثبت نشده — اول استارت بزن تا نیروهای فعلیت ثبت بشن.</div>`;
+  const myReady = !!(L.ready && L.ready[myName]);
+  const btn = document.getElementById("btn-coop-ready");
+  if(btn){
+    btn.disabled = myReady || !L.partner;
+    btn.textContent = !L.partner ? 'اول دوست اضافه کن' : (myReady ? '✅ تو آماده هستی — منتظر دوست…' : '✅ استارت (آماده)');
+  }
+}
+
+document.getElementById("btn-coop-ready").addEventListener("click", async ()=>{
+  if(!currentLobby || !currentLobby.partner){ alert('اول دوست اضافه کن.'); return; }
+  const snap = {};
+  for(const k in TROOPS){ const n=myKingdom.troops[k]||0; if(n>0) snap[k]=n; }
+  if((myKingdom.equipment.launcher||0)>=1){
+    for(const m in MISSILES){ const n=myKingdom.missiles[m]||0; if(n>0) snap[m]=n; }
+  }
+  const id = currentLobby.id;
+  const lobby = await sGetJSON(`coop-lobby:${id}`, null);
+  if(!lobby){ alert('لابی پیدا نشد.'); return; }
+  if(!lobby.ready) lobby.ready={};
+  if(!lobby.troops) lobby.troops={};
+  lobby.ready[myName]=true;
+  lobby.troops[myName]=snap;
+  if(lobby.ready[lobby.host] && lobby.ready[lobby.partner]) lobby.status='ready';
+  await sSetJSON(`coop-lobby:${id}`, lobby);
+  currentLobby = lobby;
+  renderCoopLobby();
+});
+
+document.getElementById("btn-coop-add-friend").addEventListener("click", async ()=>{
+  if(!currentLobby) return;
+  if(myName !== currentLobby.host){ alert('فقط میزبان می‌تونه دوست رو عوض کنه.'); return; }
+  const friends = await loadFriends();
+  if(friends.length===0){ alert('اول از بخش دوستان، دوست اضافه کن.'); return; }
+  const onlineFriends = [];
+  for(const f of friends){ if(await isOnline(f)) onlineFriends.push(f); }
+  const list = onlineFriends.length ? onlineFriends : friends;
+  showModal({
+    title: '➕ افزودن / عوض کردن دوست لابی',
+    body: (onlineFriends.length?'دوست‌های آنلاین:\n':'دوست‌ها:\n') + list.join('\n') + '\n\nاسم دوست رو وارد کن:',
+    input: true,
+    actions:[
+      {label:'ثبت', cls:'btn-purple', onClick: async (val)=>{
+        const partner = (val||'').trim();
+        if(!friends.includes(partner)){ alert('این اسم تو لیست دوستات نیست.'); return; }
+        if(partner===myName){ alert('خودت رو نمی‌تونی اضافه کنی.'); return; }
+        closeModal();
+        const lobby = await sGetJSON(`coop-lobby:${currentLobby.id}`, null);
+        if(!lobby){ alert('لابی پیدا نشد.'); return; }
+        // clear old invite
+        if(lobby.partner) await sDel(`coop-invite:${lobby.partner}`);
+        lobby.partner = partner;
+        if(!lobby.ready) lobby.ready={};
+        if(!lobby.troops) lobby.troops={};
+        lobby.ready[partner] = false;
+        lobby.troops[partner] = null;
+        lobby.ready[myName] = false; // reset host ready too
+        lobby.status = 'waiting';
+        await sSetJSON(`coop-lobby:${lobby.id}`, lobby);
+        await sSetJSON(`coop-invite:${partner}`, {lobbyId:lobby.id, from:myName, type:lobby.type, t:Date.now()});
+        currentLobby = lobby;
+        renderCoopLobby();
+        alert(`دعوت برای ${partner} فرستاده شد.`);
+      }},
+      {label:'انصراف', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+});
+
+document.getElementById("btn-coop-cancel").addEventListener("click", async ()=>{
+  if(!currentLobby) return;
+  const lobby = await sGetJSON(`coop-lobby:${currentLobby.id}`, null);
+  if(lobby){
+    lobby.status = 'cancelled';
+    await sSetJSON(`coop-lobby:${currentLobby.id}`, lobby);
+    if(lobby.partner) await sDel(`coop-invite:${lobby.partner}`);
+  }
+  currentLobby=null;
+  if(lobbyPollTicker) clearInterval(lobbyPollTicker);
+  showView('attack-choice');
+});
+
+async function runCoopBattle(lobby){
+  if(myName !== lobby.host){
+    // partner: wait for result
+    for(let i=0;i<15;i++){
+      await sleep(1500);
+      const done = await sGetJSON(`coop-result:${lobby.id}`, null);
+      if(done){
+        if(done.lines) await playNarration(done.lines);
+        document.getElementById("res-loot").textContent = "🪙 "+fmtNum(done.lootShare||0);
+        document.getElementById("res-lost").textContent = persianDigits(done.lostShare||0);
+        document.getElementById("res-walldmg").textContent = persianDigits(done.wallDmgPct||0)+"٪";
+        document.getElementById("res-xp").textContent = "✨ "+persianDigits(done.xp||0);
+        document.getElementById("battle-banner-box").innerHTML = done.win
+          ? `<div class="battle-banner win"><div>⚔️ نبرد مشترک</div><div class="bigline">🟢 پیروزی!</div></div>`
+          : `<div class="battle-banner lose"><div>⚔️ نبرد مشترک</div><div class="bigline">🔴 شکست!</div></div>`;
+        const fresh = await sGetJSON(`kingdom:${myName}`, null);
+        if(fresh){ myKingdom = hydrateKingdom(fresh); renderTopbar(); }
+        showView('battle-result');
+        if(done.jail || (myKingdom.jailUntil && myKingdom.jailUntil>Date.now())){
+          setTimeout(()=> enterJail(Math.max(5000, (myKingdom.jailUntil||Date.now()+60000)-Date.now())), 800);
+        }
+        currentLobby=null;
+        return;
+      }
+    }
+    alert('نتیجه هنوز آماده نیست؛ کمی بعد دوباره چک کن.');
+    showView('attack-choice');
+    currentLobby=null;
+    return;
+  }
+  // HOST resolves once
+  const combined = {};
+  for(const who of [lobby.host, lobby.partner]){
+    const t = (lobby.troops && lobby.troops[who]) || {};
+    for(const k in t) combined[k]=(combined[k]||0)+(t[k]||0);
+  }
+  let defenderSnapshot;
+  const isBank = !!(lobby.target && lobby.target.isBank);
+  const isBot = !lobby.target || lobby.target.isBot || isBank;
+  if(isBank){
+    defenderSnapshot = generateBankBot(lobby.target.bankStage||1);
+    defenderSnapshot.gold = lobby.target.bankReward || 2000;
+  } else if(isBot){
+    defenderSnapshot = (attackTarget && attackTarget.kingdom) ? attackTarget.kingdom : generateBotKingdom((myKingdom.botStage||0)+1);
+  } else {
+    defenderSnapshot = await sGetJSON(`kingdom:${lobby.target.name}`, null);
+    if(!defenderSnapshot){ alert('هدف پیدا نشد.'); return; }
+  }
+  const totalReward = isBank ? (lobby.target.bankReward||0) : 0;
+  const halfReward = Math.floor(totalReward/2);
+  const bankOpts = {isBank, bankReward: halfReward, bankStage: (lobby.target && lobby.target.bankStage)||0, skipBankStageInc:false};
+  await resolveBattleNow(myKingdom, defenderSnapshot, combined, 'battle', isBot, bankOpts);
+  // resolve already added halfReward to host (myKingdom). Now give same share to partner.
+  let half = halfReward;
+  const won = !!document.querySelector('.battle-banner.win');
+  if(!isBank){
+    const lootTxt = document.getElementById('res-loot').textContent || '0';
+    const fullLoot = parseInt(String(lootTxt).replace(/[^\d]/g,''),10) || 0;
+    half = Math.floor(fullLoot/2);
+  }
+  if(lobby.partner){
+    let partnerK = await sGetJSON(`kingdom:${lobby.partner}`, null);
+    if(partnerK){
+      partnerK = hydrateKingdom(partnerK);
+      if(won && half>0){
+        partnerK.gold = (Number(partnerK.gold)||0) + half;
+        partnerK.totalGoldEarned = (Number(partnerK.totalGoldEarned)||0) + half;
+        if(isBank) partnerK.bankStage = Math.max(partnerK.bankStage||0, (myKingdom.bankStage||0));
+      }
+      if(isBank && !won){
+        const jailMs = Math.max(20000, 60000 - ((partnerK.equipment&&partnerK.equipment.timeLock||0)*15000));
+        partnerK.jailUntil = Date.now() + jailMs;
+      }
+      partnerK.lastUpdate = Date.now();
+      await sSet(`kingdom:${lobby.partner}`, JSON.stringify(partnerK));
+    }
+  }
+  await saveKingdom(myKingdom);
+  await sSetJSON(`coop-result:${lobby.id}`, {
+    win: won,
+    lootShare: won ? half : 0,
+    lostShare: 0,
+    wallDmgPct: 0,
+    xp: won ? 45 : 10,
+    jail: isBank && !won,
+    lines: ["👥 حمله مشترک شروع شد...","🪖 نیروهای هر دو فرمانروا وارد میدان شدن...", won?"🏆 نبرد مشترک با پیروزی تموم شد! سکه‌ها بین هر دو تقسیم شد.":"☠️ نبرد مشترک شکست خورد. هر دو به زندان می‌رین."]
+  });
+  lobby.status = 'done';
+  await sSetJSON(`coop-lobby:${lobby.id}`, lobby);
+  currentLobby=null;
+}
+
+/* ============================================================
+   JAIL + GROUP CHAT
+============================================================ */
+let jailTicker=null, jailChatTicker=null;
+function enterJail(ms){
+  const screen = document.getElementById('screen-jail');
+  if(!screen) return;
+  screen.classList.remove('hidden');
+  document.getElementById('screen-main')?.classList.add('hidden');
+  const end = Date.now() + (ms||60000);
+  if(jailTicker) clearInterval(jailTicker);
+  jailTicker = setInterval(()=>{
+    const left = Math.max(0, Math.ceil((end-Date.now())/1000));
+    const el = document.getElementById('jail-timer');
+    if(el) el.textContent = persianDigits(left)+' ثانیه';
+    if(left<=0){
+      clearInterval(jailTicker); jailTicker=null;
+      if(jailChatTicker){ clearInterval(jailChatTicker); jailChatTicker=null; }
+      screen.classList.add('hidden');
+      document.getElementById('screen-main')?.classList.remove('hidden');
+      if(myKingdom){ myKingdom.jailUntil=0; saveKingdom(myKingdom); }
+      alert('🔓 آزاد شدی! دوباره می‌تونی بازی کنی.');
+    }
+  }, 400);
+  renderJailChat();
+  if(jailChatTicker) clearInterval(jailChatTicker);
+  jailChatTicker = setInterval(renderJailChat, 3000);
+}
+async function renderJailChat(){
+  const box = document.getElementById('jail-chat-list');
+  if(!box) return;
+  const msgs = await sGetJSON('jail-chat', []);
+  const list = Array.isArray(msgs) ? msgs.slice(-40) : [];
+  box.innerHTML = list.length ? list.map(m=>`<div class="jail-msg"><span class="who">${escapeHtml(m.from||'?')}</span><span class="when">${new Date(m.t||0).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</span><div>${escapeHtml(m.text||'')}</div></div>`).join('')
+    : `<div class="jail-msg" style="color:var(--ink-dim);">هنوز پیامی نیست. اولین نفر باش!</div>`;
+  box.scrollTop = box.scrollHeight;
+}
+document.getElementById('btn-jail-send')?.addEventListener('click', async ()=>{
+  const inp = document.getElementById('jail-chat-input');
+  const text = (inp&&inp.value||'').trim();
+  if(!text || !myName) return;
+  let msgs = await sGetJSON('jail-chat', []);
+  if(!Array.isArray(msgs)) msgs=[];
+  msgs.push({from:myName, text:text.slice(0,80), t:Date.now()});
+  msgs = msgs.slice(-80);
+  await sSetJSON('jail-chat', msgs);
+  if(inp) inp.value='';
+  renderJailChat();
+});
+
+function checkJailOnLogin(){
+  if(myKingdom && myKingdom.jailUntil && myKingdom.jailUntil > Date.now()){
+    enterJail(myKingdom.jailUntil - Date.now());
+  }
+}
+
+let _coopInviteShown = null;
+async function pollCoopInvites(){
+  if(!myName) return;
+  // don't interrupt if already in lobby or modal open
+  if(currentLobby) return;
+  if(document.getElementById('modal-root') && document.getElementById('modal-root').innerHTML.trim()) return;
+  const inv = await sGetJSON(`coop-invite:${myName}`, null);
+  if(!inv || !inv.t || Date.now()-inv.t > 180000) return;
+  if(_coopInviteShown === inv.lobbyId) return;
+  _coopInviteShown = inv.lobbyId;
+  showModal({
+    title: '👥 دعوت حمله مشترک',
+    body: `${inv.from} دعوتت کرده برای ${inv.type==='bank'?'مأموریت بانک':'حمله مشترک'}. قبول می‌کنی؟`,
+    actions:[
+      {label:'✅ قبول', cls:'btn-green', onClick: async ()=>{ closeModal(); await acceptCoopInvite(inv.lobbyId); }},
+      {label:'❌ رد', cls:'btn-ghost', onClick: async ()=>{ await sDel(`coop-invite:${myName}`); _coopInviteShown=null; closeModal(); }},
+    ]
+  });
+}
+
+/* ============================================================
+   SIMPLE MODAL
+============================================================ */
+function showModal({title, body, actions, input}){
+  const root = document.getElementById("modal-root");
+  const bodyHtml = escapeHtml(body).replace(/\n/g,'<br>');
+  root.innerHTML = `<div class="modal-overlay"><div class="modal-box" style="position:relative;">
+    <button id="modal-close-x" style="position:absolute; top:8px; left:8px; background:none; border:none; color:var(--ink-dim); font-size:18px; cursor:pointer; padding:4px 8px;">✕</button>
+    <h3>${escapeHtml(title)}</h3>
+    <p>${bodyHtml}</p>
+    ${input?'<input id="modal-input" class="text-input" style="width:100%; margin-bottom:12px;" type="text">':''}
+    <div class="modal-actions" id="modal-actions"></div>
+  </div></div>`;
+  document.getElementById("modal-close-x").addEventListener('click', closeModal);
+  const actionsBox = document.getElementById("modal-actions");
+  actions.forEach(a=>{
+    const b = document.createElement('button');
+    b.className = 'btn btn-sm '+(a.cls||'');
+    b.textContent = a.label;
+    b.addEventListener('click', ()=> a.onClick(input ? document.getElementById('modal-input').value : undefined));
+    actionsBox.appendChild(b);
+  });
+}
+function closeModal(){ document.getElementById("modal-root").innerHTML = ""; }
+
+/* ============================================================
+   NAV / VIEW SWITCHING
+============================================================ */
+function showView(name){
+  document.querySelectorAll('[id^="view-"]').forEach(v=>v.classList.add('hidden'));
+  const el = document.getElementById('view-'+name);
+  if(el) el.classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.view===name || (name!=='attack-choice' && (name==='attack'||name==='bot'||name==='bank'||name==='coop-lobby') && b.dataset.view==='attack-choice')));
+  if(name==='kingdom') renderKingdom();
+  if(name==='barracks') renderBarracks();
+  if(name==='equipment') renderEquipment();
+  if(name==='attack'){
+    document.getElementById('input-target-search').value='';
+    document.getElementById('attack-search-results').innerHTML = `<div class="search-result-row" style="color:var(--ink-dim);">اسم فرمانروا رو تایپ کن…</div>`;
+  }
+  if(name==='bot') refreshBotView();
+  if(name==='bank') refreshBankView();
+  if(name==='attack-choice'){
+    ensureBankMission();
+    const n=document.getElementById('bank-note');
+    if(n) n.textContent = levelFromXp(myKingdom.xp).level>=15 ? '🔓 باز است: ۷ مرحله، هر مرحله سخت‌تر' : '🔒 سطح ۱۵ باز می‌شود';
+  }
+  if(name==='inbox') refreshInboxView();
+  if(name==='friends') renderFriendsView();
+  if(name==='profile') renderProfile();
+}
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const view = btn.dataset.view;
+    if(['kingdom','barracks','equipment','attack-choice','inbox','friends','profile'].includes(view)) showView(view);
+  });
+});
+document.getElementById("btn-choice-online").addEventListener("click", ()=> showView('attack'));
+document.getElementById("btn-choice-offline").addEventListener("click", ()=> showView('bot'));
+document.getElementById("btn-choice-bank")&&document.getElementById("btn-choice-bank").addEventListener("click", ()=>{
+  if(levelFromXp(myKingdom.xp).level < 15){ alert('🔒 مأموریت بانک از سطح ۱۵ باز می‌شود.'); return; }
+  showView('bank');
+});
+document.getElementById("btn-bank-back")&&document.getElementById("btn-bank-back").addEventListener("click", ()=> showView('attack-choice'));
+document.getElementById("btn-bank-start")&&document.getElementById("btn-bank-start").addEventListener("click", async ()=>{
+  if(levelFromXp(myKingdom.xp).level < 15){ alert('🔒 سطح ۱۵ لازم است.'); return; }
+  const friends = await loadFriends();
+  if(friends.length===0){ alert('اول یک دوست اضافه کن تا بتونی مأموریت بانک رو باهاش شروع کنی.'); return; }
+  const onlineFriends = [];
+  for(const f of friends){ if(await isOnline(f)) onlineFriends.push(f); }
+  const list = onlineFriends.length ? onlineFriends : friends;
+  showModal({
+    title: '🏦 انتخاب دوست برای مأموریت بانک',
+    body: 'یک دوست انتخاب کن. هر دو باید استارت بزنید تا حمله شروع بشه (مثل لابی).\n\n'+(onlineFriends.length?'آنلاین‌ها:\n':'دوست‌ها:\n')+list.join('\n')+'\n\nاسم دوست رو وارد کن:',
+    input: true,
+    actions:[
+      {label:'شروع لابی', cls:'btn-purple', onClick: async (val)=>{
+        const partner = (val||'').trim();
+        if(!friends.includes(partner)){ alert('این اسم تو لیست دوستات نیست.'); return; }
+        closeModal();
+        attackTarget = null;
+        await createCoopLobby(partner, 'bank');
+      }},
+      {label:'انصراف', cls:'btn-ghost', onClick: ()=> closeModal()},
+    ]
+  });
+});
+document.getElementById("btn-attack-back").addEventListener("click", ()=> showView('attack-choice'));
+document.getElementById("btn-bot-back").addEventListener("click", ()=> showView('attack-choice'));
+
+/* ============================================================
+   CONNECTION STATUS
+============================================================ */
+function updateConnStatus(){
+  const el = document.getElementById("conn-status");
+  const pingTxt = window.firebasePing!==null && window.firebasePing!==undefined ? ` (${persianDigits(window.firebasePing)}ms)` : '';
+  if(el){
+    if(window.firebaseConnected===true){ el.textContent="🟢 Connect"+pingTxt; el.className="err-note ok"; }
+    else if(window.firebaseConnected===false){ el.textContent="🔴 Disconnect ( VPN )"; el.className="err-note"; }
+    else { el.textContent="🟡 Connecting..."; el.className="err-note pending"; }
+  }
+  const dot = document.getElementById("topbar-conn-dot");
+  const txt = document.getElementById("topbar-conn-text");
+  if(dot && txt){
+    if(window.firebaseConnected===true){ dot.className="conn-dot green"; txt.textContent="Ping: "+persianDigits(window.firebasePing||0)+"ms"; }
+    else if(window.firebaseConnected===false){ dot.className="conn-dot red"; txt.textContent="Disconnect"; }
+    else { dot.className="conn-dot yellow"; txt.textContent="Connecting..."; }
+  }
+}
+setInterval(updateConnStatus, 1000);
+
+/* ============================================================
+   INIT
+============================================================ */
+let authMode = null; // 'login' | 'create'
+document.getElementById("btn-auth-login").addEventListener("click", ()=>{
+  authMode='login';
+  document.getElementById("auth-choice").classList.add("hidden");
+  document.getElementById("auth-form").classList.remove("hidden");
+  document.getElementById("auth-form-title").textContent = "حساب داری؟ اسم و رمزت رو وارد کن.";
+  document.getElementById("btn-auth-submit").textContent = "ورود به حساب";
+});
+document.getElementById("btn-auth-create").addEventListener("click", ()=>{
+  authMode='create';
+  document.getElementById("auth-choice").classList.add("hidden");
+  document.getElementById("auth-form").classList.remove("hidden");
+  document.getElementById("auth-form-title").textContent = "اسم و رمز جدید انتخاب کن (هردو اجباری).";
+  document.getElementById("btn-auth-submit").textContent = "ساخت حساب";
+});
+document.getElementById("btn-auth-back").addEventListener("click", ()=>{
+  authMode=null;
+  document.getElementById("auth-form").classList.add("hidden");
+  document.getElementById("auth-choice").classList.remove("hidden");
+  document.getElementById("conn-status").textContent="";
+});
+document.getElementById("btn-auth-submit").addEventListener("click", async ()=>{
+  if(window.firebaseConnected!==true){ alert("هنوز وصل نشدیم به سرور، چند ثانیه صبر کن و دوباره امتحان کن."); return; }
+  const v = document.getElementById("input-name").value.trim();
+  const pinVal = document.getElementById("input-pin").value.trim();
+  const statusEl = document.getElementById("conn-status");
+  if(!v || !pinVal){ statusEl.textContent="🔴 اسم و رمز هر دو اجباری‌ان."; statusEl.className="err-note"; return; }
+
+  let result;
+  if(authMode==='login') result = await loginToAccount(v, pinVal);
+  else result = await createAccount(v, pinVal);
+
+  if(result.error==='no-account'){ statusEl.textContent="🔴 همچین حسابی پیدا نشد. می‌خوای بسازیش؟"; statusEl.className="err-note"; return; }
+  if(result.error==='wrong-pin'){ statusEl.textContent="🔴 رمز اشتباهه."; statusEl.className="err-note"; return; }
+  if(result.error==='name-taken'){ statusEl.textContent="🔴 این اسم قبلاً گرفته شده. اسم دیگه‌ای انتخاب کن یا وارد حسابت شو."; statusEl.className="err-note"; return; }
+  if(result.error==='pin-taken'){ statusEl.textContent="🔴 این رمز قبلاً استفاده شده. رمز دیگه‌ای انتخاب کن."; statusEl.className="err-note"; return; }
+
+  myName = v;
+  myKingdom = result.kingdom;
+  await ensureRegistered(myName);
+  document.getElementById("screen-name").classList.add("hidden");
+  document.getElementById("screen-main").classList.remove("hidden");
+  renderTopbar();
+  showView('kingdom');
+  checkJailOnLogin();
+  heartbeat();
+  goldTicker = setInterval(()=>{
+    if(myKingdom && myKingdom.jailUntil && myKingdom.jailUntil>Date.now()) return;
+    const gain = goldPerSec(myKingdom);
+    if(myKingdom.gold < treasuryCap(myKingdom)) myKingdom.gold = Math.min(treasuryCap(myKingdom), myKingdom.gold+gain);
+    myKingdom.totalGoldEarned += gain;
+    myKingdom.oil = (Number(myKingdom.oil)||0) + oilPerSec(myKingdom);
+    renderTopbar();
+    if(!document.getElementById('view-kingdom').classList.contains('hidden')) renderKingdom();
+  }, 1000);
+  setInterval(()=>{ if(myKingdom) saveKingdom(myKingdom); }, 15000);
+  presenceTicker = setInterval(heartbeat, 8000);
+  requestPollTicker = setInterval(()=>{
+    if(!document.getElementById('view-inbox').classList.contains('hidden')) refreshInboxView();
+  }, 8000);
+  alertPollTicker = setInterval(pollForLiveAlerts, 6000);
+  revengeTicker = setInterval(()=>{checkRevengeAttack();checkScheduledBotRaid();}, 20000);
+  checkRevengeAttack(); checkScheduledBotRaid();
+  setInterval(checkInboxBadge, 8000);
+  setInterval(pollCoopInvites, 8000);
+});
+document.getElementById("input-pin").addEventListener("keydown", e=>{ if(e.key==="Enter") document.getElementById("btn-auth-submit").click(); });
+document.getElementById("input-name").addEventListener("keydown", e=>{ if(e.key==="Enter") document.getElementById("input-pin").focus(); });
+
+
+/* ============================================================
+   MISSIONS / CLUB / HACKER / BANDIT / FIXES (added)
+============================================================ */
+const MISSION_DEFS = {
+  cave: {id:'cave', name:'فرار از غار', icon:'🕳️', unlock:10, stages:12, reward:2000, desc:'غار تاریک پر از تله'},
+  prison: {id:'prison', name:'فرار از زندان', icon:'⛓️', unlock:17, stages:5, reward:5000, desc:'فرار از زندان امنیتی'},
+  zombie: {id:'zombie', name:'فرار از زامبی‌ها', icon:'🧟', unlock:20, stages:8, reward:7000, desc:'هورده زامبی'}
+};
+function ensureMissionFields(k){
+  if(!k.missionProgress) k.missionProgress={cave:0,prison:0,zombie:0};
+  if(!k.missionDone) k.missionDone={cave:false,prison:false,zombie:false};
+  if(k.clubId===undefined) k.clubId=null;
+  if(!k.hackNextAt) k.hackNextAt=Date.now()+2*3600*1000;
+  if(k.hackWarned===undefined) k.hackWarned=false;
+  if(!k.banditNextAt) k.banditNextAt=Date.now()+(18+Math.random()*8)*3600*1000;
+  if(k.equipment && k.equipment.antiHack===undefined) k.equipment.antiHack=0;
+  return k;
+}
+// wrap hydrate
+const _origHydrate = hydrateKingdom;
+hydrateKingdom = function(k){
+  k = _origHydrate(k);
+  return ensureMissionFields(k);
+};
+
+async function checkHackerRaid(){
+  if(!myKingdom) return;
+  ensureMissionFields(myKingdom);
+  const now=Date.now();
+  if(now < myKingdom.hackNextAt){
+    if(!myKingdom.hackWarned && (myKingdom.hackNextAt-now)<5*60*1000){
+      myKingdom.hackWarned=true; await saveKingdom(myKingdom);
+      alert('⚠️ ربات هکر: «حساب تو را خالی خواهم کرد!»');
+    }
+    return;
+  }
+  const anti=myKingdom.equipment.antiHack||0;
+  const risk=Math.max(0.08, 0.85 - anti*0.07);
+  if(Math.random()<risk){
+    myKingdom.gold=0;
+    myKingdom.inbox=myKingdom.inbox||[];
+    myKingdom.inbox.unshift({id:uid(),attacker:'ربات هکر 💻',defenderWon:false,lootLost:0,wallDamagePct:0,defenderTroopsLost:0,t:Date.now(),lines:['💻 هکر خزانه را خالی کرد!']});
+    myKingdom.inbox=myKingdom.inbox.slice(0,30);
+    alert('💻 ربات هکر حسابت را خالی کرد! استخراج از نو شروع می‌شود.');
+  } else {
+    alert('🛡️ ضد هک جلوی حمله را گرفت!');
+  }
+  myKingdom.hackWarned=false;
+  myKingdom.hackNextAt=now+2*3600*1000;
+  await saveKingdom(myKingdom); renderTopbar();
+}
+
+async function checkBanditRaid(){
+  if(!myKingdom) return;
+  ensureMissionFields(myKingdom);
+  const now=Date.now();
+  if(now < myKingdom.banditNextAt) return;
+  const sheriffs=myKingdom.troops.sheriff||0;
+  const lvl=levelFromXp(myKingdom.xp).level;
+  const banditP=Math.max(5,lvl*8);
+  const def=sheriffs*55+troopsPower(myKingdom.troops)*0.15;
+  let stolen=[];
+  if(def < banditP*1.1){
+    const keys=Object.keys(EQUIPMENT).filter(k=>(myKingdom.equipment[k]||0)>0 && EQUIPMENT[k].max>1);
+    for(let i=0;i<Math.min(2,keys.length);i++){
+      const k=keys[Math.floor(Math.random()*keys.length)];
+      if((myKingdom.equipment[k]||0)>0){ myKingdom.equipment[k]--; stolen.push(EQUIPMENT[k].name); }
+    }
+  }
+  myKingdom.inbox=myKingdom.inbox||[];
+  myKingdom.inbox.unshift({id:uid(),attacker:'راهزنان شب 🗡️',defenderWon:stolen.length===0,lootLost:0,wallDamagePct:0,defenderTroopsLost:0,t:Date.now(),
+    lines:stolen.length?['🗡️ راهزنان تجهیزات دزدیدند: '+stolen.join('، ')]:['🛡️ کلانترها راهزنان را دفع کردند.']});
+  myKingdom.inbox=myKingdom.inbox.slice(0,30);
+  myKingdom.banditNextAt=now+(20+Math.random()*10)*3600*1000;
+  await saveKingdom(myKingdom);
+  if(stolen.length) alert('🗡️ راهزنان: '+stolen.join('، '));
+}
+
+function renderMissionsList(){
+  const box=document.getElementById('missions-list');
+  if(!box) return;
+  const lvl=levelFromXp(myKingdom.xp).level;
+  ensureMissionFields(myKingdom);
+  box.innerHTML=Object.values(MISSION_DEFS).map(m=>{
+    const done=!!myKingdom.missionDone[m.id];
+    const locked=lvl<m.unlock || done;
+    const prog=myKingdom.missionProgress[m.id]||0;
+    return `<div class="b-card" style="margin-bottom:10px;grid-column:1/-1;opacity:${locked&&!done?'.55':'1'};border-color:${done?'var(--green)':'var(--line)'}">
+      <div style="display:flex;justify-content:space-between;"><span>${m.icon} <b>${m.name}</b></span>
+        <span class="lvl-chip">${done?'✅ تمام':(lvl<m.unlock?'🔒 سطح '+persianDigits(m.unlock):persianDigits(prog)+'/'+persianDigits(m.stages))}</span></div>
+      <div class="bdesc">${m.desc} · جایزه نهایی 🪙${fmtNum(m.reward)} · با دوست اجباری</div>
+      ${(!locked && !done)?`<button class="btn btn-sm btn-purple" style="width:100%;margin-top:8px;" data-mstart="${m.id}">شروع با دوست</button>`:''}
+    </div>`;
+  }).join('');
+  box.querySelectorAll('[data-mstart]').forEach(btn=>{
+    btn.addEventListener('click',()=> openCoopFriendPickerForMission(btn.dataset.mstart));
+  });
+}
+async function openCoopFriendPickerForMission(mid){
+  const friends=await loadFriends();
+  if(!friends.length){ alert('اول دوست اضافه کن.'); return; }
+  showModal({title:'👥 دوست برای ماموریت', body:friends.join('\\n')+'\\n\\nاسم دوست:', input:true, actions:[
+    {label:'دعوت', cls:'btn-purple', onClick:async(val)=>{
+      const p=(val||'').trim();
+      if(!friends.includes(p)){alert('در لیست نیست');return;}
+      closeModal();
+      attackTarget={name:MISSION_DEFS[mid].name, isBot:true, isMission:true, missionId:mid, matchType:'battle',
+        kingdom:generateBotKingdom(6+((myKingdom.missionProgress[mid]||0)+1)*2)};
+      await createCoopLobby(p,'attack');
+    }},
+    {label:'انصراف', cls:'btn-ghost', onClick:()=>closeModal()}
+  ]});
+}
+
+async function startRandomOnlineMatch(){
+  const reg=await sGetJSON(REGISTRY_KEY,[]);
+  const online=[];
+  for(const n of reg){ if(n!==myName && await isOnline(n)) online.push(n); }
+  const pool=online.length?online:reg.filter(n=>n!==myName);
+  if(!pool.length){alert('بازیکنی پیدا نشد.');return;}
+  const pick=pool[Math.floor(Math.random()*pool.length)];
+  openComposePvP(pick,'battle');
+}
+
+/* Club simple */
+async function renderClubPanel(){
+  const box=document.getElementById('club-panel');
+  if(!box) return;
+  ensureMissionFields(myKingdom);
+  if(!myKingdom.clubId){
+    box.innerHTML=`<button id="btn-club-create" class="btn btn-primary" style="width:100%;">➕ ساخت کلاب (۸۰۰ سکه)</button>
+      <div class="section-note" style="margin-top:10px;">یا کد کلاب:</div>
+      <input id="input-club-code" class="text-input" style="width:100%;" placeholder="کد…">
+      <button id="btn-club-join" class="btn btn-sm btn-purple" style="width:100%;margin-top:6px;">عضویت</button>`;
+    document.getElementById('btn-club-create').onclick=async()=>{
+      if(myKingdom.gold<800){alert('۸۰۰ سکه لازم');return;}
+      myKingdom.gold-=800;
+      const code=uid().slice(0,8);
+      const club={id:code,code,name:'کلاب '+myName,leader:myName,members:[myName],chat:[],attackLog:[],t:Date.now()};
+      await sSetJSON('club:'+code,club);
+      myKingdom.clubId=code; await saveKingdom(myKingdom); renderTopbar(); renderClubPanel();
+      alert('کلاب ساخته شد. کد: '+code);
+    };
+    document.getElementById('btn-club-join').onclick=async()=>{
+      const code=(document.getElementById('input-club-code').value||'').trim();
+      const club=await sGetJSON('club:'+code,null);
+      if(!club){alert('پیدا نشد');return;}
+      if((club.members||[]).includes(myName)){alert('قبلاً عضو');return;}
+      club.members.push(myName); await sSetJSON('club:'+code,club);
+      myKingdom.clubId=code; await saveKingdom(myKingdom); renderClubPanel();
+    };
+    return;
+  }
+  const club=await sGetJSON('club:'+myKingdom.clubId,null);
+  if(!club){ myKingdom.clubId=null; await saveKingdom(myKingdom); renderClubPanel(); return; }
+  const isLeader=club.leader===myName;
+  let html=`<div style="margin-bottom:8px;"><b>${escapeHtml(club.name)}</b> · کد ${escapeHtml(club.code||myKingdom.clubId)}
+    <button class="btn btn-sm btn-ghost" id="btn-club-leave" style="float:left;color:var(--red);">خروج</button></div>`;
+  html+=`<div class="list-wrap" style="margin-bottom:8px;">`;
+  for(const m of (club.members||[])){
+    const on=await isOnline(m);
+    html+=`<div class="search-result-row"><span><span class="presence-dot ${on?'on':'off'}"></span>${escapeHtml(m)}${m===club.leader?' 👑':''}</span>
+      ${isLeader&&m!==myName?`<button class="btn btn-sm btn-ghost" data-kick="${escapeHtml(m)}" style="color:var(--red);">حذف</button>`:''}</div>`;
+  }
+  html+=`</div>`;
+  if(isLeader){
+    html+=`<input id="club-invite-name" class="text-input" style="width:100%;" placeholder="دعوت اسم…">
+      <button id="btn-club-inv" class="btn btn-sm btn-purple" style="width:100%;margin:6px 0;">دعوت</button>`;
+  }
+  html+=`<div class="section-title" style="font-size:12px;">💬 چت</div><div class="list-wrap" id="club-chat" style="max-height:160px;overflow-y:auto;margin-bottom:6px;"></div>
+    <div style="display:flex;gap:6px;"><input id="club-msg" class="text-input" style="flex:1;" maxlength="100" placeholder="پیام…">
+    <button id="btn-club-send" class="btn btn-sm btn-primary">ارسال</button></div>
+    <div class="section-title" style="font-size:12px;">⚔️ گزارش حملات کلاب</div>
+    <div class="list-wrap" id="club-alog"></div>`;
+  box.innerHTML=html;
+  const chatBox=document.getElementById('club-chat');
+  const msgs=club.chat||[];
+  chatBox.innerHTML=msgs.slice(-30).map((m,i)=>{
+    const seen=(m.seen||[]).join('، ')||'—';
+    return `<div class="inbox-row"><b style="color:var(--gold);">${escapeHtml(m.from)}</b>: ${escapeHtml(m.text||'')}
+      <div class="meta">👁 ${escapeHtml(seen)} ${(m.from===myName||isLeader)?`<button class="btn btn-sm btn-ghost" data-cdel="${i}" style="color:var(--red);">حذف</button>`:''}</div></div>`;
+  }).join('')||'<div class="search-result-row" style="color:var(--ink-dim);">پیامی نیست</div>';
+  // mark seen
+  let ch=false; for(const m of msgs){m.seen=m.seen||[]; if(!m.seen.includes(myName)){m.seen.push(myName);ch=true;}}
+  if(ch) await sSetJSON('club:'+myKingdom.clubId,club);
+  document.getElementById('btn-club-send').onclick=async()=>{
+    const t=(document.getElementById('club-msg').value||'').trim(); if(!t)return;
+    club.chat=club.chat||[]; club.chat.push({from:myName,text:t.slice(0,100),t:Date.now(),seen:[myName]});
+    club.chat=club.chat.slice(-60); await sSetJSON('club:'+myKingdom.clubId,club); renderClubPanel();
+  };
+  chatBox.querySelectorAll('[data-cdel]').forEach(b=>{
+    b.onclick=async()=>{ club.chat.splice(+b.dataset.cdel,1); await sSetJSON('club:'+myKingdom.clubId,club); renderClubPanel(); };
+  });
+  document.getElementById('btn-club-leave').onclick=async()=>{
+    club.members=(club.members||[]).filter(x=>x!==myName);
+    if(club.leader===myName && club.members.length) club.leader=club.members[0];
+    if(!club.members.length) await sDel('club:'+myKingdom.clubId); else await sSetJSON('club:'+myKingdom.clubId,club);
+    myKingdom.clubId=null; await saveKingdom(myKingdom); renderClubPanel();
+  };
+  if(isLeader){
+    document.getElementById('btn-club-inv').onclick=async()=>{
+      const n=(document.getElementById('club-invite-name').value||'').trim();
+      const k=await loadKingdomByName(n); if(!k){alert('حساب پیدا نشد — اسم دقیق را وارد کن');return;}
+      if(k.clubId){alert('در کلاب دیگر است');return;}
+      if((club.members||[]).includes(n)){alert('قبلاً عضو');return;}
+      club.members=club.members||[]; club.members.push(n);
+      await sSetJSON('club:'+myKingdom.clubId,club);
+      k.clubId=myKingdom.clubId; await sSetJSON('kingdom:'+n,k); renderClubPanel();
+      alert(n+' به کلاب اضافه شد');
+    };
+    box.querySelectorAll('[data-kick]').forEach(b=>{
+      b.onclick=async()=>{
+        const n=b.dataset.kick; club.members=club.members.filter(x=>x!==n);
+        await sSetJSON('club:'+myKingdom.clubId,club);
+        const k=await sGetJSON('kingdom:'+n,null); if(k){k.clubId=null; await sSetJSON('kingdom:'+n,k);}
+        renderClubPanel();
+      };
+    });
+  }
+  const alog=document.getElementById('club-alog');
+  const logs=club.attackLog||[];
+  alog.innerHTML=logs.length?logs.slice(0,15).map(e=>`<div class="inbox-row"><b>${escapeHtml(e.from)}</b>→<b>${escapeHtml(e.to)}</b> ${e.win?'🟢':'🔴'} · ${e.type||'PvP'} · 🪙${fmtNum(e.loot||0)}</div>`).join(''):'<div class="search-result-row" style="color:var(--ink-dim);">گزارشی نیست</div>';
+}
+
+/* pin change */
+document.getElementById('btn-change-pin')?.addEventListener('click',()=>{
+  if(myKingdom.gold<500){alert('۵۰۰ سکه لازم است.');return;}
+  showModal({title:'تغییر رمز (۵۰۰ سکه)', body:'رمز جدید (حداکثر ۶ کاراکتر):', input:true, actions:[
+    {label:'ثبت', cls:'btn-primary', onClick:async(val)=>{
+      const np=(val||'').trim(); if(!np||np.length>6){alert('نامعتبر');return;}
+      let used=await sGetJSON('used-pins',[]);
+      if(used.includes(np)&&np!==myKingdom.pin){alert('رمز تکراری');return;}
+      used=used.filter(p=>p!==myKingdom.pin); used.push(np);
+      await sSetJSON('used-pins',used.slice(-2000));
+      myKingdom.gold-=500; myKingdom.pin=np; await saveKingdom(myKingdom);
+      closeModal(); renderTopbar(); alert('رمز تغییر کرد.');
+    }},
+    {label:'انصراف', cls:'btn-ghost', onClick:()=>closeModal()}
+  ]});
+});
+
+/* wire missions button & club view into showView */
+const _origShowView = showView;
+showView = function(name){
+  _origShowView(name);
+  if(name==='missions') renderMissionsList();
+  if(name==='club') renderClubPanel();
+  if(name==='attack-choice'){
+    // no bank note
+  }
+};
+document.getElementById('btn-choice-missions')?.addEventListener('click',()=>showView('missions'));
+document.getElementById('btn-missions-back')?.addEventListener('click',()=>showView('attack-choice'));
+document.getElementById('btn-choice-online')?.removeEventListener; // will rebind
+const _btnOn=document.getElementById('btn-choice-online');
+if(_btnOn){ _btnOn.onclick=()=>startRandomOnlineMatch(); }
+
+/* fix gift - replace openGiftModal body for gold-only robust path already partially there; strengthen deduct-first */
+const _og=openGiftModal;
+openGiftModal=function(friendName){
+  showModal({
+    title:`🎁 هدیه برای ${friendName}`,
+    body:`🪙 طلا: ${fmtNum(myKingdom.gold)}\\nعدد سکه را وارد کن:`,
+    input:true,
+    actions:[
+      {label:'🪙 ارسال', cls:'btn-primary', onClick:async(val)=>{
+        try{
+          const amount=parseInt(String(val||'').replace(/[^\\d]/g,''),10);
+          if(!amount||amount<=0){alert('عدد معتبر');return;}
+          const freshMe=await sGetJSON(`kingdom:${myName}`,null);
+          if(freshMe) myKingdom=hydrateKingdom(freshMe);
+          if(amount>(myKingdom.gold||0)){alert('سکه کافی نیست');return;}
+          myKingdom.gold=Math.max(0,(Number(myKingdom.gold)||0)-amount);
+          myKingdom.lastUpdate=Date.now();
+          if(!(await sSet(`kingdom:${myName}`,JSON.stringify(myKingdom)))){alert('خطا در کسر');return;}
+          let fk=await sGetJSON(`kingdom:${friendName}`,null);
+          if(!fk){ myKingdom.gold+=amount; await sSet(`kingdom:${myName}`,JSON.stringify(myKingdom)); alert('دوست پیدا نشد؛ برگشت.'); return; }
+          fk=hydrateKingdom(fk);
+          fk.gold=(Number(fk.gold)||0)+amount;
+          fk.totalGoldEarned=(Number(fk.totalGoldEarned)||0)+amount;
+          fk.lastUpdate=Date.now();
+          if(!(await sSet(`kingdom:${friendName}`,JSON.stringify(fk)))){
+            myKingdom.gold+=amount; await sSet(`kingdom:${myName}`,JSON.stringify(myKingdom));
+            alert('ارسال ناموفق؛ برگشت.'); return;
+          }
+          renderTopbar(); closeModal(); alert(`🎁 ${fmtNum(amount)} سکه ارسال شد.`);
+        }catch(e){alert('خطا: '+(e&&e.message||e));}
+      }},
+      {label:'بستن', cls:'btn-ghost', onClick:()=>closeModal()}
+    ]
+  });
+};
+
+/* start periodic checks after login - inject into auth success */
+const _authBtn=document.getElementById('btn-auth-submit');
+const _oldAuth=_authBtn.onclick;
+// use capture on existing listener by setInterval after login via poll
+setInterval(()=>{
+  if(myKingdom){ checkHackerRaid(); checkBanditRaid(); }
+}, 25000);
+
+/* nav club */
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  if(btn.dataset.view==='club'){
+    btn.addEventListener('click',()=>showView('club'));
+  }
+});
+
+console.log('[kingdom] missions/club/hacker/bandit patches loaded');
+
+
+/* OIL TRADE */
+document.getElementById('btn-oil-to-gold')?.addEventListener('click', async ()=>{
+  if(!myKingdom) return;
+  let amt = parseInt(document.getElementById('oil-trade-amount')?.value||'0',10);
+  if(!amt || amt < 5){ alert('حداقل ۵ بشکه نفت لازم است.'); return; }
+  amt = Math.floor(amt/5)*5; // round down to multiple of 5
+  if((myKingdom.oil||0) < amt){ alert('نفت کافی نداری. موجودی: '+fmtNum(myKingdom.oil||0)); return; }
+  const goldGain = Math.floor(amt/5)*10;
+  myKingdom.oil = (Number(myKingdom.oil)||0) - amt;
+  myKingdom.gold = (Number(myKingdom.gold)||0) + goldGain;
+  myKingdom.totalGoldEarned = (Number(myKingdom.totalGoldEarned)||0) + goldGain;
+  await saveKingdom(myKingdom);
+  renderTopbar();
+  alert('🔄 '+fmtNum(amt)+' نفت → '+fmtNum(goldGain)+' سکه');
+});
+document.getElementById('btn-gold-to-oil')?.addEventListener('click', async ()=>{
+  if(!myKingdom) return;
+  let amt = parseInt(document.getElementById('oil-trade-amount')?.value||'0',10);
+  // amount interpreted as oil wanted; cost = (oil/5)*10 gold
+  if(!amt || amt < 5){ alert('حداقل ۵ بشکه وارد کن.'); return; }
+  amt = Math.floor(amt/5)*5;
+  const cost = Math.floor(amt/5)*10;
+  if((myKingdom.gold||0) < cost){ alert('سکه کافی نیست. نیاز: '+fmtNum(cost)); return; }
+  myKingdom.gold = (Number(myKingdom.gold)||0) - cost;
+  myKingdom.oil = (Number(myKingdom.oil)||0) + amt;
+  await saveKingdom(myKingdom);
+  renderTopbar();
+  alert('🔄 '+fmtNum(cost)+' سکه → '+fmtNum(amt)+' نفت');
+});
+
+/* MISSION SOLO - override mission list renderer */
+const _renderMissionsListOrig = typeof renderMissionsList==='function' ? renderMissionsList : null;
+renderMissionsList = function(){
+  const box=document.getElementById('missions-list');
+  if(!box || typeof MISSION_DEFS==='undefined') return;
+  const lvl=levelFromXp(myKingdom.xp).level;
+  if(typeof ensureMissionFields==='function') ensureMissionFields(myKingdom);
+  box.innerHTML=Object.values(MISSION_DEFS).map(m=>{
+    const done=!!myKingdom.missionDone[m.id];
+    const locked=lvl<m.unlock || done;
+    const prog=myKingdom.missionProgress[m.id]||0;
+    return `<div class="b-card" style="margin-bottom:10px;grid-column:1/-1;opacity:${locked&&!done?'.55':'1'};">
+      <div style="display:flex;justify-content:space-between;"><span>${m.icon} <b>${m.name}</b></span>
+        <span class="lvl-chip">${done?'✅ تمام':(lvl<m.unlock?'🔒 سطح '+persianDigits(m.unlock):persianDigits(prog)+'/'+persianDigits(m.stages))}</span></div>
+      <div class="bdesc">${m.desc} · جایزه 🪙${fmtNum(m.reward)}</div>
+      ${(!locked && !done)?`<div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="btn btn-sm btn-red" style="flex:1;" data-msolo="${m.id}">⚔️ انفرادی</button>
+        <button class="btn btn-sm btn-purple" style="flex:1;" data-mstart="${m.id}">👥 با دوست</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+  box.querySelectorAll('[data-mstart]').forEach(btn=>{
+    btn.addEventListener('click',()=> openCoopFriendPickerForMission(btn.dataset.mstart));
+  });
+  box.querySelectorAll('[data-msolo]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const mid=btn.dataset.msolo;
+      const stage=(myKingdom.missionProgress[mid]||0)+1;
+      attackTarget={name:MISSION_DEFS[mid].name+' — مرحله '+stage, isBot:true, isMission:true, missionId:mid, matchType:'battle',
+        kingdom:generateBotKingdom(6+stage*2)};
+      document.getElementById('compose-target-name').textContent=attackTarget.name;
+      document.getElementById('compose-mode-note').style.display='none';
+      composeQty={}; Object.keys(TROOPS).forEach(k=>composeQty[k]=0);
+      composeMissileQty={}; Object.keys(MISSILES).forEach(k=>composeMissileQty[k]=0);
+      document.getElementById('compose-err').textContent='';
+      showView('compose');
+      renderCompose();
+    });
+  });
+};
+
+/* CHAT FIX: robust jail + club with object storage (not double-stringify when already object) */
+async function chatPush(path, msg){
+  try{
+    let list = await sGetJSON(path, []);
+    if(!Array.isArray(list)) list = [];
+    list.push(msg);
+    list = list.slice(-80);
+    // store as raw array via set (Firebase handles JSON)
+    await firebase.database().ref(toPath(path)).set(list);
+    return true;
+  }catch(e){ console.error('chatPush', e); return false; }
+}
+async function chatLoad(path){
+  try{
+    let list = await sGetJSON(path, []);
+    if(!Array.isArray(list)) list = [];
+    return list;
+  }catch(e){ return []; }
+}
+
+// Rebind jail send
+const jailBtn = document.getElementById('btn-jail-send');
+if(jailBtn){
+  const newBtn = jailBtn.cloneNode(true);
+  jailBtn.parentNode.replaceChild(newBtn, jailBtn);
+  newBtn.addEventListener('click', async ()=>{
+    const inp = document.getElementById('jail-chat-input');
+    const text = (inp&&inp.value||'').trim();
+    if(!text || !myName) return;
+    const ok = await chatPush('jail-chat', {from:myName, text:text.slice(0,80), t:Date.now()});
+    if(!ok){ alert('ارسال پیام ناموفق. اتصال را چک کن.'); return; }
+    if(inp) inp.value='';
+    if(typeof renderJailChat==='function') renderJailChat();
+  });
+}
+
+// Override renderJailChat to use chatLoad
+if(typeof renderJailChat==='function'){
+  renderJailChat = async function(){
+    const box = document.getElementById('jail-chat-list');
+    if(!box) return;
+    const list = await chatLoad('jail-chat');
+    const slice = list.slice(-40);
+    box.innerHTML = slice.length ? slice.map(m=>`<div style="padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px;text-align:right;"><span style="color:var(--gold);font-weight:700;">${escapeHtml(m.from||'?')}</span> <span style="color:var(--ink-dim);font-size:10px;">${new Date(m.t||0).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</span><div>${escapeHtml(m.text||'')}</div></div>`).join('')
+      : `<div style="color:var(--ink-dim);padding:8px;">هنوز پیامی نیست.</div>`;
+    box.scrollTop = box.scrollHeight;
+  };
+}
+
+/* Club chat: store messages under club/{id}/chat as array via direct set */
+const _renderClubPanel = typeof renderClubPanel==='function' ? renderClubPanel : null;
+if(_renderClubPanel){
+  renderClubPanel = async function(){
+    await _renderClubPanel();
+    // rebind club send with robust push
+    const sendBtn = document.getElementById('btn-club-send');
+    const msgInp = document.getElementById('club-msg');
+    if(sendBtn && myKingdom && myKingdom.clubId){
+      sendBtn.onclick = async ()=>{
+        const t = (msgInp&&msgInp.value||'').trim();
+        if(!t) return;
+        const clubPath = 'club:'+myKingdom.clubId;
+        let club = await sGetJSON(clubPath, null);
+        if(!club){ alert('کلاب پیدا نشد'); return; }
+        club.chat = Array.isArray(club.chat) ? club.chat : [];
+        club.chat.push({from:myName, text:t.slice(0,100), t:Date.now(), seen:[myName]});
+        club.chat = club.chat.slice(-60);
+        try{
+          await firebase.database().ref(toPath(clubPath)).set(club);
+        }catch(e){
+          // fallback stringify
+          await sSetJSON(clubPath, club);
+        }
+        if(msgInp) msgInp.value='';
+        renderClubPanel();
+      };
+    }
+  };
+}
+
+/* Auto-refresh club when viewing */
+setInterval(async ()=>{
+  if(!myKingdom) return;
+  const clubView = document.getElementById('view-club');
+  if(clubView && !clubView.classList.contains('hidden') && typeof renderClubPanel==='function'){
+    try{ await renderClubPanel(); }catch(e){}
+  }
+  const jailScreen = document.getElementById('screen-jail');
+  if(jailScreen && !jailScreen.classList.contains('hidden') && typeof renderJailChat==='function'){
+    try{ await renderJailChat(); }catch(e){}
+  }
+}, 4000);
+
+/* GIFT GOLD robust fix */
+openGiftModal = function(friendName){
+  showModal({
+    title: '🎁 هدیه برای '+friendName,
+    body: '🪙 طلا داری: '+fmtNum(myKingdom.gold)+'\\nعدد سکه را وارد کن:',
+    input: true,
+    actions:[
+      {label:'🪙 ارسال', cls:'btn-primary', onClick: async (val)=>{
+        try{
+          const amount = parseInt(String(val||'').replace(/[^\\d]/g,''),10);
+          if(!amount || amount<=0){ alert('عدد معتبر وارد کن.'); return; }
+          const freshMe = await sGetJSON('kingdom:'+myName, null);
+          if(freshMe) myKingdom = hydrateKingdom(freshMe);
+          if(amount > (myKingdom.gold||0)){ alert('سکه کافی نداری.'); return; }
+          myKingdom.gold = Math.max(0, (Number(myKingdom.gold)||0) - amount);
+          myKingdom.lastUpdate = Date.now();
+          const okMe = await sSet('kingdom:'+myName, JSON.stringify(myKingdom));
+          if(!okMe){ alert('کسر ناموفق.'); return; }
+          let fk = await loadKingdomByName(friendName);
+          if(!fk){
+            myKingdom.gold += amount;
+            await sSetJSON('kingdom:'+myName, myKingdom);
+            alert('دوست پیدا نشد؛ مبلغ برگشت.');
+            return;
+          }
+          fk.gold = (Number(fk.gold)||0) + amount;
+          fk.totalGoldEarned = (Number(fk.totalGoldEarned)||0) + amount;
+          fk.lastUpdate = Date.now();
+          const okF = await sSet('kingdom:'+friendName, JSON.stringify(fk));
+          if(!okF){
+            myKingdom.gold += amount;
+            await sSet('kingdom:'+myName, JSON.stringify(myKingdom));
+            alert('ارسال ناموفق؛ مبلغ برگشت.');
+            return;
+          }
+          renderTopbar(); closeModal();
+          alert('🎁 '+fmtNum(amount)+' سکه برای '+friendName+' فرستاده شد.');
+        }catch(err){ alert('خطا: '+(err&&err.message||err)); }
+      }},
+      {label:'بستن', cls:'btn-ghost', onClick: ()=> closeModal()}
+    ]
+  });
+};
+
+console.log('[kingdom] final patch: oil, chat, missions solo, gift, design');
+
+updateConnStatus();
+})();
+</script>
+</body>
+</html>
